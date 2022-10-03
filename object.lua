@@ -1,5 +1,8 @@
---0.6.1.6
-
+--[=[
+object.lua
+处理游戏对象
+依赖于 core.lua
+]=]
 --objid 作为调用 miniExtend 函数时 objectId 参数的默认值
 _G2["__objid"] = 0
 
