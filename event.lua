@@ -64,7 +64,7 @@ Event.Listener = {
 function Event:connect(eventname, callback, uiid)
 	--设置 object 的 msgStr, callBack 和 uiId 属性
 	local object = setmetatable({}, Event.Listener)
-	local func = loadstring('return Event["EventName"].'..eventname)
+	local func = loadstring2('return Event["EventName"].'..eventname)
 	if func then
 		local pcallResult, msgStr = pcall(func)
 		object.msgStr = pcallResult and msgStr or eventname

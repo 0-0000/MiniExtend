@@ -47,7 +47,7 @@ function CustomUI:newUIView(uiid)
 	else
 		object = setmetatable({}, CustomUI.UIView)
 		object.id = uiid
-		object.images, buttons, texts, editBoxes = {}, {}, {}, {}
+		object.images, object.buttons, object.texts, object.editBoxes = {}, {}, {}, {}
 
 		Event:connect("ui.show", function(paprm)
 			if object.showCallBack then
