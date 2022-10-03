@@ -7,6 +7,7 @@
 以下列表表示了所属作用域和依赖关系：
 + core.lua
   + console.lua
+  + debug.lua
   + object.lua
     + event.lua
       + ui.lua
