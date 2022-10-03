@@ -67,7 +67,7 @@ function Event:connect(eventname, callback, uiid)
 	local func = loadstring('return Event["EventName"].'..eventname)
 	if func then
 		local pcallResult, msgStr = pcall(func)
-		object.msgStr = pcallResult and funcResult or msgStr
+		object.msgStr = pcallResult and msgStr or eventname
 	else
 		error("miniExtend - Event:connect() : bad argument #1 'eventname'")
 	end
