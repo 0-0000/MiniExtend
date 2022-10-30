@@ -18,5 +18,5 @@ end
 
 -- 返回默认对象参数
 function setObjectId()
-	return _G2["__OBJID]
+	return _G2["__OBJID"]
 end
