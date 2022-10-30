@@ -88,18 +88,18 @@ end
 
 --显示 UI 界面
 function CustomUI.UIView:show(playerid)
-	return Player:openUIView(playerid or _G2["__objid"], self.id) == 0
+	return Player:openUIView(playerid or _G2["__OBJID"], self.id) == 0
 end
 
 --隐藏 UI 界面
 function CustomUI.UIView:hide(playerid)
-	return Player:hideUIView(playerid or _G2["__objid"], self.id) == 0
+	return Player:hideUIView(playerid or _G2["__OBJID"], self.id) == 0
 end
 
 --设置 UI 界面所有注册过的元件的状态
 --@paprm state:string	要设置的界面状态
 function CustomUI.UIView:setState(state, playerid)
-	local result, playerid = true, playerid or _G2["__objid"]
+	local result, playerid = true, playerid or _G2["__OBJID"]
 	for id, element in pairs(self.images) do
 		result = (Customui:setState(playerid, self.id, element.id, state) == 0) and result
 	end
@@ -120,36 +120,36 @@ CustomUI.Element = {}
 
 --显示元件
 function CustomUI.Element:show(playerid)
-	return Customui:showElement(playerid or _G2["__objid"], self.uiView.id, self.id) == 0
+	return Customui:showElement(playerid or _G2["__OBJID"], self.uiView.id, self.id) == 0
 end
 
 --隐藏元件
 function CustomUI.Element:hide(playerid)
-	return Customui:hideElement(playerid or _G2["__objid"], self.uiView.id, self.id) == 0
+	return Customui:hideElement(playerid or _G2["__OBJID"], self.uiView.id, self.id) == 0
 end
 
 --显示或隐藏元件
 --@paprm display:boolean	true显示，否则隐藏
 function CustomUI.Element:setDisplay(display, playerid)
-	if display then return Customui:showElement(playerid or _G2["__objid"], self.uiView.id, self.id) == 0
-	else return Customui:hideElement(playerid or _G2["__objid"], self.uiView.id, self.id) == 0 end
+	if display then return Customui:showElement(playerid or _G2["__OBJID"], self.uiView.id, self.id) == 0
+	else return Customui:hideElement(playerid or _G2["__OBJID"], self.uiView.id, self.id) == 0 end
 end
 
 --设置元件状态
 --@paprm state:string	要设置的界面状态
 function CustomUI.Element:setState(state, playerid)
-	return Customui:setState(playerid or _G2["__objid"], self.uiView.id, self.id, state) == 0
+	return Customui:setState(playerid or _G2["__OBJID"], self.uiView.id, self.id, state) == 0
 end
 
 --设置元件位置
 --@paprm x:number	新位置的横坐标 position 包含键x和y的表
 --@paprm y:number	新位置的纵坐标
 local function setPosition1(x, y, playerid)
-	return Customui:setPosition(playerid or _G2["__objid"], self.uiView.id, self.id, x, y) == 0
+	return Customui:setPosition(playerid or _G2["__OBJID"], self.uiView.id, self.id, x, y) == 0
 end
 --@paprm position:table	包含键 x 和 y 的表或有序数对
 local function setPosition2(position, playerid)
-	return Customui:setPosition(playerid or _G2["__objid"], self.uiView.id, self.id, position["x"] or position[1], position["y"] or position[2]) == 0
+	return Customui:setPosition(playerid or _G2["__OBJID"], self.uiView.id, self.id, position["x"] or position[1], position["y"] or position[2]) == 0
 end
 function CustomUI.Element:setPosition(parameter1, parameter2, parameter3)
 	if type(parameter1) ~= "table" then
@@ -163,11 +163,11 @@ end
 --@paprm width:number	元件的新宽度
 --@paprm height:number	元件的新高度
 local function setSize1(width, height, playerid)
-	return Customui:setSize(playerid or _G2["__objid"], self.uiView.id, self.id, width, height) == 0
+	return Customui:setSize(playerid or _G2["__OBJID"], self.uiView.id, self.id, width, height) == 0
 end
 --@paprm size:table	包含键 width 和 height 的表
 local function setSize2(position, playerid)
-	return Customui:setSize(playerid or _G2["__objid"], self.uiView.id, self.id, size["x"], size["y"]) == 0
+	return Customui:setSize(playerid or _G2["__OBJID"], self.uiView.id, self.id, size["x"], size["y"]) == 0
 end
 function CustomUI.Element:setSize(parameter1, parameter2, parameter3)
 	if type(parameter1) ~= "table" then
@@ -184,19 +184,19 @@ function CustomUI.Element:setColor(color, playerid)
 	--这很可能是因为 API 将值转为 32 位整型变量，从数字高位向低位读出 RGB 值，低 8 位是无意义的
 	--通常的识别方法是从高位到低位依次读取 alpha, red, green, blue 值，但 API 忽略了 alpha 值
 	--由于 lua51 不支持位运算，使用 * 256 替代 << 8
-	return Customui:setColor(playerid or _G2["__objid"], self.uiView.id, self.id, color * 256) == 0
+	return Customui:setColor(playerid or _G2["__OBJID"], self.uiView.id, self.id, color * 256) == 0
 end
 
 --设置元件透明度
 --@paprm alpha:number	透明度，0为完全透明，100为不透明
 function CustomUI.Element:setAlpha(alpha, playerid)
-	return Customui:setAlpha(playerid or _G2["__objid"], self.uiView.id, self.id, alpha) == 0
+	return Customui:setAlpha(playerid or _G2["__OBJID"], self.uiView.id, self.id, alpha) == 0
 end
 
 --设置元件角度
 --@paprm angle:number 旋转角度，该角度是顺时针的
 function CustomUI.Element:setAngle(angle, playerid)
-	return Customui:rotateElement(playerid or _G2["__objid"], self.uiView.id, self.id, angle) == 0
+	return Customui:rotateElement(playerid or _G2["__OBJID"], self.uiView.id, self.id, angle) == 0
 end
 
 --[[
@@ -208,7 +208,7 @@ CustomUI.Image = {}
 --设置图像元件图案纹理
 --@paprm url:string	图片id
 function CustomUI.Image:setTexture(url, playerid)
-	return Customui:setTexture(playerid or _G2["__objid"], self.uiView.id, self.id, url) == 0
+	return Customui:setTexture(playerid or _G2["__OBJID"], self.uiView.id, self.id, url) == 0
 end
 
 --[[
@@ -230,13 +230,13 @@ CustomUI.Text = {}
 --设置文本元件字体大小
 --@paprm size:number	字体大小
 function CustomUI.Text:setFontSize(size, playerid)
-	return Customui:setFontSize(playerid or _G2["__objid"], self.uiView.id, self.id, size) == 0
+	return Customui:setFontSize(playerid or _G2["__OBJID"], self.uiView.id, self.id, size) == 0
 end
 
 --设置文本元件内容
 --@paprm text:string	显示的内容，如果字符串太长（极限可能取决于设备）则效果不明
 function CustomUI.Text:setText(text, playerid)
-	return Customui:setText(playerid or _G2["__objid"], self.uiView.id, self.id, text) == 0
+	return Customui:setText(playerid or _G2["__OBJID"], self.uiView.id, self.id, text) == 0
 end
 
 --[[

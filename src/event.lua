@@ -10,7 +10,7 @@ local ScriptSupportEvent = ScriptSupportEvent
 --uiEvents 暂时存储还不能绑定的 UI 事件
 local uiSSEObjects, uiEvents = {}, {}
 --UI 作用域中 ui_main 脚本将调用 __newUI 来处理属于该 UI 界面的事件
-_G2["__newUI"] = function(uiid, SSE)
+_G2["__SENDSSE"] = function(uiid, SSE)
 	--如果一个 ScriptSupportEvent 对象在第 0 帧没有绑定一个事件，之后对该事件的绑定会无效
 	SSE:registerEvent("UI.Show", function() end)
 	SSE:registerEvent("UI.Hide", function() end)
@@ -42,9 +42,6 @@ Event = {
 			["onClick"] = "UI.Button.Click", --按钮被点击时调用
 			["onInput"] = "UI.LostFocus", --玩家焦点离开输入框时（可以理解为玩家输入完毕）调用
 		},
-		["time"] = {
-			["newTick"] = "Game.Run", --从 1 帧开始，每帧调用 1 次
-		}
 	}
 }
 

@@ -7,7 +7,7 @@ ide.lua
 --[=[
 copy_table(table) isTypeError(type, ...) printtag(tag, ...) warn(message) log(...) logtag(tag, ...)
 getTick() scheduleCall(ticks, func, ...) nextTick(func, ...)
-getObjectId() useObjectId(objid)
+getObjectId() setObjectId(objid)
 getFunctionLocal(func)
 Console
 	log(..) loatag(tag, ...) warn(message) error(message) clear()
