@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+	<title>miniExtend Console</title>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<script src = "./js/js.js"></script>
+</head>
+<body>
+	<div class="container main">
+	<div class="row">
+		<script>writeLeftColumn("miniExtend Console")</script>
+		<div class="col middle-column">
+		<div class="article">
+			<script>writePreviousNextLinks("prevnext", "time.html", "miniExtend Time", "object.html", "miniExtend Object")</script>
+			<div class="article-body">
+			<div class="article-intro" id="content">
+				<h1>miniExtend <span class="color_h1">Console</span></h1>
+				<p>这里的 Console 并不指真实的程序控制台，而是日志，在程序控制台输出信息对开发者而言几乎是无意义的，下文将日志称为控制台。</p>
+				<img src="img/console.png" />
+				<p>Console 作用域包含以下函数：</p>
+				<table class="reference notranslate"><tbody>
+					<tr>
+						<th width="35%" align="left">函数</th>
+						<th align="left">描述</th>
+					</tr>
+
+					<tr>
+						<td>log(...)</td>
+						<td>在控制台格式化 ... 输出，格式化方式与 lua 标准函数中的 print 相同，标签为 "global" 。</td>
+					</tr>
+					<tr>
+						<td>logtag(tag, ...)</td>
+						<td>在控制台格式化 ... 输出，标签为 tag。</td>
+					</tr>
+					<tr>
+						<td>warn(message)</td>
+						<td>在控制台输出警告信息 message ，标签为 "warning" 。</td>
+					</tr>
+					<tr>
+						<td>warn(message)</td>
+						<td>在控制台输出错误信息 message ，标签为 "error" ，该函数不会抛出错误。</td>
+					</tr>
+					<tr>
+						<td>clear()</td>
+						<td>清空控制台。</td>
+					</tr>
+				</tbody></table>
+			</div>
+			</div>
+			<script>writePreviousNextLinks("prevnext", "time.html", "miniExtend Time", "object.html", "miniExtend Object")</script>
+		</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

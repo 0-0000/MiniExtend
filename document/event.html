@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+	<title>miniExtend Event</title>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<script src = "./js/js.js"></script>
+</head>
+<body>
+	<div class="container main">
+	<div class="row">
+		<script>writeLeftColumn("miniExtend Event")</script>
+		<div class="col middle-column">
+		<div class="article">
+			<script>writePreviousNextLinks("prevnext", "object.html", "miniExtend Object", "ui.html", "miniExtend CustomUI")</script>
+			<div class="article-body">
+			<div class="article-intro" id="content">
+				<h1>miniExtend <span class="color_h1">Event</span></h1>
+				<hr />
+				<h2>Event:connect() 函数</h2>
+				<div class="example">
+					<h2 class="example">实例</h2>
+					<p>在玩家点击方块时在聊天框对玩家输出方块 id ：</p>
+					<div class="example_code">
+						Event<span style="color: #Gray;">:</span>connect<span style="color: Olive;">(</span><span style="color: #a11;">[[Player.ClickBlock]]</span><span style="color: #Gray;">,</span> <span style="color: Green; font-weight: bold;">function</span><span style="color: Olive;">(</span>paprm<span style="color: Olive;">)</span><br />
+						&nbsp; Chat<span style="color: #Gray;">:</span>sendSystemMsg<span style="color: Olive;">(</span>tostring<span style="color: Olive;">(</span>paprm<span style="color: #Gray;">.</span>blockid<span style="color: Olive;">)</span><span style="color: #Gray;">,</span> paprm<span style="color: #Gray;">.</span>eventobjid<span style="color: Olive;">)</span><br />
+						<span style="color: Green; font-weight: bold;">end</span><span style="color: Olive;">)</span>
+					</div>
+					<br />
+				</div>
+				<p>
+					Event:connect() 函数用于监听事件，就像 ScriptSupportEvent:registerEvent 一样，但是它能处理更复杂的情形并返回一个 Listener 对象。<br />
+					Event:connect() 函数返回一个 Listener 对象，称它为该事件的监听者，下文会讲解 Listener 对象，可设置回调函数或删除监听。<br />
+					你可以使用 Event:connect() 函数监听同一事件多次。
+				</p>
+				<hr />
+				<h2>语法</h2>
+				<div class="code"><div>
+				<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Event:connect(</font></font>
+				<em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">eventname : string, callback : function [, uiname : string]</font></font></em>
+				<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">)</font></font>
+				</div></div>
+				<p>
+					第一个参数是事件的名称（如 [[ui.onClick]] 或 [[Player.ClickBlock]]）。<br />
+					第二个参数是事件触发后调用的函数。<br />
+					第三个参数是 UI 事件需要监听的 UI 界面 id ，非 UI 事件无需此参数。<br />
+				</p>
+				<hr />
+				<h2>miniExtend 支持的事件</h2>
+				<p>
+					eventname 可以是官方文档中支持的事件名，也可以是 miniExtend 重命名的事件名，它们在 event.lua 中的 enum_Events （局部变量）中定义。<br />
+					以下是 miniExtend 重命名的事件：
+				</p>
+				<ul>
+					<li>ui.show ，与 UI.Show 等价，当玩家打开 UI 界面时调用。</li>
+					<li>ui.hide ，与 UI.Hide 等价，当玩家隐藏 UI 界面时调用。</li>
+					<li>ui.onPress ，与 UI.Button.TouchBegin 等价，当玩家按按钮（即使没有释放）调用。</li>
+					<li>ui.onClick ，与 UI.Button.Click 等价，当玩家按下按钮（按+释放）调用。</li>
+					<li>ui.onInput ，与 UI.LostFocus 等价，当玩家焦点离开输入框（玩家输入完毕）时调用。</li>
+				</ul>
+				<hr />
+				<h2>传递参数</h2>
+				<p>
+					传递的参数是一个哈希表，包括事件原有的参数 ，增加了 listener ，表示该事件的监听者。<br />
+					miniExtend 还会自动设置 objid 为参数的 eventobjid 键。
+				</p>
+				<hr />
+				<h2>Listener 类</h2>
+				<p>
+					Listener 类位于 Event 作用域内，它包含以下属性：
+				</p>
+				<table class="reference"><tbody>
+					<tr>
+						<th style="width:20%">属性</th>
+						<th>描述</th>
+					</tr>
+
+					<tr>
+						<td>callBack : function</td>
+						<td>事件触发后调用的函数，可读写。</td>
+					</tr>
+					<tr>
+						<td>id : number</td>
+						<td>监听者的 id ，可读。</td>
+					</tr>
+					<tr>
+						<td>eventName : string</td>
+						<td>调用 Event:connect() 函数时传递的 eventName 参数，可读。</td>
+					</tr>
+					<tr>
+						<td>msgStr : string</td>
+						<td>事件原始名，可读。</td>
+					</tr>
+				</tbody></table>
+				<table class="lamp"><tbody><tr>
+					<th style="width:34px"><img src="img/lamp.jpg" alt="Note" style="height:32px;width:32px"></th>
+					<td>虽然你可以直接访问 miniExtend 对象的属性，但你不应该使用属性规定权限之外的权限，例如你不应该为一个可读的属性赋值，如果未明确给出权限，则视为不建议访问的属性。</td>
+				</tr></tbody></table>
+			</div>
+			</div>
+			<script>writePreviousNextLinks("prevnext", "object.html", "miniExtend Object", "ui.html", "miniExtend CustomUI")</script>
+		</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

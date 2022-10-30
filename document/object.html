@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+	<title>miniExtend Object</title>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<script src = "./js/js.js"></script>
+</head>
+<body>
+	<div class="container main">
+	<div class="row">
+		<script>writeLeftColumn("miniExtend Object")</script>
+		<div class="col middle-column">
+		<div class="article">
+			<script>writePreviousNextLinks("prevnext", "core.html", "miniExtend Core", "event.html", "miniExtend Event")</script>
+			<div class="article-body">
+			<div class="article-intro" id="content">
+				<h1>miniExtend Object</h1>
+				<p>
+					目前 Object 中的内容极少，目前的作用是设置 <strong>objid</strong> 默认参数。<br />
+					在回调函数（使用 miniExtend 函数绑定）中，通常只操作事件中的对象 (eventobjid) ，少数情况下操作目标对象 (toobjid) ，随机对象和所有类型对象（例如全体玩家，同一队伍玩家）。<br />
+					而 objid 在前两种情况下作用很大，特别是 eventobjid ，例如在回调函数中调用 CustomUI 中的函数，无需传实参，默认使用 eventobjid。<br />
+					更多内容参见 <a href="event.html">miniExtend Event</a> 和 <a href="ui.html">miniExtend CustomUI</a> 。<br />
+					注意， objid 并非全局变量，它实际上是 _G2["__objid"] ，应该使用 getObjectId() 获取它的值。
+				</p>
+				<table class="reference notranslate"><tbody>
+					<tr>
+						<th width="35%" align="left">函数</th>
+						<th align="left">描述</th>
+					</tr>
+
+					<tr>
+						<td>getObjectId()</td>
+						<td>返回 objid 的值。</td>
+					</tr>
+					<tr>
+						<td>useObjectId(objid)</td>
+						<td>设置 objid 的值，如果参数是一个表，则设置为 "eventobjid" 键的值，如果参数是数字，直接设置，否则不做任何有意义的操作。</td>
+					</tr>
+				</tbody></table>
+			</div>
+			</div>
+			<script>writePreviousNextLinks("prevnext", "core.html", "miniExtend Core", "event.html", "miniExtend Event")</script>
+		</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

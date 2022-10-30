@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>miniExtend 文档</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!-- 将内部样式表替换为外部样式表 -->
+<!--
+<style type="text/css">
+</style>
+-->
+<link rel="stylesheet" type="text/css" href="./css/markdownpad-github.css" />
+
+</head>
+<body>
+<h1>miniExtend 简介</h1>
+<p>miniExtend 是一个为<a title="理论上支持任何使用迷你世界引擎的软件，例如迷你编程">迷你世界</a>脚本设计的 lua 库。<br />
+使用 miniExtend 可以极大简化迷你世界脚本开发。<br />
+使用 miniExtend 并不困难。  
+</p>
+<p>miniExtend 允许你像正常一样调用 lua 基本函数，例如 <code>os.execute()</code> 函数，该函数正常情况是不能<strong>直接</strong>调用的。<br />
+miniExtend 允许你将脚本代码集中在<em>全局作用域</em>下管理，只需在 <em>UI 作用域</em>下添加简短的脚本并稍作修改即可，而不是在各个<em>作用域</em>之间来回切换，通常无法<strong>直接</strong>在<em>全局作用域</em>下绑定绑定 <em>UI 事件</em>。<br />
+miniExtend 允许你执行基于对象的迷你世界 API ，这甚至允许你将原来所需的 3 个参数降至 0 个！一个例子是 <code>CustomUI.UIView.Element:show()</code> ，首先根据对象自身属性确定 2 个参数，然后根据 <code>_G2[&quot;__objid&quot;]</code> 再确定 1 个参数！<br />
+阅读源代码，你会发现更多有趣的内容！  
+</p>
+<hr />
+<h2>约定</h2>
+<h3>定义</h3>
+<blockquote>
+<h4><span id="namespace">脚本作用域</span></h4>
+<blockquote>
+<p><strong>脚本文件所处的位置叫做脚本文件的作用域。</strong><br />
+所处的位置和脚本文件在文件结构上的位置有关，例如有的脚本文件在<a title="这里包括子文件夹，后同">地图文件夹</a>中，而有的在<em>自定义 UI 界面</em> 文件夹中。<br />
+所处的位置决定了脚本在什么时候执行，以及脚本执行时的环境，这就是定义它的意义。<br />
+需要注意，不同的脚本作用域的环境 <code>_G</code> 是不同的，所以<strong>不同作用域下的脚本不共享全局变量</strong>，但有其它方式来让它们交流，更多内容详见 <code>core.lua</code> 。<br />
+在 miniExtend 一般将作用域分为两类，其它类别暂不讨论：  
+</p>
+<ul>
+<li>
+<p><strong>全局作用域</strong>：该脚本文件位于地图文件夹中，辨别方式是<strong>其在脚本编辑器创建</strong>，其性质是该作用域下的文件总是在<a title="这里指开发者可编辑的脚本，可能不包含插件包，这有待测试">可见脚本</a>中最先执行。  
+</p>
+</li>
+<li>
+<p><strong>UI 作用域</strong>：该脚本文件位于自定义 UI 界面文件夹中，辨别方式是<strong>其在 UI 编辑器中创建</strong>，其性质是该作用域下的文件晚于全局作用域下的脚本文件执行，脚本可以使用 <code>ScriptSupportEvent</code> 监听所属 UI 界面的事件，全局作用域和其它 UI 作用域无法使用 <code>ScriptSupportEvent</code> </p>
+</li>
+</ul>
+<p>这可能很难理解，没关系！你只需知道如何区分全局作用域和 UI 作用域即可！除非你是 miniExtend 开发者，那样我还是建议你理解它！  
+</p>
+</blockquote>
+<h4><span id="tick">游戏帧</span></h4>
+<blockquote>
+<p><strong>游戏帧是游戏的基本事件单位，游戏帧从 0 开始，</strong>以下简称帧。<br />
+游戏数据每帧改变一次。<br />
+从第 0 帧开始，平均每 <strong>0.05s</strong> 会进入新的游戏帧，每个游戏帧的时长是无规律，不确定的，可能与这一帧游戏的计算量有关。<br />
+可以近似的把 1 帧当做 0.05s ，但要知道它并不是真正的 0.05s ，不要利用游戏帧来做精密的计时器，可以使用 <code>os.clock()</code> 来替代。<br />
+对于延续性事件（例如玩家挖掘方块），每一帧会触发一次事件，这也体现了游戏帧的意义。  
+</p>
+</blockquote>
+</blockquote>
+<h3>代码规范</h3>
+<blockquote>
+<ul>
+<li>使用 <code>:</code> 而不是 <code>.</code> 调用 miniExtend 作用域和对象的函数，不要自认为函数不需要 <code>self</code> 参数就可以使用 <code>.</code> 调用了！  
+</li>
+<li>除非是调试，否则不要在正式代码中访问未在文档中提供的函数，属性等， miniExtend 没有设定保护它们，这可能导致不可预知的结果。  
+</li>
+<li>除非有特别说明 miniExtend 不会检查你调用函数时的参数是否正确，请保证形参的正确性！  
+</li>
+</ul>
+</blockquote>
+<h3>关键字</h3>
+<blockquote>
+<p>以下是 miniExtend 关键字，避免意外地使用它们作为自己的标识符，改变脚本添加的函数的意义不会影响 miniExtend 的使用，但有的 API 可能会使用这些函数从而导致脚本无法正常运行。  
+</p>
+<table>
+	<tr>
+	<th>脚本添加的函数</th>
+	<td>copy_table</td>
+	<td>isTypeError</td>
+	<td>print_console</td>
+	<td>printtag</td>
+	<td>warn</td>
+</tr>
+<tr>
+	<th>miniExtend 全局函数</th>
+	<td>getObjectId</td>
+	<td>setObjectId</td>
+</tr>
+<tr>
+	<th>miniExtend 全局表/作用域/类</th>
+	<td>_G2</td>
+	<td>Console</td>
+	<td>CustomUI</td>
+	<td>Event</td>
+</tr>
+</table>
+</blockquote>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

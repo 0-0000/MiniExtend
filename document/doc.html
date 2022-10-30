@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+	<title>miniExtend 参考手册</title>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<script src = "./js/js.js"></script>
+</head>
+<body>
+	<div class="container main">
+	<div class="row" id="row">
+		<script>writeLeftColumn("miniExtend 参考手册")</script>
+		<div class="col middle-column" id="col_middle_column">
+		<div class="article">
+			<script>writePreviousNextLinks("next", "environment.html", "miniExtend 安装")</script>
+			<div class="article-body">
+			<div class="article-intro" id="content">
+				<h1>miniExtend 参考手册</h1>
+				<div class="tutintro">
+					<img src="img/dev-wiki.png" alt="lua" width="128" height="128" class="alignnone size-full wp-image-11865" sizes="(max-width: 128px) 100vw, 128px" />
+					<p>
+					miniExtend （迷你世界脚本扩展）是以面相对象方式封装迷你世界 Lua API 的开源扩展包，同时包括了代码和文档，其设计目的是为了简化脚本代码，提高可读性，从而提高脚本开发者的开发效率。
+					</p>
+				</div>
+				<hr />
+				<h2>设计目的</h2>
+				<p>其设计目的是为了简化脚本代码，提高可读性，从而提高脚本开发者的开发效率。</p>
+				<hr />
+				<h2>阅读本文档前，您需要了解的知识：</h2>
+				<ul>
+					<li>lua</li>
+					<li><a href="difference.html">迷你世界脚本与 lua 的差异</a></li>
+				</ul>
+				<hr />
+				<h2>版本信息</h2>
+				<p>
+					您当前使用的版本为 alpha 0.5.1.5，代码的第一行显示了文件在何版本更改，正常情况下有且仅有一个文件会显示当前使用的版本。<br />
+					请注意，当前版本是内测版，因此不要在公共网络上发布该版本的 miniExtend 内容。
+				</p>
+				<hr />
+				<h2>第一个 miniExtend 脚本</h2>
+				<p>接下来我们使用 miniExtend 监听<strong>玩家动作改变</strong>这一事件，在事件发生时来在控制台以"tag"作为标签输出"Hello World!"</p>
+				<div class="example"> 
+					<h2 class="example">实例(miniExtend)</h2> 
+					<div class="example_code">
+						Event<span style="color: #Gray;">:</span>connect<span style="color: Olive;">(</span><span style="color: #a11;">[[Player.PlayAction]]</span><span style="color: #Gray;">,</span> <span style="color: Green; font-weight: bold;">function</span><span style="color: Olive;">(</span>paprm<span style="color: Olive;">)</span><br />
+						&nbsp; Console<span style="color: #Gray;">:</span>logtag<span style="color: Olive;">(</span><span style="color: #a11;">"tag"</span><span style="color: #Gray;">,</span> <span style="color: #a11;">"Hello, world!"</span><span style="color: Olive;">)</span><br />
+						<span style="color: Green; font-weight: bold;">end</span><span style="color: Olive;">)</span>
+					</div><br />
+				</div>
+				<p><strong>玩家动作改变</strong>时，控制台的"tag"标签会显示 "Hello, world!"。</p>
+				<h2>miniExtend 效率</h2>
+				<p>
+					虽然 miniExtend 添加了许多有用的函数来提高可读性，但 miniExtend 效率不低。<br />
+					其中一个理由是安装 miniExtend 的脚本访问全局变量只需要索引一个表，而未安装 miniExtend 的脚本访问全局变量（以读取为例）需要经过这些步骤，这些步骤仅是推测，但几乎是最简的：
+				</p>
+				<ul>
+					<li>访问运行环境是否含有该索引，结果总是不包含该索引。</li>
+					<li>调用 __index 函数。</li>
+					<li>检测 _ScriptFenv_base_ 和 _ScriptFenv_buffer_ 中是否含有该键，如果有返回对应值。</li>
+					<li>如果没有， 检验 _ScriptFenv_G_ 中是否含有该键，如果没有返回 nil 。</li>
+					<li>如果有，返回 genv 中该键对应的值。</li>
+				</ul>
+				<p>
+					miniExtend 初始化也很快，在 4 处理器 2.5GHz 的电脑上在 CPU 空闲时初始化只需要大约 0.005s 的时间，仅相当于 1 帧的 1/10 。
+				</p>
+			</div>
+			</div>
+			<script>writePreviousNextLinks("next", "environment.html", "miniExtend 安装")</script>
+		</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

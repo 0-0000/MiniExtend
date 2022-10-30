@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>miniExtend Time</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!-- 将内部样式表替换为外部样式表 -->
+<!--
+<style type="text/css">
+</style>
+-->
+<link rel="stylesheet" type="text/css" href="./css/markdownpad-github.css" />
+
+</head>
+<body>
+<h1>miniExtend Time</h1>
+<p>对应源文件： <code>time.lua</code> 。  </p>
+<h2><code>getTick()</code> 函数</h2>
+<ul>
+<li>函数返回当前是第几<a href="./document.html#tick">游戏帧</a>。</li>
+<li>只要你立即游戏帧的含义，该函数很容易理解。</li>
+</ul>
+<h2><code>scheduleCall(ticks, func, ...)</code> 函数</h2>
+<ul>
+<li>在 <code>ticks</code> 游戏帧后以 <code>...</code> 为参数调用函数 <code>func</code> 。  </li>
+<li><code>ticks</code> 类型为 <code>number</code> 的正整数，会被设置为 <code>math.max(math.floor(ticks), 1)</code> 来修正不合法的数值。</li>
+<li><code>func</code> 类型为 <code>function</code> ， miniExtend 会检查它的类型。</li>
+<li><code>...</code> 类型不限，作为调用 <code>func</code> 时传递的实参。  </li>
+<li>函数不使用多线程，在当前线程执行 <code>func</code> ，这可能导致程序阻塞。  </li>
+</ul>
+<h2><code>nextTick(func, ...)</code> 函数</h2>
+<ul>
+<li>在下一帧以 <code>...</code> 为参数调用函数 <code>func</code> 。  </li>
+<li>等价于 <code>scheduleCall(1, func, ...);</code> ，会检查 <code>func</code> 类型。  </li>
+</ul>
+<p>综合实例：
+从第 2 帧开始，每一帧都在日志输出 <code>&quot;tick&quot;</code> 、当前帧和 <code>Fibonacci[tick]</code>。<br />
+其中 <code>tick</code> 表示当前是第几帧。<br />
+<code>Fibonacci</code>	表示斐波那契数列，它的定义如下：  </p>
+<ul>
+<li><code>Fibonacci[0] = 0</code>  </li>
+<li><code>Fibonacci[1] = 1</code>  </li>
+<li><code>Fibonacci[i] = Fibonacci[i-1] + Fibonacci[i-2] (i≥2, i∈N*)</code>  </li>
+</ul>
+<p></p>
+<pre><code>-- fib_2 表示 Fibonacci[tick-2] , fib_1 表示 Fibonacci[tick-1]
+function f(fib_2, fib_1)
+    -- fib 表示 Fibonacci[tick]
+    local fib = fib_1 + fib_2
+    --Console:log() 函数参见 miniExtend Console
+    Console:log(&quot;tick&quot;, getTick(), fib)
+    nextTick(f, fib_1, fib)
+end
+-- Fibonacci[0] = 0, Fibonacci[1] = 1
+scheduleCall(2, f, 0, 1)
+</code></pre>
+
+<p>部分输出如下，忽略时间，标签前缀：<br />
+tick	2	1<br />
+tick	3	2<br />
+tick	4	3<br />
+tick	5	5<br />
+tick	6	8<br />
+tick	7	13  </p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
