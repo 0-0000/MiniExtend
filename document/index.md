@@ -8,6 +8,9 @@
 ## miniExtend ##
 - [miniExtend Core](./core.html)
 - [miniExtend Time](./time.html)
+- [miniExtend Console](./console.html)
+- [miniExtend Object](./object.html)
+- [miniExtend Event](./event.html)
 
 ## 附加 ##
 以下内容不属于 miniExtend ，但没有官方的文档描述它们，而它们对于使用 miniExtend 又是有用的，所以附加了这些文档。  

@@ -11,7 +11,7 @@ function useObjectId(objid)
 	local t = type(objid)
 	if t == "number" then
 		_G2["__OBJID"] = objid
-	elseif t == "table" and objid["eventobjid"] then
+	elseif t == "table" and type(objid["eventobjid"]) == "number" then
 		_G2["__OBJID"] = objid["eventobjid"]
 	end
 end

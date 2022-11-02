@@ -1,57 +1,76 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-	<title>miniExtend Console</title>
-	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
-	<link rel="stylesheet" type="text/css" href="css/css.css" />
-	<script src = "./js/js.js"></script>
+<title>miniExtend Console</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!-- 将内部样式表替换为外部样式表 -->
+<!--
+<style type="text/css">
+</style>
+-->
+<link rel="stylesheet" type="text/css" href="./css/markdownpad-github.css" />
+
 </head>
 <body>
-	<div class="container main">
-	<div class="row">
-		<script>writeLeftColumn("miniExtend Console")</script>
-		<div class="col middle-column">
-		<div class="article">
-			<script>writePreviousNextLinks("prevnext", "time.html", "miniExtend Time", "object.html", "miniExtend Object")</script>
-			<div class="article-body">
-			<div class="article-intro" id="content">
-				<h1>miniExtend <span class="color_h1">Console</span></h1>
-				<p>这里的 Console 并不指真实的程序控制台，而是日志，在程序控制台输出信息对开发者而言几乎是无意义的，下文将日志称为控制台。</p>
-				<img src="img/console.png" />
-				<p>Console 作用域包含以下函数：</p>
-				<table class="reference notranslate"><tbody>
-					<tr>
-						<th width="35%" align="left">函数</th>
-						<th align="left">描述</th>
-					</tr>
+<h1>miniExtend Console</h1>
+<p>对应源文件： <code>console.lua</code> 。  
+</p>
+<h2>日志管理 <code style="color:green;">Console</code></h2>
+<p>这里的 Console 并不指真实的程序控制台，而是指日志，如图所示：<br />
+<img src="./img/console.png" alt="日志" /><br />
+真正在控制台输出的信息几乎是不可见的，但是日志中的信息是可见的。<br />
+注：在开发者工具中调整<img src="./img/test.png" alt="测试" />至图示状态来启用日志，新地图创建时该按钮可能出于启用状态但日志并未开启，为了保证日志启用可以点击该按钮两次来刷新状态。<br />
+在玩法模式下按<img src="./img/console-button.png" alt="日志按钮" />来打开日志窗口。  
+</p>
+<h2>函数</h2>
+<p><code>Console</code> 包含以下函数：  
+</p>
+<ul>
+<li><code>log(...)</code>  
+</li>
+</ul>
+<blockquote>
+<p>在日志以 <code>&quot;global&quot;</code> 为标签格式化输出 <code>...</code>，格式化方式与 lua 基本函数 <code>print(...)</code> 相同，等价于调用 <code>Console:logtag(&quot;global&quot;, ...);</code> 。  
+</p>
+</blockquote>
+<ul>
+<li><code>logtag(tag, ...)</code>  
+</li>
+</ul>
+<blockquote>
+<p>在日志以 <code>tag</code> 为标签格式化输出 <code>...</code>，格式化方式与 <code>Console:log(...)</code> 相同。<br />
+如果 <code>tag</code> 不是字符串，结果会令人疑惑。  
+</p>
+</blockquote>
+<ul>
+<li><code>warn(message)</code>  
+</li>
+</ul>
+<blockquote>
+<p>在日志输出警告信息 <code>message</code> ，标签为 <code>&quot;warning&quot;</code> 。<br />
+这和<a title="这个 warn 函数指全局函数 warn，参见 difference.html"> <code>warn(message)</code> 函数</a>很像，但 <code>Console:warn(message)</code> 会以黄色高亮显示警告。</p>
+</blockquote>
+<ul>
+<li><code>error(message)</code>  
+</li>
+</ul>
+<blockquote>
+<p>在日志输出错误信息 <code>message</code> ，标签为 <code>&quot;error&quot;</code> 。<br />
+该函数不像被 miniExtend 恢复的全局函数 <code>error(message [, level])</code> ，不会终止上次调用的受保护函数。<br />
+该函数会以红色高亮显示警告。  
+</p>
+</blockquote>
+<ul>
+<li><code>clear()</code>  
+</li>
+</ul>
+<blockquote>
+<p>清空日志，效果和在控制台点击&quot;清空日志&quot;按钮一样。  
+</p>
+</blockquote>
+<p>这些函数都比较简单，就不举实例了，有疑惑可以自行测试效果。</p>
 
-					<tr>
-						<td>log(...)</td>
-						<td>在控制台格式化 ... 输出，格式化方式与 lua 标准函数中的 print 相同，标签为 "global" 。</td>
-					</tr>
-					<tr>
-						<td>logtag(tag, ...)</td>
-						<td>在控制台格式化 ... 输出，标签为 tag。</td>
-					</tr>
-					<tr>
-						<td>warn(message)</td>
-						<td>在控制台输出警告信息 message ，标签为 "warning" 。</td>
-					</tr>
-					<tr>
-						<td>warn(message)</td>
-						<td>在控制台输出错误信息 message ，标签为 "error" ，该函数不会抛出错误。</td>
-					</tr>
-					<tr>
-						<td>clear()</td>
-						<td>清空控制台。</td>
-					</tr>
-				</tbody></table>
-			</div>
-			</div>
-			<script>writePreviousNextLinks("prevnext", "time.html", "miniExtend Time", "object.html", "miniExtend Object")</script>
-		</div>
-		</div>
-	</div>
-	</div>
 </body>
 </html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -23,7 +23,7 @@ _G2["__SENDSSE"] = function(uiid, SSE)
 		if listener.uiId == uiid then
 			listener.id = SSE:registerEvent(listener.msgStr, function(paprm)
 				paprm["listener"] = listener
-				useObjectId(paprm["eventobjid"])
+				setObjectId(paprm["eventobjid"])
 				listener.callBack(paprm)
 			end)
 			uiEvents[i] = nil
@@ -72,7 +72,11 @@ function Event:connect(eventname, callback, uiid)
 	--检查是否是 UI 事件，如果是，设置对象的 uiId 属性
 	if string.sub(object.msgStr, 1, 2) == [[UI]] then
 		object.isUIEvent = true
-		object.uiId = uiid
+		if type(uiid) == "string" then
+			object.uiId = uiid
+		else
+			error("miniExtend - Event:connect() : bad argument #3 'uiid'")
+		end
 	end
 
 	--正式调用 API 开始绑定事件
@@ -80,7 +84,7 @@ function Event:connect(eventname, callback, uiid)
 	if not object.isUIEvent then
 		object.id = ScriptSupportEvent:registerEvent(object.msgStr, function(paprm)
 			paprm["listener"] = object
-			useObjectId(paprm["eventobjid"])
+			setObjectId(paprm["eventobjid"])
 			object.callBack(paprm)
 		end)
 	else --如果是 UI 事件，那么使用使用对应的 UI 界面的 ScriptSupportEvent 对象，可能还要暂时储存
@@ -88,7 +92,7 @@ function Event:connect(eventname, callback, uiid)
 		if api then
 			object.id = api:registerEvent(object.msgStr, function(paprm)
 				paprm["listener"] = object
-				useObjectId(paprm["eventobjid"])
+				setObjectId(paprm["eventobjid"])
 				object.callBack(paprm)
 			end)
 		else

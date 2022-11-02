@@ -1,107 +1,79 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-	<title>miniExtend Event</title>
-	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
-	<link rel="stylesheet" type="text/css" href="css/css.css" />
-	<script src = "./js/js.js"></script>
+<title>miniExtend Event</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!-- 将内部样式表替换为外部样式表 -->
+<!--
+<style type="text/css">
+</style>
+-->
+<link rel="stylesheet" type="text/css" href="./css/markdownpad-github.css" />
+
 </head>
 <body>
-	<div class="container main">
-	<div class="row">
-		<script>writeLeftColumn("miniExtend Event")</script>
-		<div class="col middle-column">
-		<div class="article">
-			<script>writePreviousNextLinks("prevnext", "object.html", "miniExtend Object", "ui.html", "miniExtend CustomUI")</script>
-			<div class="article-body">
-			<div class="article-intro" id="content">
-				<h1>miniExtend <span class="color_h1">Event</span></h1>
-				<hr />
-				<h2>Event:connect() 函数</h2>
-				<div class="example">
-					<h2 class="example">实例</h2>
-					<p>在玩家点击方块时在聊天框对玩家输出方块 id ：</p>
-					<div class="example_code">
-						Event<span style="color: #Gray;">:</span>connect<span style="color: Olive;">(</span><span style="color: #a11;">[[Player.ClickBlock]]</span><span style="color: #Gray;">,</span> <span style="color: Green; font-weight: bold;">function</span><span style="color: Olive;">(</span>paprm<span style="color: Olive;">)</span><br />
-						&nbsp; Chat<span style="color: #Gray;">:</span>sendSystemMsg<span style="color: Olive;">(</span>tostring<span style="color: Olive;">(</span>paprm<span style="color: #Gray;">.</span>blockid<span style="color: Olive;">)</span><span style="color: #Gray;">,</span> paprm<span style="color: #Gray;">.</span>eventobjid<span style="color: Olive;">)</span><br />
-						<span style="color: Green; font-weight: bold;">end</span><span style="color: Olive;">)</span>
-					</div>
-					<br />
-				</div>
-				<p>
-					Event:connect() 函数用于监听事件，就像 ScriptSupportEvent:registerEvent 一样，但是它能处理更复杂的情形并返回一个 Listener 对象。<br />
-					Event:connect() 函数返回一个 Listener 对象，称它为该事件的监听者，下文会讲解 Listener 对象，可设置回调函数或删除监听。<br />
-					你可以使用 Event:connect() 函数监听同一事件多次。
-				</p>
-				<hr />
-				<h2>语法</h2>
-				<div class="code"><div>
-				<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Event:connect(</font></font>
-				<em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">eventname : string, callback : function [, uiname : string]</font></font></em>
-				<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">)</font></font>
-				</div></div>
-				<p>
-					第一个参数是事件的名称（如 [[ui.onClick]] 或 [[Player.ClickBlock]]）。<br />
-					第二个参数是事件触发后调用的函数。<br />
-					第三个参数是 UI 事件需要监听的 UI 界面 id ，非 UI 事件无需此参数。<br />
-				</p>
-				<hr />
-				<h2>miniExtend 支持的事件</h2>
-				<p>
-					eventname 可以是官方文档中支持的事件名，也可以是 miniExtend 重命名的事件名，它们在 event.lua 中的 enum_Events （局部变量）中定义。<br />
-					以下是 miniExtend 重命名的事件：
-				</p>
-				<ul>
-					<li>ui.show ，与 UI.Show 等价，当玩家打开 UI 界面时调用。</li>
-					<li>ui.hide ，与 UI.Hide 等价，当玩家隐藏 UI 界面时调用。</li>
-					<li>ui.onPress ，与 UI.Button.TouchBegin 等价，当玩家按按钮（即使没有释放）调用。</li>
-					<li>ui.onClick ，与 UI.Button.Click 等价，当玩家按下按钮（按+释放）调用。</li>
-					<li>ui.onInput ，与 UI.LostFocus 等价，当玩家焦点离开输入框（玩家输入完毕）时调用。</li>
-				</ul>
-				<hr />
-				<h2>传递参数</h2>
-				<p>
-					传递的参数是一个哈希表，包括事件原有的参数 ，增加了 listener ，表示该事件的监听者。<br />
-					miniExtend 还会自动设置 objid 为参数的 eventobjid 键。
-				</p>
-				<hr />
-				<h2>Listener 类</h2>
-				<p>
-					Listener 类位于 Event 作用域内，它包含以下属性：
-				</p>
-				<table class="reference"><tbody>
-					<tr>
-						<th style="width:20%">属性</th>
-						<th>描述</th>
-					</tr>
+<h1>miniExtend Event</h1>
+<p>对应源文件： <code>event.lua</code> 。  
+</p>
+<h2>事件管理 <code style="color:green;">Event</code></h2>
+<p>miniExtend Event 原型为 <code>ScriptSupportEvent</code> ，但功能更多，支持 <a href="./object.html">miniExtend Object</a> 。  
+</p>
+<h2><code>Event:connect()</code> 函数</h2>
+<p>该函数是 miniExtend Event 的核心，作用为监听游戏事件，在事件发生时回调函数。<br />
+该函数原型为 <code>ScriptSupportEvent:registerEvent(msgStr, func)</code> 。  
+</p>
+<h3>语法</h3>
+<blockquote>
+<p><code>Event:connect(eventname, callback, [, uiid])</code><br />
+在 <code>eventname</code> 所描述的事件发生时，调用 <code>callback</code> ，如果 <code>eventname</code> 所描述的事件为 <a title="判定依据为事件名以 UI 或 ui 开头，前提是存在该事件">UI 事件</a>，需要指定 <code>uiid</code> 为事件所处 UI 界面 id 。  
+</p>
+<h4><code>eventname</code> 参数</h4>
+<blockquote>
+<p>该参数是 <code>string</code> 类型，描述事件，形如 <code>[[namespace.event]]</code> 。<br />
+该参数不合法会导致报错： <span style="color:red;"><code>miniExtend - Event:connect() : bad argument #1 'eventname'</code></span> 。<br />
+该参数可以是 miniExtend 自定义的事件名，也可以是 <code>ScriptSupportEvent:registerEvent()</code> 函数支持的事件名， miniExtend 自定义的事件名如下：<br />
+<code>[[ui.show]]</code> ：等价于 <code>[[UI.Show]]</code> ， UI 界面显示。<br />
+<code>[[ui.hide]]</code> ：等价于 <code>[[UI.Hide]]</code> ， UI 界面隐藏。<br />
+<code>[[ui.onPress]]</code> ：等价于 <code>[[UI.Button.TouchBegin]]</code> ，按钮被按下，注意该事件不是持续性事件。<br />
+<code>[[ui.onClick]]</code> ：等价于 <code>[[UI.Button.Click]]</code> ，按钮被点击。<br />
+<code>[[ui.onInput]]</code> ：等级于 <code>[[UI.LostFocus]]</code> ，输入框失去焦点，可以理解为玩家完成了在输入框的输入。<br />
+这些自定义的事件名都描述的是 UI 事件，但通常通过 <a href="./ui.html">CustomUI</a> 来监听这些事件。<br />
+注：点击=按下+释放，玩家可能按下按钮，然后把焦点移出按钮再释放，此时不会触发该按钮的释放事件，也就不会触发按钮的点击事件。  
+</p>
+</blockquote>
+<h4><code>callback</code> 参数</h4>
+<blockquote>
+<p>该参数是 <code>function</code> 类型，指定要回调的函数，该参数不会被检查，且只会在事件发生时才会报错。  
+</p>
+<p>回调函数调用时，还会传递一个哈希表作为参数，以下简称 <code>paprm</code> ，存储着该事件发生时的一些信息。<br />
+<code>paprm</code> 一定包含 <code>ScriptSupportEvent:registerEvent(eventname, callback);</code> 会传递的参数，详见<a href="https://developers.mini1.cn/wiki/event.html">假 wiki</a> 。<br />
+除此之外，还必包含一个 <code>listener</code> ，表示监听该事件的 <code>Event.Listener</code> 对象， <code>Event.Listener</code> 对象详见下文。<br />
+回调函数时还会提前隐式地设置 <code>objid</code> 的值为 <code>paprm[&quot;eventobjd&quot;]</code> ，根据 <code>setObjectId()</code> 函数的行为，如果不包含那个键，那么 <code>objid</code> 的值不会被设置。  
+</p>
+</blockquote>
+<h3><code>uiid</code> 参数</h3>
+<blockquote>
+<p>如果所指定事件为 UI 事件，那么该参数应为 <code>string</code> 类型，表示要监听的 UI 界面 id ，非 UI 事件应指定为 <code>nil</code> 。<br />
+对于 UI 事件，如果该参数类型不为 <code>string</code> ，会导致报错： <span style="color:red;"><code>miniExtend - Event:connect() : bad argument #3 'uiid'</code></span> 。<br />
+对于 UI 事件，函数只能监听 <code>uiid</code> 所指 UI 界面发生的事件，其它 UI 界面发生的事件（如按钮被点击）不会被监听，解决方法是对每个需要监听的 UI 界面使用不同的 <code>uiid</code> 参数执行该函数。  
+</p>
+</blockquote>
+</blockquote>
+<h2><code>Event.Listener</code> 类</h2>
+<p><code>Event.Listener</code> 类管理事件监听，每次调用 <code>Event:connect()</code> 都会返回一个 <code>Event.Listener</code> 对象，该对象包含了该监听的一些信息，并提供了删除监听的方法。  </p>
+<h3>属性</h3>
+<ul>
+<li><code>callBack</code> ： <code>function</code> 类型，事件发生时要回调的函数，你可以修改它，这样在事件发生时回调的函数会改变。  </li>
+<li><code>id</code> : <code>number</code> 类型，事件 id 。</li>
+<li><code>eventName</code> : <code>string</code> 类型，等于调用 <code>Event:connect()</code> 函数时传递的 <code>eventname</code> 参数。  </li>
+<li><code>msgStr</code> ： <code>string</code> 类型，事件在 API 中的名称，除非使用 miniExtend 自定义事件否则等于 <code>eventName</code> 属性，正常等于 <code>paprm[&quot;msgStr&quot;]</code> 。  </li>
+</ul>
+<h3>方法</h3>
+<h4><code>delete()</code> 方法</h4>
+<p>删除对象所指的监听，在事件发生时不再调用 <code>callBack</code> 。<br />
+该函数只取消监听，不会删除对象本生，让 lua 垃圾收集器做这件事。  </p>
 
-					<tr>
-						<td>callBack : function</td>
-						<td>事件触发后调用的函数，可读写。</td>
-					</tr>
-					<tr>
-						<td>id : number</td>
-						<td>监听者的 id ，可读。</td>
-					</tr>
-					<tr>
-						<td>eventName : string</td>
-						<td>调用 Event:connect() 函数时传递的 eventName 参数，可读。</td>
-					</tr>
-					<tr>
-						<td>msgStr : string</td>
-						<td>事件原始名，可读。</td>
-					</tr>
-				</tbody></table>
-				<table class="lamp"><tbody><tr>
-					<th style="width:34px"><img src="img/lamp.jpg" alt="Note" style="height:32px;width:32px"></th>
-					<td>虽然你可以直接访问 miniExtend 对象的属性，但你不应该使用属性规定权限之外的权限，例如你不应该为一个可读的属性赋值，如果未明确给出权限，则视为不建议访问的属性。</td>
-				</tr></tbody></table>
-			</div>
-			</div>
-			<script>writePreviousNextLinks("prevnext", "object.html", "miniExtend Object", "ui.html", "miniExtend CustomUI")</script>
-		</div>
-		</div>
-	</div>
-	</div>
 </body>
 </html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
