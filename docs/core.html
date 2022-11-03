@@ -16,34 +16,51 @@
 <h1>miniExtend Core</h1>
 <p>对应源文件： <code>core.lua</code> 。<br />
 miniExtend 已尽可能恢复标准 lua 环境，这意味着你能正常调用那些被删除的基本函数。<br />
-以下是有相对标准 lua 环境有所不同的部分：  </p>
+以下是有相对标准 lua 环境有所不同的部分：  
+</p>
 <h2><code>loadstring2(string, [, chuckname])</code> 函数</h2>
 <ul>
-<li>增加了 <code>loadstring2(string [, chuckname])</code> 函数，该函数等价于 <code>LoadLuaScript(string, [, chuckname])</code> 函数，使用它代替 <code>LoadLuaScript()</code> 函数。  </li>
+<li>增加了 <code>loadstring2(string [, chuckname])</code> 函数，该函数等价于 <code>LoadLuaScript(string, [, chuckname])</code> 函数，使用它代替 <code>LoadLuaScript()</code> 函数。  
+</li>
 <li>该函数效果类似于 lua51 基本函数 <code>loadstring(string, [, chuckname]</code> 。</li>
-<li>但是 <code>loadstring()</code> 运行时的 <code>_G</code> 完全是标准的 lua51 的 <code>_G</code> ，它<strong>不能访问迷你世界 API ，当前脚本下的全局变量，包括 miniExtend</strong>。  </li>
-<li>而 <code>loadstring2()</code> 运行时的 <code>_G</code> 等于你的脚本中的 <code>_G</code> 。  </li>
-<li>简而言之，当解析的代码只进行一些简单的计算，不需要 API 和交换数据的话，使用 <code>loadstring()</code> ，否则使用 <code>loadstring2()</code> 。  </li>
+<li>但是 <code>loadstring()</code> 运行时的 <code>_G</code> 是标准的 lua51 的 <code>_G</code> ，它<strong>不能访问迷你世界 API ，当前脚本下的全局变量，但可以正常访问 miniExtend</strong>。  
+</li>
+<li>而 <code>loadstring2()</code> 运行时的 <code>_G</code> 等于你的脚本中的 <code>_G</code> 。  
+</li>
+<li>注意，如果返回的函数调用时出错，即使以保护模式调用，仍会在日志中输出错误，解决方法是改用 <code>loadstring()</code> 。  
+</li>
 </ul>
 <h2><code>_G2</code> 表</h2>
 <ul>
-<li>只要一个脚本在 miniExtend 的 <code>core</code> 脚本后运行，都能直接访问该表，因此可以通过 <code>_G2</code> 来在各个脚本之间交换数据。  </li>
+<li>只要一个脚本在 miniExtend 的 <code>core</code> 脚本后运行，都能直接访问该表，因此可以通过 <code>_G2</code> 来在各个脚本之间交换数据。  
+</li>
 <li>不要使用 <code>&quot;__&quot; + 大写字母组合</code> 来作为自己的索引，因为 miniExtend 使用这种标识符作为索引存储一些变量，你可以遍历 <code>_G2</code> 来确定 miniExtend 使用了哪些标识符。  </li>
-<li><code>loadstring()</code> 返回的函数执行时不能使用 <code>_G2</code> 。  </li>
+</ul>
+<h2><code>_LUAG</code> 表</h2>
+<ul>
+<li>该表是一个标准的 lua <code>_G</code> 表，但额外包含了 miniExtend 各种全局变量。  </li>
+<li>该表与 <code>loadstring()</code> 返回的函数中的 <code>_G</code> 相同，可以更改该表来改变 <code>loadstring()</code> 的环境。  
+</li>
 </ul>
 <h2>注意事项</h2>
 <p>由于迷你世界不是简单的 lua 解释器，有时还会在服务器上运行，因此一些 lua 基本函数可能有歧义。<br />
 对于任何访问系统的函数，例如 <code>io</code>, <code>package</code>, <code>os.execute</code> ，它们大多本是被删除的函数和库，其行为取决于游戏的服务器。 </p>
 <ul>
-<li>在单人模式下，服务器就是玩家的设备。  </li>
-<li>由房主开启的多人游戏，服务器是房主的设备。  </li>
-<li>开发者申请的云服，服务器是迷你世界管理该云服的服务器（这可能不准确因为没有明确的证据证明这一点）。  </li>
+<li>在单人模式下，服务器就是玩家的设备。  
+</li>
+<li>由房主开启的多人游戏，服务器是房主的设备。  
+</li>
+<li>开发者申请的云服，服务器是迷你世界管理该云服的服务器（这可能不准确因为没有明确的证据证明这一点）。  
+</li>
 </ul>
 <p>这些函数只会在服务器上运行，访问的操作系统方法也取决于服务器。<br />
-而且，其中的某些函数可能很危险，以下是一些例子：  </p>
+而且，其中的某些函数可能很危险，以下是一些例子：  
+</p>
 <ul>
-<li>如果你使用 <code>io.close();</code> ，这将关闭默认输出文件，在 lua 上因为不能关闭标准文件而失败，但在迷你世界中，这将导致<a title="这似乎会使游戏保存，再次打开地图仍是玩法模式，然后继续关闭……所以请使用编辑模式打开">程序突然关闭</a>。  </li>
-<li>在 Windows 下执行 <code>os.execute(&quot;cmd&quot;)</code> ，会弹出一个 cmd 窗口，而且该窗口会阻塞程序运行，除非手动关闭，这也非常难看。  </li>
+<li>如果你使用 <code>io.close();</code> ，这将关闭默认输出文件，在 lua 上因为不能关闭标准文件而失败，但在迷你世界中，这将导致<a title="这似乎会使游戏保存，再次打开地图仍是玩法模式，然后继续关闭……所以请使用编辑模式打开">程序突然关闭</a>。  
+</li>
+<li>在 Windows 下执行 <code>os.execute(&quot;cmd&quot;)</code> ，会弹出一个 cmd 窗口，而且该窗口会阻塞程序运行，除非手动关闭，这也非常难看。  
+</li>
 </ul>
 
 </body>

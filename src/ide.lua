@@ -3,6 +3,7 @@ ide.lua
 用于编辑器自动补充
 不依赖其它 miniExtend 脚本
 应该放在用户自定义脚本中
+最后更新 : 0.1.0.1
 ]=]
 --[=[
 getTick() scheduleCall(ticks, func, ...) nextTick(func, ...)

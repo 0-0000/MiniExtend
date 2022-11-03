@@ -5,13 +5,15 @@ miniExtend 已尽可能恢复标准 lua 环境，这意味着你能正常调用�
 ## `loadstring2(string, [, chuckname])` 函数 ##
 - 增加了 `loadstring2(string [, chuckname])` 函数，该函数等价于 `LoadLuaScript(string, [, chuckname])` 函数，使用它代替 `LoadLuaScript()` 函数。  
 - 该函数效果类似于 lua51 基本函数 `loadstring(string, [, chuckname]` 。
-- 但是 `loadstring()` 运行时的 `_G` 完全是标准的 lua51 的 `_G` ，它**不能访问迷你世界 API ，当前脚本下的全局变量，包括 miniExtend**。  
+- 但是 `loadstring()` 运行时的 `_G` 是标准的 lua51 的 `_G` ，它**不能访问迷你世界 API ，当前脚本下的全局变量，但可以正常访问 miniExtend**。  
 - 而 `loadstring2()` 运行时的 `_G` 等于你的脚本中的 `_G` 。  
-- 简而言之，当解析的代码只进行一些简单的计算，不需要 API 和交换数据的话，使用 `loadstring()` ，否则使用 `loadstring2()` 。  
+- 注意，如果返回的函数调用时出错，即使以保护模式调用，仍会在日志中输出错误，解决方法是改用 `loadstring()` 。  
 ## `_G2` 表 ##
 - 只要一个脚本在 miniExtend 的 `core` 脚本后运行，都能直接访问该表，因此可以通过 `_G2` 来在各个脚本之间交换数据。  
 - 不要使用 `"__" + 大写字母组合` 来作为自己的索引，因为 miniExtend 使用这种标识符作为索引存储一些变量，你可以遍历 `_G2` 来确定 miniExtend 使用了哪些标识符。  
-- `loadstring()` 返回的函数执行时不能使用 `_G2` 。  
+## `_LUAG` 表 ##
+- 该表是一个标准的 lua `_G` 表，但额外包含了 miniExtend 各种全局变量。  
+- 该表与 `loadstring()` 返回的函数中的 `_G` 相同，可以更改该表来改变 `loadstring()` 的环境。  
 ## 注意事项 ##
 由于迷你世界不是简单的 lua 解释器，有时还会在服务器上运行，因此一些 lua 基本函数可能有歧义。  
 对于任何访问系统的函数，例如 `io`, `package`, `os.execute` ，它们大多本是被删除的函数和库，其行为取决于游戏的服务器。 

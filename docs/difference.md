@@ -20,7 +20,7 @@
 - `isTypeError(type, ...)` ：如果所有可变参数的类型都等于 `type` ，返回 `false` ，否则返回 `true` 。
 - `print_console(...)` ：等价于调用标准 lua 的 `print(...)` 函数，要注意该函数会输出到控制，而非日志。
 - `printtag(tag, ...)` ：在日志以 `tag` 为标签格式化输出，参见 [print()][print] 函数，调用 `print(...);` 等价于调用 `printtag("global", ...)` ，也就是说 `print()` 函数使用标签 `"global"` 。
-- `warn(message)` ：在日志中输出警告信息（有黄色高亮标记） `message` ，使用 `"warning"` 作为标签。  
+- <code id="warn">warn(message)</code> ：在日志中输出警告信息（有黄色高亮标记） `message` ，使用 `"warning"` 作为标签。  
 
 miniExtend 没有修改这些添加的函数，不建议使用这些函数，它们应该只被内部调用。
 

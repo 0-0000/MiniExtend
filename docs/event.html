@@ -3,7 +3,6 @@
 <head>
 <title>miniExtend Event</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
 <!-- 将内部样式表替换为外部样式表 -->
 <!--
 <style type="text/css">
@@ -14,7 +13,7 @@
 </head>
 <body>
 <h1>miniExtend Event</h1>
-<p>对应源文件： <code>event.lua</code> 。  
+<p>对应源文件： <code>event.lua</code>, <code>ui_main.lua</code> 。  
 </p>
 <h2>事件管理 <code style="color:green;">Event</code></h2>
 <p>miniExtend Event 原型为 <code>ScriptSupportEvent</code> ，但功能更多，支持 <a href="./object.html">miniExtend Object</a> 。  
@@ -61,18 +60,23 @@
 </blockquote>
 </blockquote>
 <h2><code>Event.Listener</code> 类</h2>
-<p><code>Event.Listener</code> 类管理事件监听，每次调用 <code>Event:connect()</code> 都会返回一个 <code>Event.Listener</code> 对象，该对象包含了该监听的一些信息，并提供了删除监听的方法。  </p>
+<p><code>Event.Listener</code> 类管理事件监听，每次调用 <code>Event:connect()</code> 都会返回一个 <code>Event.Listener</code> 对象，该对象包含了该监听的一些信息，并提供了删除监听的方法。  
+</p>
 <h3>属性</h3>
 <ul>
-<li><code>callBack</code> ： <code>function</code> 类型，事件发生时要回调的函数，你可以修改它，这样在事件发生时回调的函数会改变。  </li>
-<li><code>id</code> : <code>number</code> 类型，事件 id 。</li>
-<li><code>eventName</code> : <code>string</code> 类型，等于调用 <code>Event:connect()</code> 函数时传递的 <code>eventname</code> 参数。  </li>
-<li><code>msgStr</code> ： <code>string</code> 类型，事件在 API 中的名称，除非使用 miniExtend 自定义事件否则等于 <code>eventName</code> 属性，正常等于 <code>paprm[&quot;msgStr&quot;]</code> 。  </li>
+<li><code>callBack</code> ： <code>function</code> 类型，事件发生时要回调的函数，你可以修改它，这样在事件发生时回调的函数会改变。  
+</li>
+<li><code>id</code> ： <code>number</code> 类型，事件 id 。</li>
+<li><code>eventName</code> ： <code>string</code> 类型，等于调用 <code>Event:connect()</code> 函数时传递的 <code>eventname</code> 参数。  
+</li>
+<li><code>msgStr</code> ： <code>string</code> 类型，事件在 API 中的名称，除非使用 miniExtend 自定义事件否则等于 <code>eventName</code> 属性，正常等于 <code>paprm[&quot;msgStr&quot;]</code> 。  
+</li>
 </ul>
 <h3>方法</h3>
 <h4><code>delete()</code> 方法</h4>
 <p>删除对象所指的监听，在事件发生时不再调用 <code>callBack</code> 。<br />
-该函数只取消监听，不会删除对象本生，让 lua 垃圾收集器做这件事。  </p>
+该函数只取消监听，不会删除对象本生，让 lua 垃圾收集器做这件事。  
+</p>
 
 </body>
 </html>

@@ -31,4 +31,4 @@ Object 的核心是 `_G2["__OBJID"]` ，以下简称 `objid` 。
 		-- 等价于调用 uiview:show(getObjectId())
 		uiview:show()
 	end, uiid)
-当任意玩家进入游戏时，玩家会打开 `uiview` 界面。
+当任意玩家进入游戏时，玩家会打开 `uiview` 界面。  

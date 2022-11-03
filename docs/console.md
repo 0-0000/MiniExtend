@@ -19,7 +19,7 @@
 
 - `warn(message)`  
 > 在日志输出警告信息 `message` ，标签为 `"warning"` 。  
-> 这和<a title="这个 warn 函数指全局函数 warn，参见 difference.html"> `warn(message)` 函数</a>很像，但 `Console:warn(message)` 会以黄色高亮显示警告。
+> 这和 [`warn(message)`](./difference.html#warn) 函数很像，但 `Console:warn(message)` 会以黄色高亮显示警告。
 
 - `error(message)`  
 > 在日志输出错误信息 `message` ，标签为 `"error"` 。  
@@ -27,6 +27,6 @@
 > 该函数会以红色高亮显示警告。  
 
 - `clear()`  
-> 清空日志，效果和在控制台点击"清空日志"按钮一样。  
+> 清空日志，效果和在控制台点击![清空日志](./img/clear-console.png)按钮一样。  
 
 这些函数都比较简单，就不举实例了，有疑惑可以自行测试效果。

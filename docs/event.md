@@ -1,7 +1,8 @@
 # miniExtend Event #
-对应源文件： `event.lua` 。  
+对应源文件： `event.lua`, `ui_main.lua` 。  
 ## 事件管理 <code style="color:green;">Event</code> ##
 miniExtend Event 原型为 `ScriptSupportEvent` ，但功能更多，支持 [miniExtend Object](./object.html) 。  
+
 ## `Event:connect()` 函数 ##
 该函数是 miniExtend Event 的核心，作用为监听游戏事件，在事件发生时回调函数。  
 该函数原型为 `ScriptSupportEvent:registerEvent(msgStr, func)` 。  
@@ -30,12 +31,13 @@ miniExtend Event 原型为 `ScriptSupportEvent` ，但功能更多，支持 [min
 > > 如果所指定事件为 UI 事件，那么该参数应为 `string` 类型，表示要监听的 UI 界面 id ，非 UI 事件应指定为 `nil` 。  
 > > 对于 UI 事件，如果该参数类型不为 `string` ，会导致报错： <span style="color:red;">`miniExtend - Event:connect() : bad argument #3 'uiid'`</span> 。  
 > > 对于 UI 事件，函数只能监听 `uiid` 所指 UI 界面发生的事件，其它 UI 界面发生的事件（如按钮被点击）不会被监听，解决方法是对每个需要监听的 UI 界面使用不同的 `uiid` 参数执行该函数。  
+
 ## `Event.Listener` 类 ##
 `Event.Listener` 类管理事件监听，每次调用 `Event:connect()` 都会返回一个 `Event.Listener` 对象，该对象包含了该监听的一些信息，并提供了删除监听的方法。  
 ### 属性 ###
 - `callBack` ： `function` 类型，事件发生时要回调的函数，你可以修改它，这样在事件发生时回调的函数会改变。  
-- `id` : `number` 类型，事件 id 。
-- `eventName` : `string` 类型，等于调用 `Event:connect()` 函数时传递的 `eventname` 参数。  
+- `id` ： `number` 类型，事件 id 。
+- `eventName` ： `string` 类型，等于调用 `Event:connect()` 函数时传递的 `eventname` 参数。  
 - `msgStr` ： `string` 类型，事件在 API 中的名称，除非使用 miniExtend 自定义事件否则等于 `eventName` 属性，正常等于 `paprm["msgStr"]` 。  
 ### 方法 ###
 #### `delete()` 方法 ####

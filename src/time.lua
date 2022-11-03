@@ -2,6 +2,7 @@
 time.lua
 支持延时调用和获取一些时间信息
 依赖于 core.lua, object.lua, event.lua
+最后更新 : 0.1.0.1
 --]=]
 
 --[=[
@@ -43,6 +44,7 @@ function scheduleCall(ticks, func, ...)
 		
 	end
 end
+_LUAG["scheduleCall"] = scheduleCall
 
 --在1帧后调用函数，等价于 scheduleCall(1, func, ...)
 function nextTick(func, ...)
@@ -53,6 +55,7 @@ function nextTick(func, ...)
 		})
 	end
 end
+_LUAG["nextTick"] = nextTick
 
 return function()
 	tick = tick + 1
@@ -61,7 +64,7 @@ return function()
 	local scheduleCalls2 = scheduleCalls
 	scheduleCalls = {}
 	for ticks, calls in pairs(scheduleCalls2) do
-		if ticks ~= 1 then
+		if ticks ~= 2 then
 			scheduleCalls[ticks-1] = calls
 		else
 			nextTickCalls = calls
