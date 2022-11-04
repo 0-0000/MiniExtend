@@ -1,0 +1,16 @@
+title: miniExtend
+description: 一个为迷你世界脚本设计的 Lua 库
+themeConfig:
+  nav:
+    -
+      text: 指南
+      link: /guide/
+    -
+      text: API参考
+      link: /api/
+    -
+      text: GitHub
+      link: https://github.com/0-0000/miniExtend/
+      target: _blank
+  sidebar: auto
+  displayAllHeaders: true

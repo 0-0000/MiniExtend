@@ -1,0 +1,15 @@
+{
+  "name": "miniextend_docs",
+  "version": "0.0.0",
+  "description": "miniExtend官方文档",
+  "main": "",
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs"
+  },
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "vuepress": "^1.9.7"
+  }
+}
