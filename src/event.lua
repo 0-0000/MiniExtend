@@ -2,6 +2,7 @@
 event.lua
 处理回调
 依赖于 core.lua, object.lua
+最后更新 : 0.1.0.1
 ]=]
 
 local ScriptSupportEvent = ScriptSupportEvent
@@ -10,7 +11,7 @@ local ScriptSupportEvent = ScriptSupportEvent
 --uiEvents 暂时存储还不能绑定的 UI 事件
 local uiSSEObjects, uiEvents = {}, {}
 --UI 作用域中 ui_main 脚本将调用 __newUI 来处理属于该 UI 界面的事件
-_G2["__newUI"] = function(uiid, SSE)
+_G2["__SENDSSE"] = function(uiid, SSE)
 	--如果一个 ScriptSupportEvent 对象在第 0 帧没有绑定一个事件，之后对该事件的绑定会无效
 	SSE:registerEvent("UI.Show", function() end)
 	SSE:registerEvent("UI.Hide", function() end)
@@ -23,7 +24,7 @@ _G2["__newUI"] = function(uiid, SSE)
 		if listener.uiId == uiid then
 			listener.id = SSE:registerEvent(listener.msgStr, function(paprm)
 				paprm["listener"] = listener
-				useObjectId(paprm["eventobjid"])
+				setObjectId(paprm["eventobjid"])
 				listener.callBack(paprm)
 			end)
 			uiEvents[i] = nil
@@ -42,11 +43,9 @@ Event = {
 			["onClick"] = "UI.Button.Click", --按钮被点击时调用
 			["onInput"] = "UI.LostFocus", --玩家焦点离开输入框时（可以理解为玩家输入完毕）调用
 		},
-		["time"] = {
-			["newTick"] = "Game.Run", --从 1 帧开始，每帧调用 1 次
-		}
 	}
 }
+_LUAG["Event"] = Event
 
 --Listener class
 Event.Listener = {
@@ -64,7 +63,7 @@ Event.Listener = {
 function Event:connect(eventname, callback, uiid)
 	--设置 object 的 msgStr, callBack 和 uiId 属性
 	local object = setmetatable({}, Event.Listener)
-	local func = loadstring2('return Event["EventName"].'..eventname)
+	local func = loadstring('return Event["EventName"].'..eventname)
 	if func then
 		local pcallResult, msgStr = pcall(func)
 		object.msgStr = pcallResult and msgStr or eventname
@@ -75,7 +74,11 @@ function Event:connect(eventname, callback, uiid)
 	--检查是否是 UI 事件，如果是，设置对象的 uiId 属性
 	if string.sub(object.msgStr, 1, 2) == [[UI]] then
 		object.isUIEvent = true
-		object.uiId = uiid
+		if type(uiid) == "string" then
+			object.uiId = uiid
+		else
+			error("miniExtend - Event:connect() : bad argument #3 'uiid'")
+		end
 	end
 
 	--正式调用 API 开始绑定事件
@@ -83,7 +86,7 @@ function Event:connect(eventname, callback, uiid)
 	if not object.isUIEvent then
 		object.id = ScriptSupportEvent:registerEvent(object.msgStr, function(paprm)
 			paprm["listener"] = object
-			useObjectId(paprm["eventobjid"])
+			setObjectId(paprm["eventobjid"])
 			object.callBack(paprm)
 		end)
 	else --如果是 UI 事件，那么使用使用对应的 UI 界面的 ScriptSupportEvent 对象，可能还要暂时储存
@@ -91,7 +94,7 @@ function Event:connect(eventname, callback, uiid)
 		if api then
 			object.id = api:registerEvent(object.msgStr, function(paprm)
 				paprm["listener"] = object
-				useObjectId(paprm["eventobjid"])
+				setObjectId(paprm["eventobjid"])
 				object.callBack(paprm)
 			end)
 		else

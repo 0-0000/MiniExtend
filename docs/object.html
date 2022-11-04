@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>miniExtend Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!-- 将内部样式表替换为外部样式表 -->
+<!--
+<style type="text/css">
+</style>
+-->
+<link rel="stylesheet" type="text/css" href="./css/markdownpad-github.css" />
+
+</head>
+<body>
+<h1>miniExtend Object</h1>
+<p>对应源文件： <code>time.lua</code> 。  
+</p>
+<p>在阅读 <a href="./event.html">miniExtend Event</a> 和 <a href="./ui.html">miniExtend CustomUI</a> 前， 可能很难理解这部分的强大功能，这是很正常的。  
+</p>
+<p>目前 miniExtend Object 内容较少，且主要以理解为主。<br />
+Object 的核心是 <code>_G2[&quot;__OBJID&quot;]</code> ，以下简称 <code>objid</code> 。<br />
+在调用 miniExtend 的一些函数时， <code>objid</code> 会作为游戏对象默认参数（参数名形如 <code>...id</code> ，如 <code>playerid</code>）。<br />
+注意， miniExtend 没有 <code>Object</code> 这个作用域，以下函数都是全局函数，<strong>没有约定作用域时默认为全局函数</strong>。</p>
+<h3><code>getObjectId()</code> 函数</h3>
+<blockquote>
+<p>返回 <code>objid</code> 的值。<br />
+你应该使用 <code>getObjidId()</code> 函数获取 <code>objid</code> 的值，而不是使用 <code>_G2[&quot;__OBJID&quot;]</code> 。  
+</p>
+</blockquote>
+<h3><code>setObjectId(objid)</code> 函数</h3>
+<blockquote>
+<p>由于名称冲突，这里 <code>objid</code> 表示 <code>objid</code> 参数。<br />
+设置 <code>_G2[&quot;__OBJID&quot;]</code> 的值。<br />
+如果 <code>objid</code> 是一个数字，直接设置 <code>_G2[&quot;__OBJID&quot;]</code> 为 <code>objid</code> ，不会检查 <code>objid</code> 是否合法。<br />
+如果 <code>objid</code> 是一个表且 <code>eventobjid</code> 键对应的值为 <code>number</code> 类型，设置 <code>_G2[&quot;__OBJID&quot;]</code> 为 <code>objid[&quot;eventobjid&quot;]</code> 。这在事件的回调中非常有用，只需传递回调函数的表参数，这样会自动索引 <code>eventobjid</code> 键。<br />
+如果 <code>objid</code> 类型为其它，函数不做有意义的事。  
+</p>
+</blockquote>
+<h2>实例</h2>
+<p>对于<a href="./ui.html#UIView-show"><code>CustomUI.UIView.show([playerid])</code></a> 这个函数，你可以不传递 <code>playerid</code> 参数调用该函数，这时 <code>objid</code> 将代替 <code>playerid</code> 参数。<br />
+以下代码假设你已经配置好 miniExtend UI 环境了。  
+</p>
+<pre><code>-- 需替换为 UI 界面 id
+local uiid = [[]]
+
+uiview = CustomUI:newUIView(uiid)
+-- 任意玩家进入游戏事件
+Event:connect([[Game.AnyPlayer.EnterGame]], function(paprm)
+    -- objid 已被隐式地设置为 paprm.eventobjid
+    -- 等价于调用 uiview:show(getObjectId())
+    uiview:show()
+end, uiid)
+</code></pre>
+
+<p>当任意玩家进入游戏时，玩家会打开 <code>uiview</code> 界面。  
+</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

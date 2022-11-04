@@ -3,12 +3,11 @@ ide.lua
 用于编辑器自动补充
 不依赖其它 miniExtend 脚本
 应该放在用户自定义脚本中
+最后更新 : 0.1.0.1
 ]=]
 --[=[
-copy_table(table) isTypeError(type, ...) printtag(tag, ...) warn(message) log(...) logtag(tag, ...)
 getTick() scheduleCall(ticks, func, ...) nextTick(func, ...)
-getObjectId() useObjectId(objid)
-getFunctionLocal(func)
+getObjectId() setObjectId(objid)
 Console
 	log(..) loatag(tag, ...) warn(message) error(message) clear()
 ui
@@ -21,7 +20,7 @@ CustomUI
 	getRootSize()
 	newUIView(uiid)
 	UIView
-		open([playerid]) hide([playerid]) setState(state [, playerid])
+		show([playerid]) hide([playerid]) setState(state [, playerid])
 		newImage(elementid)
 		newButton(elementid)
 		newText(elementid)

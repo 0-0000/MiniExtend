@@ -2,12 +2,14 @@
 console.lua
 在控制台输出日志
 依赖于 core.lua
+最后更新 : 0.1.0.1
 ]=]
 
 local UI = UI
 
 --Console namespace
 Console = {}
+_LUAG["Console"] = Console
 
 --代替printtag函数，以 tag 为标签格式化输出日志
 function Console:logtag(tag, ...)

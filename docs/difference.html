@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>迷你世界脚本与标准 lua 脚本的差异</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!-- 将内部样式表替换为外部样式表 -->
+<!--
+<style type="text/css">
+</style>
+-->
+<link rel="stylesheet" type="text/css" href="./css/markdownpad-github.css" />
+
+</head>
+<body>
+<h1>迷你世界脚本与标准 lua 脚本的差异</h1>
+<p>首先，要知道迷你世界的 lua 脚本解释器为 <a href="http://www.lua.org/manual/5.1/">lua51</a> 。
+但是，脚本运行环境与标准的 lua51 环境有很大差异，举个简单的事实， <code>_G</code> 表实际不包含任何值，对 <code>_G</code> 的修改和读取都是由它的元表完成的，对环境的修复也要以这个元表为突破口，详见 <code>core.lua</code> 。<br />
+以下假设你还未使用 miniExtend ，使用 miniExtend 会改变这些现象，详见 <a href="./core.html">miniExtend Core</a> 。</p>
+<h2>删除的基本函数和库</h2>
+<ul>
+<li><code>io</code>, <code>package</code> 中的所有值 。 </li>
+<li><code>os.clock()</code>, <code>os.difftime()</code>, <code>os.execute()</code>, <code>os.exit()</code>, <code>os.getenv()</code>, <code>os.remove()</code>, <code>os.rename()</code>, <code>os.setlocale()</code>, <code>os.tmpname()</code> 。即 <code>os</code> 中除了 <code>os.date()</code>, <code>os.time()</code> 以外的所有函数。  
+</li>
+</ul>
+<p>实际上，它们并没有真正的从内存上删除，只是无法通过 <code>_G</code> 索引而已。</p>
+<h2>更改的基本函数</h2>
+<ul>
+<li><code>dofile()</code> 和 <code>loadfile()</code> 函数不会获得它们应有的效果，应该是什么都不做的空函数。</li>
+<li><code>error()</code> 函数虽然仍会在日志中输出错误信息，但不会抛出错误来终止函数运行，在没有 miniExtend 时，开发者可能不得不使用 <code>return error(message);</code> 。</li>
+<li>调用 <code>loadstring()</code> 函数会弹出漂浮文字，提示开发者使用 <code>LoadLuaScript()</code> ，而不会做其它事。  
+</li>
+<li><span id="print"><code>print(...)</code></span> 函数在<a title="玩法模式下开发者可按右上角的“！”按钮打开日志">日志</a>中输出而不是在<a title="迷你世界是 GUI 软件，正常情况不会显示控制台">控制台</a>输出，且格式化方式与标准 <code>print(...)</code> 差异很大，具体格式化方式可自行测试。  
+</li>
+</ul>
+<p>同样，它们也没有被真正替换，只是通过 <code>_G</code> 来索引的结果是更改后的函数。</p>
+<h2>添加的函数</h2>
+<ul>
+<li><code>copy_table(table)</code> ： 返回 <code>table</code> 的深拷贝  
+</li>
+<li><code>isTypeError(type, ...)</code> ：如果所有可变参数的类型都等于 <code>type</code> ，返回 <code>false</code> ，否则返回 <code>true</code> 。</li>
+<li><code>print_console(...)</code> ：等价于调用标准 lua 的 <code>print(...)</code> 函数，要注意该函数会输出到控制，而非日志。</li>
+<li><code>printtag(tag, ...)</code> ：在日志以 <code>tag</code> 为标签格式化输出，参见 <a href="#print">print()</a> 函数，调用 <code>print(...);</code> 等价于调用 <code>printtag(&quot;global&quot;, ...)</code> ，也就是说 <code>print()</code> 函数使用标签 <code>&quot;global&quot;</code> 。</li>
+<li><code id="warn">warn(message)</code> ：在日志中输出警告信息（有黄色高亮标记） <code>message</code> ，使用 <code>&quot;warning&quot;</code> 作为标签。  
+</li>
+</ul>
+<p>miniExtend 没有修改这些添加的函数，不建议使用这些函数，它们应该只被内部调用。</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
