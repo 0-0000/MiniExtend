@@ -1,0 +1,32 @@
+title: miniExtend
+description: 一个为迷你世界脚本设计的 Lua 库
+plugins:
+  - '@vuepress/last-updated'
+themeConfig:
+  nav:
+    - text: 指南
+      link: /guide/
+    - text: API参考
+      link: /api/
+  sidebar:
+    /guide/:
+      - ./
+      - environment
+      - core
+    /api/:
+      - ./
+      - title: API 详细介绍
+        children:
+          - console
+          - object
+          - event
+          - time
+          - ui
+  nextLinks: true
+  prevLinks: true
+  repo: 0-0000/miniExtend
+  docsRepo: 0-0000/miniExtend
+  docsDir: docs
+  docsBranch: master
+  editLinks: true
+  editLinkText: 帮助我们改善此页面！
