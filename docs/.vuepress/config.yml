@@ -21,6 +21,7 @@ themeConfig:
           - object
           - event
           - time
+          - ui
   nextLinks: true
   prevLinks: true
   repo: 0-0000/miniExtend
