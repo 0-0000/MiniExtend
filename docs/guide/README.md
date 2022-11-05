@@ -1,6 +1,12 @@
-# 目录
+---
+title: 快速上手
+---
 
-## 入门
+
+
+# 快速入门路线图
+
+## 开始学习
 
 - [miniExtend 搭建环境](/environment.html)
 - [miniExtend API参考](/api/)
@@ -16,5 +22,5 @@
 
 ## 附加
 
-以下内容不属于 miniExtend ，但没有官方的文档描述它们，而它们对于使用 miniExtend 又是有用的，所以附加了这些文档。
+以下内容不属于 miniExtend ，但没有官方的文档描述它们，而它们对于使用 miniExtend 又是有用的：
 - [miniExtend 脚本与标准 lua 脚本的差异](./difference.html)

@@ -4,7 +4,7 @@
   "description": "miniExtend官方文档",
   "main": "",
   "scripts": {
-    "dev": "vuepress dev docs",
+    "dev": "vuepress dev docs --temp .temp",
     "build": "vuepress build docs"
   },
   "author": "",

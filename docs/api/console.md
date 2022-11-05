@@ -1,36 +1,87 @@
+---
+title: 日志管理 Console
+---
+
+
+
 # miniExtend Console
 
-## 日志管理 Console
-
 这里的 Console 并不指真实的程序控制台，而是指日志，如图所示：
-![日志](./img/console.png)
+![日志](/static/console.png)
 真正在控制台输出的信息几乎是不可见的，但是日志中的信息是可见的。
 
+## 前置事项
+
+在开发者工具中配置“测试”按钮（<img style='width: 52px; height: 17px;' src='/static/test-button.png' />）以启用日志。
+
 ::: tip
-在开发者工具中调整![测试](../static/test-button.png)至图示状态来启用日志，新地图创建时该按钮可能出于启用状态但日志并未开启，为了保证日志启用可以点击该按钮两次来刷新状态。
-在玩法模式下按![日志按钮](../static/console-button.png)来打开日志窗口。
+
+该按钮偶发显示异常，为保证日志功能正常启用，可多点几次以刷新状态。
+
 :::
 
-## 函数
-`Console` 包含以下函数：
+在玩法模式下按“日志”按钮（<img style='width: 20px; height: 20px;' src='/static/console-button.png' />）以打开日志窗口。
 
-- `log(...)`
-> 在日志以 `"global"` 为标签格式化输出 `...`，格式化方式与 lua 基本函数 `print(...)` 相同，等价于调用 `Console:logtag("global", ...);` 。
+## 函数介绍
 
-- `logtag(tag, ...)`
-> 在日志以 `tag` 为标签格式化输出 `...`，格式化方式与 `Console:log(...)` 相同。
-> 如果 `tag` 不是字符串，结果会令人疑惑。
+### `logtag`
 
-- `warn(message)`
-> 在日志输出警告信息 `message` ，标签为 `"warning"` 。
-> 这和<a title="这个 warn 函数指全局函数 warn，参见 difference.html"> `warn(message)` 函数</a>很像，但 `Console:warn(message)` 会以黄色高亮显示警告。
+函数原型：
 
-- `error(message)`
-> 在日志输出错误信息 `message` ，标签为 `"error"` 。
-> 该函数不像被 miniExtend 恢复的全局函数 `error(message [, level])` ，不会终止上次调用的受保护函数。
-> 该函数会以红色高亮显示警告。
+```lua
+function Console:logtag(tag, ...) end
+```
 
-- `clear()`
-> 清空日志，效果和在控制台点击"清空日志"按钮一样。
+在日志以 `tag` 为标签格式化输出 `...`，格式化方式与 Lua 基本函数 `print(...)` 相同。
 
-这些函数都比较简单，就不举实例了，有疑惑可以自行测试效果。
+如果 `tag` 不是字符串，结果会令人疑惑。
+
+### `log`
+
+函数原型：
+
+```lua
+function Console:log(...)
+  Console:logtag("global", ...)
+end
+```
+
+在日志输出日志，标签为 `global` 。
+
+等价于 `Console:logtag("global", ...)` 。
+
+### `warn`
+
+函数原型：
+
+```lua
+function Console:warn(message) end
+```
+
+在日志输出警告信息 `message` ，标签为 `warning` 。
+
+这和<span title="这个 warn 函数指全局函数 warn，参见 difference.html"> Lua 标准函数 `warn` </span>很像，但 `Console:warn(message)` 会以黄色高亮显示警告。
+
+### `error`
+
+函数原型：
+
+```lua
+function Console:error(message) end
+```
+
+在日志输出错误信息，标签为 `error` 。
+
+该函数不会真正抛出错误，只是输出了错误信息 `message` ，代码会正常运行。
+
+该函数会以红色高亮显示警告。
+
+### `clear`
+
+函数原型：
+
+```lua
+function Console:clear() end
+```
+
+清空日志，效果同在控制台点击“清空日志”按钮。
