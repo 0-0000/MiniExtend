@@ -7,8 +7,9 @@ ui.lua
 element	元件，但在 miniExtend 不被直接使用，因为 UI 界面中创建的元件必定是以下四种之一
 	image	图像
 		button	按钮
-	text	文本
-		editBox	输入框，早期 miniExtend 称之为 inputBox ，后来发现 API 中称之为 editBox 才改名
+	text	文字
+		editBox	输入框
+最后更新 : 0.1.0.1
 ]=]
 
 local Player = Player
@@ -19,6 +20,7 @@ local UIEditorDef = genv["UIEditorDef"]
 CustomUI = {
 	UIViews = {} --存储所有UI界面
 }
+_LUAG["CustomUI"] = CustomUI
 
 --获取 UI 界面大小，该大小是精准到小数位的，也就是足够精准
 --@return UI 界面的宽度 (width) 和高度 (height)
@@ -167,7 +169,7 @@ local function setSize1(width, height, playerid)
 end
 --@paprm size:table	包含键 width 和 height 的表
 local function setSize2(position, playerid)
-	return Customui:setSize(playerid or _G2["__OBJID"], self.uiView.id, self.id, size["x"], size["y"]) == 0
+	return Customui:setSize(playerid or _G2["__OBJID"], self.uiView.id, self.id, size["width"] or size[1], size["height"] or size[2]) == 0
 end
 function CustomUI.Element:setSize(parameter1, parameter2, parameter3)
 	if type(parameter1) ~= "table" then
@@ -218,7 +220,7 @@ Button class
 CustomUI.Button = {
 	pressCallBack, --function	按钮被按下时调用，需手动赋值
 	clickCallBack, --function	按钮被点击时调用，需手动赋值
-	-- 注：点击 = 按下 + 释放，然而很难判断按钮是否处于按下状态（按下但未释放）或者玩家释放了按钮，因为玩家可能将焦点移出按钮而我们没有办法判断这件事的发生
+	-- 注：点击 = 按下 + 释放
 }
 
 --[[
@@ -248,7 +250,7 @@ CustomUI.EditBox = {
 }
 
 --创建或获取一个 Image 对象
---@paprm elementid:string	元件的id，形如[[uiname_elementid]]
+--@paprm elementid:string	元件的id，形如[[uiid_elementid]]
 --@return 创建或获取到的元件对象
 function CustomUI.UIView:newImage(elementid)
 	local object = self.images[elementid]
@@ -263,7 +265,7 @@ function CustomUI.UIView:newImage(elementid)
 end
 
 --此函数创建或获取一个 Button 对象
---@paprm elementid:string	元件的id，形如[[uiname_elementid]]
+--@paprm elementid:string	元件的id
 --@return 创建或获取到的元件对象
 function CustomUI.UIView:newButton(elementid)
 	local object = self.buttons[elementid]
@@ -278,7 +280,7 @@ function CustomUI.UIView:newButton(elementid)
 end
 
 --此函数创建或获取一个 Text 对象
---@paprm elementid:string	元件的id，形如[[uiname_elementid]]
+--@paprm elementid:string	元件的id
 --@return 创建或获取到的元件对象
 function CustomUI.UIView:newText(elementid)
 	local object = self.texts[elementid]
@@ -293,7 +295,7 @@ function CustomUI.UIView:newText(elementid)
 end
 
 --此函数创建或获取一个 EditBox 对象
---@paprm elementid:string	元件的id，形如[[uiname_elementid]]
+--@paprm elementid:string	元件的id
 --@return 创建或获取到的元件对象
 function CustomUI.UIView:newEditBox(elementid)
 	local object = self.editBoxes[elementid]
@@ -302,7 +304,7 @@ function CustomUI.UIView:newEditBox(elementid)
 		object = setmetatable({}, CustomUI.EditBox)
 		object.uiView = self
 		object.id = elementid
-		self.inputBoxes[elementid] = object
+		self.editBoxes[elementid] = object
 		return object
 	end
 end

@@ -6,6 +6,7 @@ ui_main.lua
 间接依赖于 object.lua
 
 注意手动将 uiname 替换！
+最后更新 : 0.1.0.1
 ]=]
 
 --将 uiid 替换为所属 UI 界面 id
