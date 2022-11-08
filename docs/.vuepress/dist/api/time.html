@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>游戏时间 Time | miniExtend</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/favicon.png">
+    <meta name="description" content="一个为迷你世界脚本设计的 Lua 库">
+    
+    <link rel="preload" href="/assets/css/0.styles.d6ad21ed.css" as="style"><link rel="preload" href="/assets/js/app.9c94b45a.js" as="script"><link rel="preload" href="/assets/js/2.eeb24f79.js" as="script"><link rel="preload" href="/assets/js/12.ddc33069.js" as="script"><link rel="prefetch" href="/assets/js/10.9f3c9c76.js"><link rel="prefetch" href="/assets/js/11.ff45d9ad.js"><link rel="prefetch" href="/assets/js/13.95a91dad.js"><link rel="prefetch" href="/assets/js/14.7ee59538.js"><link rel="prefetch" href="/assets/js/15.4f779e26.js"><link rel="prefetch" href="/assets/js/16.4b7b1353.js"><link rel="prefetch" href="/assets/js/17.84123403.js"><link rel="prefetch" href="/assets/js/3.316f8e03.js"><link rel="prefetch" href="/assets/js/4.f876ad59.js"><link rel="prefetch" href="/assets/js/5.18c5236f.js"><link rel="prefetch" href="/assets/js/6.e86df8f9.js"><link rel="prefetch" href="/assets/js/7.745720cc.js"><link rel="prefetch" href="/assets/js/8.ec66c5f7.js"><link rel="prefetch" href="/assets/js/9.ba6f7fdb.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.d6ad21ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">miniExtend</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/guide/" class="nav-link">
+  指南
+</a></div><div class="nav-item"><a href="/api/" class="nav-link router-link-active">
+  API参考
+</a></div> <a href="https://github.com/0-0000/miniExtend" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/guide/" class="nav-link">
+  指南
+</a></div><div class="nav-item"><a href="/api/" class="nav-link router-link-active">
+  API参考
+</a></div> <a href="https://github.com/0-0000/miniExtend" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><a href="/api/" aria-current="page" class="sidebar-link">简介与约定</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>API 详细介绍</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/api/console.html" class="sidebar-link">日志管理 Console</a></li><li><a href="/api/object.html" class="sidebar-link">对象管理 Object</a></li><li><a href="/api/event.html" class="sidebar-link">事件管理 Event</a></li><li><a href="/api/time.html" aria-current="page" class="active sidebar-link">游戏时间 Time</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/api/time.html#函数介绍" class="sidebar-link">函数介绍</a></li><li class="sidebar-sub-header"><a href="/api/time.html#示例" class="sidebar-link">示例</a></li></ul></li><li><a href="/api/ui.html" class="sidebar-link">UI 管理 CustomUI</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="miniextend-time"><a href="#miniextend-time" class="header-anchor">#</a> miniExtend Time</h1> <p>对应源文件： <code>time.lua</code> 。</p> <h2 id="函数介绍"><a href="#函数介绍" class="header-anchor">#</a> 函数介绍</h2> <h3 id="gettick"><a href="#gettick" class="header-anchor">#</a> <code>getTick</code></h3> <p>函数原型：</p> <div class="language-lua extra-class"><pre class="language-lua"><code><span class="token keyword">function</span> <span class="token function">getTick</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">end</span>
+</code></pre></div><p>返回当前是第几游戏帧。</p> <p>只要你理解游戏帧的含义，该函数很容易理解。</p> <h3 id="schedulecall"><a href="#schedulecall" class="header-anchor">#</a> <code>scheduleCall</code></h3> <p>在 <code>ticks</code> 游戏帧后以 <code>...</code> 为参数调用函数 <code>func</code> 。</p> <p>函数原型：</p> <div class="language-lua extra-class"><pre class="language-lua"><code><span class="token keyword">function</span> <span class="token function">scheduleCall</span><span class="token punctuation">(</span>ticks<span class="token punctuation">,</span> func<span class="token punctuation">,</span> <span class="token punctuation">...</span><span class="token punctuation">)</span> <span class="token keyword">end</span>
+</code></pre></div><p>参数：</p> <ul><li><code>ticks</code> ： 类型为 <code>number</code> 的正整数，会被设置为 <code>math.max(math.floor(ticks), 1)</code> 来修正不合法的数值。</li> <li><code>func</code> 类型为 <code>function</code> ， 会检查类型。</li> <li><code>...</code> 类型不限，作为调用 <code>func</code> 时传递的实参。</li></ul> <div class="custom-block warning"><p class="custom-block-title">WARNING</p> <p>本函数同步执行。如果在当前线程执行 <code>func</code> ，这可能导致程序阻塞。</p></div> <h3 id="nexttick-func"><a href="#nexttick-func" class="header-anchor">#</a> <code>nextTick(func, ...)</code></h3> <p>在下一帧以 <code>...</code> 为参数调用函数 <code>func</code> 。</p> <p>函数原型：</p> <div class="language-lua extra-class"><pre class="language-lua"><code><span class="token keyword">function</span> <span class="token function">nextTick</span><span class="token punctuation">(</span>func<span class="token punctuation">,</span> <span class="token punctuation">...</span><span class="token punctuation">)</span>
+  <span class="token function">scheduleCall</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> func<span class="token punctuation">,</span> <span class="token punctuation">...</span><span class="token punctuation">)</span>
+<span class="token keyword">end</span>
+</code></pre></div><p>等价于 <code>scheduleCall(1, func, ...);</code> ，会检查 <code>func</code> 类型。</p> <h2 id="示例"><a href="#示例" class="header-anchor">#</a> 示例</h2> <p>从第 2 帧开始，每一帧都在日志输出 <code>&quot;tick&quot;</code> 、当前帧和 <code>fibonacci[tick]</code>。</p> <p>其中 <code>tick</code> 表示当前的帧数。</p> <p><code>fibonacci</code>	表示斐波那契数列，详见<a href="https://baike.baidu.com/item/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97" target="_blank" rel="noopener noreferrer">百度百科词条<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>。</p> <div class="language-lua extra-class"><pre class="language-lua"><code><span class="token comment">-- fib_2 表示 fibonacci[tick-2] , fib_1 表示 fibonacci[tick-1]</span>
+<span class="token keyword">function</span> <span class="token function">f</span><span class="token punctuation">(</span>fib_2<span class="token punctuation">,</span> fib_1<span class="token punctuation">)</span>
+	<span class="token comment">-- fib 表示 fibonacci[tick]</span>
+	<span class="token keyword">local</span> fib <span class="token operator">=</span> fib_1 <span class="token operator">+</span> fib_2
+	<span class="token comment">--Console:log() 函数参见 miniExtend Console</span>
+	Console<span class="token punctuation">:</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">&quot;tick&quot;</span><span class="token punctuation">,</span> <span class="token function">getTick</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> fib<span class="token punctuation">)</span>
+	<span class="token function">nextTick</span><span class="token punctuation">(</span>f<span class="token punctuation">,</span> fib_1<span class="token punctuation">,</span> fib<span class="token punctuation">)</span>
+<span class="token keyword">end</span>
+<span class="token comment">-- fibonacci[0] = 0, fibonacci[1] = 1</span>
+<span class="token function">scheduleCall</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> f<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+</code></pre></div><p>部分输出如下（忽略时间，标签前缀）：</p> <div class="language- extra-class"><pre class="language-text"><code>tick	2	1
+tick	3	2
+tick	4	3
+tick	5	5
+tick	6	8
+tick	7	13
+</code></pre></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/0-0000/miniExtend/edit/master/docs/api/time.md" target="_blank" rel="noopener noreferrer">帮助我们改善此页面！</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">11/5/2022, 2:57:22 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/api/event.html" class="prev">
+        事件管理 Event
+      </a></span> <span class="next"><a href="/api/ui.html">
+        UI 管理 CustomUI
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.9c94b45a.js" defer></script><script src="/assets/js/2.eeb24f79.js" defer></script><script src="/assets/js/12.ddc33069.js" defer></script>
+  </body>
+</html>

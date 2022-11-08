@@ -1,5 +1,9 @@
 title: miniExtend
 description: 一个为迷你世界脚本设计的 Lua 库
+head:
+  - - link
+    - rel: icon
+      href: /favicon.png
 plugins:
   - '@vuepress/last-updated'
 themeConfig:
