@@ -24,24 +24,26 @@ title: UI 管理 CustomUI
 
 ### 子类之间的关系
 
-- [`CustomUI.UIView`](#UIView) UI 界面类。
-  该类管理 `CustomUI.Element` （其子类）对象。
-- [`CustomUI.Element`](#Element) UI 元件类。
-  该类在 miniExtend 中并没有提供构造函数，因为在 UI 界面中创建的元件必定是其子类所指元件类型。
-  之所以定义这个类，是因为不同种元件也有许多相同的方法。
-  这个类包含了 UI 元件的基本操作，这些操作可应用于所有元件。
-- [`CustomUI.Image`](#Image) UI 图片元件类。
-  `CustomUI.Image` 对象管理 UI 界面下的图片元件，**继承**自 `CustomUI.Element` 。
-  该类只额外提供了一个 `setTexture(url [, playerid])` 方法。
-- [`CustomUI.Button`](#Button) UI 按钮元件类。
-  `CustomUI.Button` 对象管理 UI 界面下的按钮元件，**继承**自 `CustomUI.Image` 。
-  该类相比父类并没有提供额外的方法，但提供了两个参数 `pressCallBack` 和 `clickCallBack` ，它们允许你处理按钮事件。
-- [`CustomUI.Text`](#Text) UI 文本元件类。
-  `CustomUI.Text` 对象管理 UI 界面下的文本元件，**继承**自 `CustomUI.Element` 。
-  该类额外提供了两个方法： `setFontSize(size [, playerid]` 和 `setText(text [, playerid])` 。
-- [`CustomUI.EditBox`](#EditBox) UI 输入框元件类。
-  `CustomUI.EditBox` 对象管理 UI 界面下的输入框元件，**继承**自 `CustomUI.Text` 。
-	该类额外提供了一个参数 `inputCallBack` ，它允许你处理输入框事件。
+|子类|简介|继承|具象|
+|:---:|:---:|:---:|:---:|
+|`UIView`|界面||:heavy_check_mark:|
+|`Element`|元件||:x:|
+|`Image`|图片元件|`Element`|:heavy_check_mark:|
+|`Button`|按钮元件|`Image`|:heavy_check_mark:|
+|`Text`|文字元件|`Element`|:heavy_check_mark:|
+|`EditBox`|输入框元件|`Text`|:heavy_check_mark:|
+
+::: details 什么是具象类？
+
+> 具象类是可以构造实例的类，其所有方法都已给出实现。<br/>
+  非具象类是抽象类，抽象类不能构造实例，仅用于规范继承者的行为。<br/>
+  当然，继承抽象类后，如果实现了其未实现的方法，就能成为具象类了。
+
+在 Lua 中，并没有提供像 C++ 那样严谨的机制。
+
+但程序设计需要它，所以就有了这一段。
+
+:::
 
 ### `CustomUI.UIView` 类
 
