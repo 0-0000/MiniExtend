@@ -3,7 +3,7 @@ home: true
 heroText: miniExtend
 description: 一个为迷你世界脚本设计的 Lua 库
 actionText: 快速入门 →
-actionLink: /guide/starter.html
+actionLink: /guide/
 features:
   - title: 简洁
     details: 简化迷你世界脚本开发
