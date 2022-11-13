@@ -49,83 +49,134 @@ title: UI 管理 CustomUI
 
 一个 `CustomUI.UIView` 对象代表了一个 UI 界面。
 
-构造函数：`CustomUI:newUIView(uiid)` ，构造一个 `CustomUI.UIView` 对象。
+构造函数：
 
-- `uiid` ： `string` 类型，指定该 UI 界面的 id ，该参数不会被检查。
+```lua
+-- 函数返回一个 `CustomUI.UIView` 对象
+-- 其 `id` 属性为 `uiid` 。
+function CustomUI:newUIView(uiid) end
+```
 
-函数返回一个 `CustomUI.UIView` 对象，其 [`id` 属性](#Element-id)为 `uiid` 。
+参数：
 
-::: tip
+|参数名|类型|简介|检查|
+|:---:|:---:|:---:|:---:|
+|`uiid`|`string`|UI 界面 ID||
 
-在同一作用域下， `uiid` 用于唯一性判断。
+::: tip uiid 用于唯一性判断。
 
 如果 `uiid` 参数相同，构造两次 `CustomUI.UIView` 对象，等价于构造一次。
 
 :::
 
-成员属性：
+成员变量：
 
-- `id` ： `string` 类型， UI 界面的 ID ，等于调用 `CustomUI:newUIView()` 时传递的 `uiid` 属性。
-- `showCallBack` ： 默认为 `nil` ，如果有则为 `function` 类型，指定当 UI 界面显示时回调的函数，你可以修改它来改变 UI 界面显示时回调的函数。
-- `hideCallBack` ： 默认为 `nil` ，如果有则为 `function` 类型，指定当 UI 界面隐藏时回调的函数，类似 `showCallBack` 。这比 `showCallBack` 属性有用，因为桌面端玩家可能会按下 `Esc` 键来意外退出 UI 界面。
-- `images` ： `table` 类型，包含属于该界面的 `CustomUI.Image` 对象。
-- `buttons` ： `table` 类型，包含属于该界面的 `CustomUI.Button` 对象。
-- `texts` ： `table` 类型，包含属于该界面的 `CustomUI.Text` 对象。
-- `editBoxes` ： `table` 类型，包含属于该界面的 `CustomUI.EditBox` 对象。
+|名称|类型|简介|可写|
+|:---:|:---:|:---:|:---:|
+|`id`|`string`|UI 界面 ID||
+|`showCallback`|`function` \| `nil`|界面显示时调用的函数||
+|`hideCallBack`|`function` \| `nil`|界面关闭时调用的函数||
+|`images`|`table<Image>`|属于该界面的图片元件||
+|`buttons`|`table<Button>`|属于该界面的按钮元件||
+|`texts`|`table<Text>`|属于该界面的文字元件||
+|`editBoxes`|`table<EditBox>`|属于该界面的输入框元件||
+
+桌面端玩家可能会按下 `Esc` 键来意外退出 UI 界面，所以 `hideCallBack` 应是常用的的。
 
 成员函数：
 
-- `show([playerid])` ：使玩家打开该 UI 界面。
-- `hide([playerid])` ：使玩家隐藏该 UI 界面。
-- `setState(state [, playerid])` ：设置该 UI 界面创建过的所有**元件对象所指元件**的状态为 `state`:`string` ，参见 [`CustomUI.Element.setState(state [, playerid])`](#Element-setState)。
-- `newImage(elementid)` ：[创建或获取已有的](#create-get) ID 为 `elementid`:`string` 的 `CustomUI.Image` 对象。
-- `newButton(elementid)` ：创建或获取已有的 ID 为 `elementid`:`string` 的 `CustomUI.Button` 对象。
-- `newText(elementid)` ：创建或获取已有的 ID 为 `elementid`:`string` 的 `CustomUI.Text` 对象。
-- `newEditBox(elementid)` ：创建或获取已有的 ID 为 `elementid`:`string` 的 `CustomUI.EditBox` 对象。
+```lua
+-- 对玩家打开该界面。
+function CustomUI.UIView:show([playerid]) end
+-- 对玩家关闭该界面。
+function CustomUI.UIView:hide([playerid]) end
+-- 修改所有子元件的状态。
+function CustomUI.UIView:setState(state [, playerid]) end
+-- 创建或获取 ID 为 `elementid` 的 `Image` 对象。
+function CustomUI.UIView:newImage(elementid) end
+-- 创建或获取 ID 为 `elementid` 的 `Button` 对象。
+function CustomUI.UIView:newButton(elementid) end
+-- 创建或获取 ID 为 `elementid` 的 `Text` 对象。
+function CustomUI.UIView:newText(elementid) end
+-- 创建或获取 ID 为 `elementid` 的 `EditBox` 对象。
+function CustomUI.UIView:newEditBox(elementid) end
+```
 
 ### `CustomUI.Element` 类
 
 一个 `CustomUI.Element` 对象代表一个 UI 元件。
 
-这是一个抽象类，无法构造对象示例，应该构造其子类的实例。使用 `CustomUI.UIView` 对象的最后四个方法来创建元件对象。
+**这是一个抽象类，无法构造对象示例**，应该构造其子类的实例。
 
-成员属性：
+使用 `CustomUI.UIView` 对象的最后四个方法来创建元件对象。
 
-- `uiView` ： `table` 类型，元件所属 `CustomUI.UIView` 对象。
-- `id` ： `stirng` 类型，元件 ID ，等于构造该元件对象时传递的 `elementid` 参数。
+成员变量：
+
+|名称|类型|简介|可写|
+|:---:|:---:|:---:|:---:|
+|`uiView`|`table<UIView>`|所属的界面||
+|`id`|`string`|元件 ID||
 
 成员函数：
 
-- `show([playerid])` ：显示该元件。
-- `hide([playerid])` ：隐藏该元件。
-- `setDisplay(display [, playerid])` ：设置元件的显示状态，如果 `display` 为 `true` ，显示元件，否则隐藏元件。
-- `setState(state [, playerid])` ：设置元件的状态为 `state` 。
-- `setPosition(x, y [, playerid])` ：如果 `x` 不为 `table` 类型，调用该重载函数，设置元件的位置为 `(x, y)` 。
-- `setPosition(position [, playerid])` ：否则调用该重载函数，设置元件的位置为 (`positon["x"] or position[1], position["y"] or position[2]`) 。
-- `setSize(width, height [, playerid])` ：如果 `width` 不为 `table` 类型，调用该重载函数，设置元件宽度为 `width` ，高度为 `height` 。
-- `setSize(size [, playerid])` ：否则调用该重载函数，设置元件宽度为 `size["width"] or size[1]` ，高度为 `size["height"] or size[2]` 。
-- `setAngle(angle [, playerid])` ：旋转元件至 `angle`:`number` 角度，将**原始元件（角度为 0 ）**以__元件位置__为旋转点**顺时针**旋转 `angle`:`number` 度得到旋转后的元件。
-- `setColor(color [, playerid])` ：设置元件 RGB 颜色为 `color`:`number` ，取值范围为 `0x000000`~`0xffffff`，对于 `0xRrGgBb` 的 `color` 参数，则红色值为 `0xRr` ，绿色值为 `0xGg` ，蓝色值为 `0xBb` 。
-- `setAlpha(alpha [, playerid]` ：设置元件透明度为 `alpha`:`number` ， 取值范围为 `0`~`100` ，0 为完全透明， 100 为完全不透明。
+```lua
+-- 对玩家打开该界面。
+function CustomUI.Element:show([playerid]) end
+-- 对玩家关闭该界面。
+function CustomUI.Element:hide([playerid]) end
+-- 修改元件显示状态。
+-- 显示为`true`，否则隐藏。
+function CustomUI.Element:setDisplay(state [, playerid]) end
+-- 修改元件的状态。
+function CustomUI.Element:setState(state [, playerid]) end
+-- 如果 `x` 不为 `table` 类型，调用该重载函数。
+-- 设置元件位置。
+function CustomUI.Element:setPosition(x, y [, playerid]) end
+-- 否则调用该重载函数。
+-- 设置元件位置为 `positon["x"] or position[1], position["y"] or position[2]`。
+-- 如果 `width` 不为 `table` 类型，调用该重载函数。
+-- 设置元件宽度、高度。
+function CustomUI.Element:setSize(width, height [, playerid]) end
+-- 否则调用该重载函数。
+-- 设置元件宽度为 `size["width"] or size[1]` ，高度为 `size["height"] or size[2]` 。
+function CustomUI.Element:setSize(size [, playerid]) end
+-- 旋转元件至 `angle`:`number` 角度。
+-- 以元件位置为旋转点顺时针旋转 `angle` 度得到旋转后的元件。
+function CustomUI.Element:setAngle(angle [, playerid]) end
+-- 设置元件 RGB 颜色为 `color` ，取值范围为 `0x000000` ~ `0xffffff`。
+-- 对于 `0xRrGgBb` 的 `color` 参数，则红色值为 `0xRr` ，绿色值为 `0xGg` ，蓝色值为 `0xBb` 。
+function CustomUI.Element:setColor(color [, playerid]) end
+-- 设置元件透明度为 `alpha`:`number` ， 取值范围为 `0`~`100` 。
+-- 0 为完全透明， 100 为完全不透明。
+function CustomUI.Element:setAlpha(alpha [, playerid] end
+```
 
 ### `CustomUI.Image` 类
 
 一个 `CustomUI.Image` 对象代表一个 UI 图片元件。
 
-构造函数：`CustomUI.UIView:newImage(elementid)` ，构造一个 `CustomUI.Image` 对象。
+构造函数：
+```lua
+function CustomUI.CustomUI:newImage(elementid) end
+```
 
 成员函数：
 
-- `setTexture(url [, playerid])`：
-  - `url` 的类型为 `string` 。
-  - 设置图片的纹理为 `url` 。
-  - 可以通过 "ID库" -"图片" 来获取 `url` 。
+```lua
+-- 设置图片的纹理为 `url` 。
+-- 可通过 "ID库" -"图片" 来获取 `url` 。
+function CustomUI.Image.setTexture(url [, playerid]) end
+```
 
 ### `CustomUI.Button` 类
 
 一个 `CustomUI.Button` 对象代表一个 UI 图片元件。
 
-构造函数：`CustomUI:newButton(uiid)` ，构造一个 `CustomUI.Button` 对象。
+构造函数：
+
+```lua
+function CustomUI.CustomUI:newButton(uiid) end
+```
 
 ::: tip
 
@@ -135,12 +186,14 @@ title: UI 管理 CustomUI
 
 成员变量：
 
-- `pressCallBack` ：默认为 `nil` ，如果有则为 `function` 类型，指定当所指按钮被按下时回调的函数。
-- `clickCallBack` ：该属性与 `pressCallBack` 属性类似，但在按钮被点击时回调。
+|名称|类型|简介|可写|
+|:---:|:---:|:---:|:---:|
+|`clickCallBack`|`function` \| `nil`|按钮点击后的回调|:heavy_check_mark:|
+|`pressCallBack`|`function` \| `nil`|按钮按下后的回调|:heavy_check_mark:|
 
-::: tip
+::: tip 不要混淆这些事件
 
-点击=按下+释放，不要混淆这些事件。
+点击 = 按下 + 松开。
 
 :::
 
@@ -148,29 +201,44 @@ title: UI 管理 CustomUI
 
 一个 `CustomUI.Text` 对象代表一个 UI 文本元件。
 
-构造函数：`CustomUI.UIIview:newText(uiid)` ，构造一个 `CustomUI.Text` 对象。
+构造函数：
+
+```lua
+function CustomUI.UIview:newText(uiid) end
+```
 
 成员函数：
 
-- `setFontSize(size [, playerid])` ：设置文本元件的字体大小为 `size` 。
-  - `size` 的类型为 `number` ，取值范围为正整数。
-  - 要想知道多大的 `size` 是合适的，你可以在 UI 编辑器中测试。
-- `setText(text [, playerid])` ：设置文本元件显示的文本为 `text` 。
-  - `text` 的类型为 `string` ，如果太长，似乎不会起作用。
-  - 这不会导致文本被屏蔽。
+```lua
+-- 设置文本元件的字体大小。
+function CustomUI.Text:setFontSize(size [, playerid]) end
+-- 设置文本元件显示的文本。
+-- 如果太长，似乎不会起作用；这不会导致文本被屏蔽。
+function CustomUI.Text:setText(text [, playerid]) end
+```
 
 ### `CustomUI.EditBox` 类
 
 一个 `CustomUI.EditBox` 对象代表一个 UI 输入框元件。
 
-使用 `CustomUI.UIView:newText(elementid);` 来创建一个 `CustomUI.Text` 对象。
+构造函数：
+
+```lua
+function CustomUI.UIView:newText(elementid) end
+```
 
 成员变量：
 
-- `inputCallBack` ：默认为 `nil` ，如果有则为 `function` 类型，指定当所指输入框失焦（即输入完成）时回调的函数。
-- 和 `CustomUI.Button` 对象的 `clickCallBack` 属性类似，也会传递参数，且额外包含 `element` 键。
-- `content`:`string` 是事件中最有用的参数，表示输入框输入的信息。
-- 如果输入被屏蔽， `content` 也会是屏蔽后的结果。
+|名称|类型|简介|可写|
+|:---:|:---:|:---:|:---:|
+|`inputCallBack`|`function` \| `nil`|输入完成后的回调|:heavy_check_mark:|
+|`content`|`string`|输入的信息<br/>如果被屏蔽，将会是屏蔽后的结果。||
+
+::: tip
+
+在电脑上，输入框失去焦点即为输入完成。
+
+:::
 
 ## 示例
 
