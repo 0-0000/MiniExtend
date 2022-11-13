@@ -6,7 +6,7 @@ title: 对象管理 Object
 
 # miniExtend Object
 
-对应源文件： `time.lua` 。
+对应源文件： `object.lua` 。
 
 在阅读 [miniExtend Event](/api/event.html) 和 [miniExtend CustomUI](/api/ui.html) 前， 可能很难理解这部分的强大功能。这是很正常的。
 
@@ -14,31 +14,43 @@ title: 对象管理 Object
 
 Object 的核心是 `_G2["__OBJID"]` ，以下简称 `objid` 。
 
-在调用 miniExtend 的一些函数时， `objid` 会作为游戏对象默认参数（参数名形如 `...id` ，如 `playerid`）。
+在调用 miniExtend 的一些函数时， `objid` 会作为游戏对象默认参数（参数名形如以`id`结尾 ，如 `playerid`）。
 
 ## 函数介绍
 
-::: warning
+::: warning 没有 Object 作用域
 
-miniExtend 没有 `Object` 作用域，以下函数都是**全局函数**。
+以下函数都是全局函数。
 
 :::
 
 ### `getObjectId`
 
-参数：无。
-
 返回 `objid` 的值。
 
-为了更好的兼容性，你应该使用 `getObjidId()` 函数获取 `objid` 的值，而不是直接从 `_G2` 中取。
+函数原型：
+
+```lua
+function getObjectId() end
+```
+
+::: tip 为了更好的兼容性
+
+你应该使用 `getObjidId()` 函数获取 `objid` 的值，而不是直接从 `_G2` 中取。
+
+:::
 
 ### `setObjectId`
 
 设置 `_G2["__OBJID"]` 的值。
 
-参数：
+```lua
+function setObjectId(objid) end
+```
 
-- `objid` ：需要设置 `_G2["__OBJID"]` 的新值。
+|参数名|类型|简介|检查|
+|:---:|:---:|:---:|:---:|
+|`objid`|`any`|需要设置的新值||
 
 ::: tip
 

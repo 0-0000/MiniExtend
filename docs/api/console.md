@@ -32,11 +32,20 @@ title: 日志管理 Console
 function Console:logtag(tag, ...) end
 ```
 
+参数：
+
+|参数名|类型|简介|检查|
+|:---:|:---:|:---:|:---:|
+|`tag`|`string`|输出的标签||
+|`...`|`...any`|输出的内容||
+
 在日志以 `tag` 为标签格式化输出 `...`，格式化方式与 Lua 基本函数 `print(...)` 相同。
 
 如果 `tag` 不是字符串，结果会令人疑惑。
 
 ### `log`
+
+在日志输出日志，标签为 `global` 。
 
 函数原型：
 
@@ -46,7 +55,11 @@ function Console:log(...)
 end
 ```
 
-在日志输出日志，标签为 `global` 。
+参数：
+
+|参数名|类型|简介|检查|
+|:---:|:---:|:---:|:---:|
+|`...`|`...any`|输出的内容||
 
 等价于 `Console:logtag("global", ...)` 。
 
@@ -57,6 +70,12 @@ end
 ```lua
 function Console:warn(message) end
 ```
+
+参数：
+
+|参数名|类型|简介|检查|
+|:---:|:---:|:---:|:---:|
+|`message`|`string`|输出的警告信息||
 
 在日志输出警告信息 `message` ，标签为 `warning` 。
 
@@ -69,6 +88,10 @@ function Console:warn(message) end
 ```lua
 function Console:error(message) end
 ```
+
+|参数名|类型|简介|检查|
+|:---:|:---:|:---:|:---:|
+|`message`|`string`|输出的错误信息||
 
 在日志输出错误信息，标签为 `error` 。
 

@@ -34,9 +34,11 @@ function scheduleCall(ticks, func, ...) end
 
 参数：
 
-- `ticks` ： 类型为 `number` 的正整数，会被设置为 `math.max(math.floor(ticks), 1)` 来修正不合法的数值。
-- `func` 类型为 `function` ， 会检查类型。
-- `...` 类型不限，作为调用 `func` 时传递的实参。
+|参数名|类型|简介|检查|
+|:---:|:---:|:---:|:---:|
+|`ticks`|`number`|等待帧数|通过 `math.max(math.floor(ticks), 1)` 修正|
+|`func`|`function`|调用的函数|:heavy_check_mark:|
+|`...`|`...any`|调用 `func` 时传递的实参||
 
 ::: warning
 
@@ -56,7 +58,14 @@ function nextTick(func, ...)
 end
 ```
 
-等价于 `scheduleCall(1, func, ...);` ，会检查 `func` 类型。
+参数：
+
+|参数名|类型|简介|检查|
+|:---:|:---:|:---:|:---:|
+|`func`|`function`|调用的函数|:heavy_check_mark:|
+|`...`|`...any`|调用 `func` 时传递的实参||
+
+等价于 `scheduleCall(1, func, ...);` 。
 
 ## 示例
 
