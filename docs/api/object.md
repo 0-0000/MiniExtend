@@ -14,7 +14,7 @@ title: 对象管理 Object
 
 Object 的核心是 `_G2["__OBJID"]` ，以下简称 `objid` 。
 
-在调用 miniExtend 的一些函数时， `objid` 会作为游戏对象默认参数（参数名形如以`id`结尾 ，如 `playerid`）。
+在调用 miniExtend 的一些函数时， `objid` 会作为游戏对象默认参数（参数名以 `id` 结尾，如 `playerid`）。
 
 ## 函数介绍
 

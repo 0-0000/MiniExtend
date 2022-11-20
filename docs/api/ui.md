@@ -231,8 +231,7 @@ function CustomUI.UIView:newText(elementid) end
 
 |名称|类型|简介|可写|
 |:---:|:---:|:---:|:---:|
-|`inputCallBack`|`function` \| `nil`|输入完成后的回调|:heavy_check_mark:|
-|`content`|`string`|输入的信息<br/>如果被屏蔽，将会是屏蔽后的结果。||
+|`inputCallBack`|`function` \| `nil`|输入框失去焦点后的回调|:heavy_check_mark:|
 
 ::: tip
 

@@ -72,10 +72,10 @@ function Event.Listener:delete() end
 - `ui.hide` ：等价于 `UI.Hide` ， UI 界面隐藏。
 - `ui.onPress` ：等价于 `UI.Button.TouchBegin` ，按钮被按下，注意该事件不是持续性事件。
 - `ui.onClick` ：等价于 `UI.Button.Click` ，按钮被点击。
-- `ui.onInput` ：等价于 `UI.LostFocus` ，输入框输入完成。
+- `ui.onInput` ：等价于 `UI.LostFocus` ，输入框失去焦点。
 
 ::: tip 对于等价的事件
 
-应该优先选择 miniExtend 拓展的事件名，这会有更好的兼容性。
+应该优先选择 miniExtend 拓展的事件名，这会有更好的可读性。
 
 :::
