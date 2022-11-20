@@ -22,6 +22,7 @@ title: 事件管理 Event
 
 ```lua
 function Event:connect(eventname, callback [, uiid])
+  -- 处理一些特殊逻辑
   ScriptSupportEvent:registerEvent(eventname, callback)
 end
 ```
