@@ -213,7 +213,8 @@ function CustomUI.UIview:newText(uiid) end
 -- 设置文本元件的字体大小。
 function CustomUI.Text:setFontSize(size [, playerid]) end
 -- 设置文本元件显示的文本。
--- 如果太长，似乎不会起作用；这不会导致文本被屏蔽。
+-- 如果太长，似乎不会起作用。
+-- 本 API 不会导致文本被屏蔽。
 function CustomUI.Text:setText(text [, playerid]) end
 ```
 
