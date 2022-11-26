@@ -25,7 +25,7 @@ Release 中也包含了离线文档。
 > 直接访问压缩包中的文件的话，压缩程序通常只解压该文件到一个临时文件夹，所以无法访问 css 等必要文件，要获得更多信息可以查找相关资料。  
 
 **一些优秀的 MiniExtend 文档：**  
-- [kaikaibenkai 的 vuepress 风格文档](https://kaikaibenkai.github.io/MiniExtendDocs/)  
+- [kaikaibenkai 的 vuepress 风格文档](https://kaikaibenkai.github.io/MiniExtendDoc/)  
 
 ## 致开发者
 无论你的 pull requests 质量如何，很高兴你能为 MiniExtend 开发做贡献！  
