@@ -1,76 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>miniExtend Console</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-<!-- 将内部样式表替换为外部样式表 -->
-<!--
-<style type="text/css">
-</style>
--->
-<link rel="stylesheet" type="text/css" href="./css/markdownpad-github.css" />
-
-</head>
-<body>
-<h1>miniExtend Console</h1>
-<p>对应源文件： <code>console.lua</code> 。  
-</p>
-<h2>日志管理 <code style="color:green;">Console</code></h2>
-<p>这里的 Console 并不指真实的程序控制台，而是指日志，如图所示：<br />
-<img src="./img/console.png" alt="日志" /><br />
-真正在控制台输出的信息几乎是不可见的，但是日志中的信息是可见的。<br />
-注：在开发者工具中调整<img src="./img/test.png" alt="测试" />至图示状态来启用日志，新地图创建时该按钮可能出于启用状态但日志并未开启，为了保证日志启用可以点击该按钮两次来刷新状态。<br />
-在玩法模式下按<img src="./img/console-button.png" alt="日志按钮" />来打开日志窗口。  
-</p>
-<h2>函数</h2>
-<p><code>Console</code> 包含以下函数：  
-</p>
+      <!DOCTYPE html>
+      <html>
+        <head>
+            <meta charset="utf-8" />
+            <title>MiniExtend Console</title>
+            <link rel="stylesheet" type="text/css" href="./css/markdown.css" />
+        </head>
+        <body class='markdown-preview' data-use-github-style><h1 id="miniextend-console">MiniExtend Console</h1>
+<p>对应源文件： <em>console.lua</em>  </p>
+<h2 id="code-stylecolorgreenconsolecode-作用域"><code style="color: green; font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Console</code> 作用域</h2>
+<p>这里的 Console 并不指真实的程序控制台，而是指日志，如图所示：<br><img alt="日志" src=".\img\console.png"><br>真正在控制台输出的信息几乎是不可见的，但是日志中的信息是可见的。<br>注：在开发者工具中调整<img alt="测试" src=".\img\test.png">至图示状态来启用日志，新地图创建时该按钮可能出于启用状态但日志并未开启，为了保证日志启用可以点击该按钮两次来刷新状态。<br>在玩法模式下按<img alt="日志按钮" src=".\img\console-button.png">来打开日志窗口。  </p>
+<h2 id="函数">函数</h2>
+<p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Console</code> 作用域包含以下函数：  </p>
 <ul>
-<li><code>log(...)</code>  
+<li><p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">log(...)</code>  </p>
+<blockquote>
+<p>在日志以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"global"</code> 为标签格式化输出 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...</code>，格式化方式与 lua 基本函数 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">print(...)</code> 相同，等价于调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Console:logtag("global", ...);</code> 。  </p>
+</blockquote>
+</li>
+<li><p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">logtag(tag, ...)</code>  </p>
+<blockquote>
+<p>在日志以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tag</code> 为标签格式化输出 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...</code>，格式化方式与 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Console:log(...)</code> 相同。<br>如果 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tag</code> 不是字符串，结果会令人疑惑。  </p>
+</blockquote>
+</li>
+<li><p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">warn(message)</code>  </p>
+<blockquote>
+<p>在日志输出警告信息 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">message</code> ，标签为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"warning"</code> 。<br>这和 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">warn(message)</code> 函数很像，但 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Console:warn(message)</code> 会以黄色高亮显示警告。</p>
+</blockquote>
+</li>
+<li><p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">error(message)</code>  </p>
+<blockquote>
+<p>在日志输出错误信息 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">message</code> ，标签为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"error"</code> 。<br>该函数不像被 miniExtend 恢复的全局函数 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">error(message [, level])</code> ，不会终止上次调用的受保护函数。<br>该函数会以红色高亮显示警告。  </p>
+</blockquote>
+</li>
+<li><p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">clear()</code>  </p>
+<blockquote>
+<p>清空日志，效果和在控制台点击<img alt="清空日志" src=".\img\clear-console.png">按钮一样。  </p>
+</blockquote>
 </li>
 </ul>
-<blockquote>
-<p>在日志以 <code>&quot;global&quot;</code> 为标签格式化输出 <code>...</code>，格式化方式与 lua 基本函数 <code>print(...)</code> 相同，等价于调用 <code>Console:logtag(&quot;global&quot;, ...);</code> 。  
-</p>
-</blockquote>
-<ul>
-<li><code>logtag(tag, ...)</code>  
-</li>
-</ul>
-<blockquote>
-<p>在日志以 <code>tag</code> 为标签格式化输出 <code>...</code>，格式化方式与 <code>Console:log(...)</code> 相同。<br />
-如果 <code>tag</code> 不是字符串，结果会令人疑惑。  
-</p>
-</blockquote>
-<ul>
-<li><code>warn(message)</code>  
-</li>
-</ul>
-<blockquote>
-<p>在日志输出警告信息 <code>message</code> ，标签为 <code>&quot;warning&quot;</code> 。<br />
-这和 <a href="./difference.html#warn"><code>warn(message)</code></a> 函数很像，但 <code>Console:warn(message)</code> 会以黄色高亮显示警告。</p>
-</blockquote>
-<ul>
-<li><code>error(message)</code>  
-</li>
-</ul>
-<blockquote>
-<p>在日志输出错误信息 <code>message</code> ，标签为 <code>&quot;error&quot;</code> 。<br />
-该函数不像被 miniExtend 恢复的全局函数 <code>error(message [, level])</code> ，不会终止上次调用的受保护函数。<br />
-该函数会以红色高亮显示警告。  
-</p>
-</blockquote>
-<ul>
-<li><code>clear()</code>  
-</li>
-</ul>
-<blockquote>
-<p>清空日志，效果和在控制台点击<img src="./img/clear-console.png" alt="清空日志" />按钮一样。  
-</p>
-</blockquote>
-<p>这些函数都比较简单，就不举实例了，有疑惑可以自行测试效果。</p>
-
-</body>
-</html>
-<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
+<p>这些函数都比较简单，就不举实例了，有疑惑可以自行测试效果。</p></body>
+      </html>

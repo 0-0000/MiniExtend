@@ -1,269 +1,164 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>miniExtend CustomUI</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-<!-- 将内部样式表替换为外部样式表 -->
-<!--
-<style type="text/css">
-</style>
--->
-<link rel="stylesheet" type="text/css" href="./css/markdownpad-github.css" />
-
-</head>
-<body>
-<h1>miniExtend CustomUI</h1>
-<p>对应源文件： <code>ui.lua</code> 。  
-</p>
-<h2>自定义 UI 界面管理 <code style="color:green;">CustomUI</code></h2>
-<p>miniExtend Event 原型为 <code>Customui</code> ，但以面相对象方式描述界面与元件，且支持 <a href="./object.html">miniExtend Object</a> 。<br />
-注意，大多数 <code>CustomUI</code> 下的函数都会包含一个 <code>[, playerid]</code> 参数，它表示要响应该改变的<a title="通常为玩家的迷你号，单人模式下可以传递为 0 表示那个唯一玩家">玩家 id</a> ，该参数不会被检查，如果 <code>playerid</code> 的布尔值为 <code>false</code> （包括 <code>nil</code> 与 <code>false</code>），则以 <code>objid</code> 代替。<br />
-<code>CustomUI</code> 下的所有未表明返回值的函数或方法，一律返回 <code>true</code> 表示<a title="调用 API 成功不一定代表函数正确工作">调用 API 成功</a>，返回 <code>false</code> 表示<a title="部分失败也视为函数失败">失败</a>。  
-</p>
-<h2><code>CustomUI</code> 下的类之间的关系</h2>
-<blockquote>
-<p><a href="#UIView"><code>CustomUI.UIView</code></a> UI 界面类<br />
-该类管理 <code>CustomUI.Element</code> （其子类）对象。   
-</p>
-<p><a href="#Element"><code>CustomUI.Element</code></a> UI 元件类<br />
-该类在 miniExtend 中并没有提供构造函数，因为在 UI 界面中创建的元件必定是其子类所指元件类型。<br />
-之所以定义这个类，是因为不同种元件也有许多相同的方法。<br />
-这个类包含了 UI 元件的基本操作，这些操作可应用于所有元件。  
-</p>
-<blockquote>
-<p><a href="#Image"><code>CustomUI.Image</code></a> UI 图片元件类<br />
-<code>CustomUI.Image</code> 对象管理 UI 界面下的图片元件，<strong>继承</strong>自 <code>CustomUI.Element</code> 。<br />
-该类只额外提供了一个 <code>setTexture(url [, playerid])</code> 方法。  
-</p>
-<blockquote>
-<p><a href="#Button"><code>CustomUI.Button</code></a> UI 按钮元件类<br />
-<code>CustomUI.Button</code> 对象管理 UI 界面下的按钮元件，<strong>继承</strong>自 <code>CustomUI.Image</code> 。<br />
-该类相比父类并没有提供额外的方法，但提供了两个参数 <code>pressCallBack</code> 和 <code>clickCallBack</code> ，它们允许你处理按钮事件。  
-</p>
-</blockquote>
-<p><a href="#Text"><code>CustomUI.Text</code></a> UI 文本元件类<br />
-<code>CustomUI.Text</code> 对象管理 UI 界面下的文本元件，<strong>继承</strong>自 <code>CustomUI.Element</code> 。<br />
-该类额外提供了两个方法： <code>setFontSize(size [, playerid]</code> 和 <code>setText(text [, playerid])</code> 。  
-</p>
-<blockquote>
-<p><a href="#EditBox"><code>CustomUI.EditBox</code></a> UI 输入框元件类<br />
-<code>CustomUI.EditBox</code> 对象管理 UI 界面下的输入框元件，<strong>继承</strong>自 <code>CustomUI.Text</code> 。<br />
-该类额外提供了一个参数 <code>inputCallBack</code> ，它允许你处理输入框事件。  
-</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<h2><code id="UIView">CustomUI.UIView</code> 类</h2>
-<p>一个 <code>CustomUI.UIView</code> 对象代表了一个 UI 界面。  
-</p>
-<h3>构造</h3>
+      <!DOCTYPE html>
+      <html>
+        <head>
+            <meta charset="utf-8" />
+            <title>MiniExtend UI</title>
+            <link rel="stylesheet" type="text/css" href="./css/markdown.css" />
+        </head>
+        <body class='markdown-preview' data-use-github-style><h1 id="miniextend-ui">MiniExtend UI</h1>
+<p>对应源文件： <em>ui.lua</em>  </p>
+<h2 id="code-stylecolorgreenuicode-作用域"><code style="color: green; font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI</code> 作用域</h2>
+<p>MiniExtend UI 前身为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Customui</code> ，但以面相对象方式描述界面与元件，且支持 <a href="./object.html">MiniExtend Object</a> 。<br>与 UI API 命名冲突，使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">GameVM.UI</code> 来访问 API 。  </p>
+<p>大多数 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI</code> 下的函数都会包含一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">[, playerid]</code> 参数，它表示要响应该操作的玩家 id ，该参数不会被检查，如果 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">playerid</code> 的布尔值为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">false</code> ，则以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 代替。<br><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI</code> 下的所有未表明返回值的函数或方法，一律返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">true</code> 表示<u title="调用 API 成功不一定代表函数正确工作">调用 API 成功</u>，返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">false</code> 表示<u title="只要有一次调用 API 失败">失败</u>。  </p>
+<h2 id="ui-下的类之间的关系"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI</code> 下的类之间的关系</h2>
+<table>
+<thead>
+<tr>
+<th align="center">类名</th>
+<th align="center">类描述</th>
+<th align="center">父类</th>
+<th align="center">具象</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">UIView</td>
+<td align="center">UI 界面</td>
+<td align="center">/</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="center">Element</td>
+<td align="center">UI 元件</td>
+<td align="center">/</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="center">Texture</td>
+<td align="center">UI 图片</td>
+<td align="center">Element</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="center">Button</td>
+<td align="center">UI 按钮</td>
+<td align="center">Texture</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="center">Label</td>
+<td align="center">UI 文字</td>
+<td align="center">Element</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="center">EditBox</td>
+<td align="center">UI 输入框</td>
+<td align="center">Label</td>
+<td align="center">是</td>
+</tr>
+</tbody></table>
+<h2 id="uiuiview-类"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.UIView</code> 类</h2>
+<p>一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.UIView</code> 对象代表了一个 UI 界面，以下简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UIView</code> 。  </p>
+<h3 id="构造函数">构造函数</h3>
 <ul>
-<li>使用 <code>CustomUI:newUIView(uiid);</code> 来构造一个 <code>CustomUI.UIView</code> 对象。  
-</li>
-<li><code>uiid</code> ： <code>string</code> 类型，指定该 UI 界面的 id ，该参数不会被检查。  
-</li>
-<li>函数返回一个 <code>CustomUI.UIView</code> 对象，其 <a href="#Element-id"><code>id</code> 属性</a>为 <code>uiid</code> 。  
-</li>
-<li>如果存在，<a id="create-get">该函数会返回已有的</a> <code>CustomUI.UIView</code> 对象。在同一作用域下，如果你已经构造一个 <code>id</code> 相同的 <code>CustomUI.UIView</code> 对象，再使用同样的 <code>uiid</code> 参数来构造，会返回之前构造的对象，也就是两次返回的对象的内存地址相同。  
-</li>
+<li>使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.UIView:new(uiid);</code> 来构造一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UIView</code> 对象。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiid</code>: <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string</code> 类型，指定该 UI 界面的 id ，该参数不会被检查。  </li>
+<li>函数返回一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UIView</code> 对象，其 id 属性为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiid</code> 。  </li>
+<li>如果已经构造过这样的对象则返回之。  </li>
 </ul>
-<h3>属性</h3>
+<h3 id="属性">属性</h3>
 <ul>
-<li><code>id</code> ： <code>string</code> 类型， UI 界面的 id ，等于调用 <code>CustomUI:newUIView()</code> 时传递的 <code>uiid</code> 属性。  
-</li>
-<li><code>showCallBack</code> ： 默认为 <code>nil</code> ，如果有则为 <code>function</code> 类型，指定当 UI 界面显示时回调的函数，你可以修改它来改变 UI 界面显示时回调的函数。  
-</li>
-<li><code>hideCallBack</code> ： 默认为 <code>nil</code> ，如果有则为 <code>function</code> 类型，指定当 UI 界面隐藏时回调的函数，类似 <code>showCallBack</code> 。这比 <code>showCallBack</code> 属性有用，因为桌面端玩家可能会按下 <code>Esc</code> 键来意外退出 UI 界面。  
-</li>
-<li><code>images</code> ： <code>table</code> 类型，包含属于该界面的 <code>CustomUI.Image</code> 对象。  
-</li>
-<li><code>buttons</code> ： <code>table</code> 类型，包含属于该界面的 <code>CustomUI.Button</code> 对象。  
-</li>
-<li><code>texts</code> ： <code>table</code> 类型，包含属于该界面的 <code>CustomUI.Text</code> 对象。  
-</li>
-<li><code>editBoxes</code> ： <code>table</code> 类型，包含属于该界面的 <code>CustomUI.EditBox</code> 对象。  
-</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">id</code>: <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string</code> 类型， UI 界面的 id ，等于构造时传递的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiid</code> 属性。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">onShow</code>: 默认为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nil</code> ，如果有则为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">function</code> 类型，指定当 UI 界面显示时回调的函数，你可以修改它来改变 UI 界面显示时回调的函数。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">onHide</code>: 默认为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nil</code> ，如果有则为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">function</code> 类型，指定当 UI 界面隐藏时回调的函数，类似。注意桌面端玩家可能会按下 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Esc</code> 键意外地退出 UI 界面。  </li>
 </ul>
-<h3>方法</h3>
+<h3 id="方法">方法</h3>
 <ul>
-<li><code id="UIView-show">show([playerid])</code> ：使玩家打开该 UI 界面。  
-</li>
-<li><code>hide([playerid])</code> ：使玩家隐藏该 UI 界面。  
-</li>
-<li><code>setState(state [, playerid])</code> ：设置该 UI 界面创建过的所有<strong>元件对象所指元件</strong>的状态为 <code>state</code>:<code>string</code> ，参见 <a href="#Element-setState"><code>CustomUI.Element.setState(state [, playerid])</code></a>。  
-</li>
-<li><code>newImage(elementid)</code> ：<a href="#create-get">创建或获取已有的</a> id 为 <code>elementid</code>:<code>string</code> 的 <code>CustomUI.Image</code> 对象。  
-</li>
-<li><code>newButton(elementid)</code> ：创建或获取已有的 id 为 <code>elementid</code>:<code>string</code> 的 <code>CustomUI.Button</code> 对象。  
-</li>
-<li><code>newText(elementid)</code> ：创建或获取已有的 id 为 <code>elementid</code>:<code>string</code> 的 <code>CustomUI.Text</code> 对象。  
-</li>
-<li><code>newEditBox(elementid)</code> ：创建或获取已有的 id 为 <code>elementid</code>:<code>string</code> 的 <code>CustomUI.EditBox</code> 对象。  
-</li>
+<li><code id="UIView-show" style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">show([playerid])</code> ：使玩家打开该 UI 界面。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">hide([playerid])</code>: 使玩家隐藏该 UI 界面。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setState(state [, playerid])</code>: 设置该 UI 界面的所有子元件的界面状态为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">state</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string</code> 。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">newTexture(elementid)</code>: 构造一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Texture</code> 对象。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">newButton(elementid)</code>: 构造一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Button</code> 对象。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">newLabel(elementid)</code>: 构造一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Label</code> 对象。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">newEditBox(elementid)</code>: 构造一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Texture</code> 对象。  </li>
 </ul>
-<h2><code id="Element">CustomUI.Element</code> 类</h2>
-<p>一个 <code>CustomUI.Element</code> 对象代表一个 UI 元件。<br />
-并没有直接创建 <code>CustomUI.Element</code> 对象的构造函数，应该构造其子类的实例，使用 <code>CustomUI.UIView</code> 对象的最后四个方法来创建元件对象。  
-</p>
-<h3>属性</h3>
+<h2 id="uielement-类">UI.Element 类</h2>
+<p>一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Element</code> 对象代表一个 UI 元件，以下简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Element</code> 。<br>该类非具象类，不能直接构造 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Element</code> 对象，应构造 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Element</code> 子类的对象。  </p>
+<h3 id="属性-1">属性</h3>
 <ul>
-<li><code>uiView</code> ： <code>table</code> 类型，元件所属 <code>CustomUI.UIView</code> 对象。  
-</li>
-<li><code id="Element-id">id</code> ： <code>stirng</code> 类型，元件的 id ，等于构造该元件对象时传递的 <code>elementid</code> 参数。  
-</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiView</code>: <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">table</code> 类型，元件所属 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UIView</code> 对象。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">id</code>: <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">stirng</code> 类型，元件的 id ，等于构造该元件对象时传递的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">elementid</code> 参数。  </li>
 </ul>
-<h3>方法</h3>
+<h3 id="方法-1">方法</h3>
 <ul>
-<li><code>show([playerid])</code> ：显示该元件。  
-</li>
-<li><code>hide([playerid])</code> ：隐藏该元件。  
-</li>
-<li><code>setDisplay(display [, playerid])</code> ：设置元件的显示状态，如果 <code>display</code>:<code>boolean</code> 为 <code>true</code> ,显示元件，否则隐藏元件。  
-</li>
-<li><code id="Element-setState">setState(state [, playerid])</code> ：设置元件的状态为 <code>state</code>:<code>string</code> 。  
-</li>
-<li><code>setPosition(x, y [, playerid])</code> ：如果 <code>x</code> 不为 <code>table</code> 类型，调用该重载函数，设置元件的位置为 (<code>x, y</code>) 。  
-</li>
-<li><code>setPosition(position [, playerid])</code> ：否则调用该重载函数，设置元件的位置为 (<code>positon[&quot;x&quot;] or position[1], position[&quot;y&quot;] or position[2]</code>) 。  
-</li>
-<li><code>setSize(width, height [, playerid])</code> ：如果 <code>width</code> 不为 <code>table</code> 类型，调用该重载函数，设置元件宽度为 <code>width</code> ，高度为 <code>height</code> 。  
-</li>
-<li><code>setSize(size [, playerid])</code> ：否则调用该重载函数，设置元件宽度为 <code>size[&quot;width&quot;] or size[1]</code> ，高度为 <code>size[&quot;height&quot;] or size[2]</code> 。  
-</li>
-<li><code>setAngle(angle [, playerid])</code> ：旋转元件至 <code>angle</code>:<code>number</code> 角度，将<strong>原始元件（角度为 0 ）</strong>以<strong>元件位置</strong>为旋转点<strong>顺时针</strong>旋转 <code>angle</code>:<code>number</code> 度得到旋转后的元件。  
-</li>
-<li><code>setColor(color [, playerid])</code> ：设置元件 RGB 颜色为 <code>color</code>:<code>number</code> ，取值范围为 <code>0x000000</code>~<code>0xffffff</code>，对于 <code>0xRrGgBb</code> 的 <code>color</code> 参数，则红色值为 <code>0xRr</code> ，绿色值为 <code>0xGg</code> ，蓝色值为 <code>0xBb</code> 。  
-</li>
-<li><code>setAlpha(alpha [, playerid]</code> ：设置元件透明度为 <code>alpha</code>:<code>number</code> ， 取值范围为 <code>0</code>~<code>100</code> ，0 为完全透明， 100 为完全不透明。  
-</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">show([playerid])</code>: 显示该元件。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">hide([playerid])</code>: 隐藏该元件。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setDisplay(display [, playerid])</code>: 设置元件的显示状态，如果 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">display</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">boolean</code> 为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">true</code> ，显示元件，否则隐藏元件。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setState(state [, playerid])</code>: 设置元件的状态为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">state</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string</code> 。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setPosition(x, y [, playerid])</code>: 设置元件的位置为 (<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">x, y</code>) 。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setSize(width, height [, playerid])</code>: 设置元件宽度为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">width</code> ，高度为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">height</code> 。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setAngle(angle [, playerid])</code>: 旋转元件至 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">angle</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">number</code> 角度。<br>将 <strong>原始元件(角度为 0 )</strong> 以 <strong>元件位置</strong> 为旋转点 <strong>顺时针</strong> 旋转 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">angle</code> 度得到旋转后的元件。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setColor(color [, playerid])</code>: 设置元件 RGB 颜色为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">color</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">number</code> ，取值范围为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">0x000000</code>~<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">0xffffff</code>。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setAlpha(alpha [, playerid]</code>: 设置元件透明度为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">alpha</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">number</code> ， 取值范围为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">0</code>~<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">100</code> ，0 为完全透明， 100 为完全不透明。  </li>
 </ul>
-<h2><code id="Image">CustomUI.Image</code> 类</h2>
-<p>一个 <code>CustomUI.Image</code> 对象代表一个 UI 图片元件。<br />
-使用 <code>CustomUI.UIView:newImage(elementid);</code> 来创建一个 <code>CustomUI.Image</code> 对象。  
-</p>
-<h3><code>setTexture(url [, playerid])</code> 方法</h3>
+<h2 id="uitexture-类"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Texture</code> 类</h2>
+<p>一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Texture</code> 对象代表一个 UI 图片元件，以下简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Texture</code> 。<br>使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Texture:new(uiview, elementid);</code> 来创建一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Texture</code> 对象，其中 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiview</code> 表示元件的父 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UIView</code> 对象，等价于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiview:newTexture(elementid);</code>。  </p>
+<h3 id="settextureurl--playerid-方法"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setTexture(url [, playerid])</code> 方法</h3>
 <ul>
-<li><code>url</code> 的类型为 <code>string</code> 。  
-</li>
-<li>设置图片的纹理为 <code>url</code> 。  
-</li>
-<li>可以通过 &quot;ID库&quot; -&gt; &quot;图片&quot; 来获取 <code>url</code> 。  
-</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">url</code> 的类型为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string</code> 。  </li>
+<li>设置图片的纹理为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">url</code> 。  </li>
+<li>可以通过 "ID库" -&gt; "图片" 来获取 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">url</code> 。  </li>
 </ul>
-<h2><code id="Button">CustomUI.Button</code> 类</h2>
-<p>一个 <code>CustomUI.Button</code> 对象代表一个 UI 图片元件。<br />
-使用 <code>CustomUI.UIView:newButton(elementid);</code> 来创建一个 <code>CustomUI.Image</code> 对象。<br />
-注：你可以对一个按钮元件使用 <code>CustomUI.UIView:newImage(elementid);</code> 来获取一个 <code>CustomUI.Image</code> 对象并把元件当做图片操作，但是不建议这么做，对于 <code>CustomUI.Text</code> 和 <code>CustomUI.EditBox</code> 也如此。  
-</p>
-<h3><code>pressCallBack</code> 属性</h3>
+<h2 id="uibutton-类"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Button</code> 类</h2>
+<p>一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Button</code> 对象代表一个 UI 图片元件，以下简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Button</code> 。<br>使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Button:new(uiview, elementid);</code> 来创建一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Button</code> 对象。  </p>
+<h3 id="onpress-属性"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">onPress</code> 属性</h3>
 <ul>
-<li>该属性默认为 <code>nil</code> ，如果有则为 <code>function</code> 类型，指定当所指按钮被按下时回调的函数，你可以修改它来改变回调的函数。  
+<li>该属性默认为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nil</code> ，如果有则为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">function</code> 类型，指定当所指按钮被按下时回调的函数，你可以修改它来改变回调的函数。  </li>
+<li>与 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Event:connect([[ui.onPress]], pressCallBack, uiid)</code> 类似，会传递 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">param</code> ，但表会额外包含 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">element</code> 键，表示这个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Button</code> 对象。  <h3 id="onclick-属性"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">onClick</code> 属性</h3>
 </li>
-<li>与 <code>Event:connect([[ui.onPress]], pressCallBack, uiid)</code> 类似，会传递一个哈希表作为参数，但表会额外包含 <code>element</code> 键，表示这个对象。  
-</li>
+<li>该属性与 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">onPress</code> 属性类似，但在按钮被点击时回调。  </li>
 </ul>
-<h3><code>clickCallBack</code> 属性</h3>
+<h2 id="uilabel-类"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Label</code> 类</h2>
+<p>一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Label</code> 对象代表一个 UI 文字元件，以下简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Label</code> 。<br>使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Label:new(uiview, elementid);</code> 来创建一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Label</code> 对象。  </p>
+<h3 id="setfontsizesize--playerid-方法"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setFontSize(size [, playerid])</code> 方法</h3>
 <ul>
-<li>该属性与 <code>pressCallBack</code> 属性类似，但在按钮被点击时回调。<br />
-注：点击=按下+释放，不要混淆这些事件。  
-</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">size</code> 的类型为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">number</code> ，取值范围为正整数。  </li>
+<li>设置文本元件的字体大小为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">size</code> 。  </li>
+<li>要想知道多大的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">size</code> 是合适的，你可以在 UI 编辑器中测试。  </li>
 </ul>
-<h2><code id="Text">CustomUI.Text</code> 类</h2>
-<p>一个 <code>CustomUI.Text</code> 对象代表一个 UI 文本元件。<br />
-使用 <code>CustomUI.UIView:newText(elementid);</code> 来创建一个 <code>CustomUI.Text</code> 对象。  
-</p>
-<h3><code>setFontSize(size [, playerid])</code> 方法</h3>
+<h3 id="settexttext--playerid-方法"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setText(text [, playerid])</code> 方法</h3>
 <ul>
-<li><code>size</code> 的类型为 <code>number</code> ，取值范围为正整数。  
-</li>
-<li>设置文本元件的字体大小为 <code>size</code> 。  
-</li>
-<li>要想知道多大的 <code>size</code> 是合适的，你可以在 UI 编辑器中测试。  
-</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">text</code> 的类型为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string</code> 。  </li>
+<li>设置文本元件显示的文本为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">text</code> 。  </li>
+<li>如果 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">text</code> 太长，这似乎不会起作用。  </li>
+<li>文字不会被屏蔽，但输入框会。  </li>
 </ul>
-<h3><code>setText(text [, playerid])</code> 方法</h3>
+<h2 id="uieditbox-类"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.EditBox</code> 类</h2>
+<p>一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.EditBox</code> 对象代表一个 UI 输入框元件，以下简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">EditBox</code> 。<br>使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.EditBox:new(uiview, elementid);</code> 来创建一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">EditBox</code> 对象。  </p>
+<h3 id="onlostfocus-属性"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">onLostFocus</code> 属性</h3>
 <ul>
-<li><code>text</code> 的类型为 <code>string</code> 。  
-</li>
-<li>设置文本元件显示的文本为 <code>text</code> 。  
-</li>
-<li>如果 <code>text</code> 太长，这似乎不会起作用。  
-</li>
-<li>这不会导致文本被屏蔽。  
-</li>
+<li>该属性默认为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nil</code> ，如果有则为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">function</code> 类型，指定当所指输入框失去焦点（可当做玩家完成输入框的输入）时回调的函数，你可以修改它来改变回调的函数。  </li>
+<li>和 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Button</code> 类中 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">onClock</code> 属性类似，也会传递 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">param</code> ，且额外包含 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">element</code> 键。  </li>
+<li>注: <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">param</code> 中 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">content</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string</code> 是事件中最有用的参数，表示输入框输入的信息，即使这不在 MiniExtend 的范围。  </li>
+<li>如果输入被屏蔽， <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">content</code> 也会是屏蔽后的结果。  </li>
 </ul>
-<h2><code id="EditBox">CustomUI.EditBox</code> 类</h2>
-<p>一个 <code>CustomUI.EditBox</code> 对象代表一个 UI 输入框元件。<br />
-使用 <code>CustomUI.UIView:newText(elementid);</code> 来创建一个 <code>CustomUI.Text</code> 对象。  
-</p>
-<h3><code>inputCallBack</code> 属性</h3>
+<h2 id="实例">实例</h2>
+<h3 id="情形">情形</h3>
+<p>已知一 UI 界面 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">u</code> 下有一个输入框元件 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">e</code> 和一个文字元件 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">l</code> ，要求如下：  </p>
 <ul>
-<li>该属性默认为 <code>nil</code> ，如果有则为 <code>function</code> 类型，指定当所指输入框失去焦点（可当做玩家完成输入框的输入）时回调的函数，你可以修改它来改变回调的函数。  
-</li>
-<li>和 <code>CustomUI.Button</code> 对象的 <code>clickCallBack</code> 属性类似，也会传递参数，且额外包含 <code>element</code> 键。  
-</li>
-<li><code>content</code>:<code>string</code> 是事件中最有用的参数，表示输入框输入的信息。  
-</li>
-<li>如果输入被屏蔽， <code>content</code> 也会是屏蔽后的结果。  
-</li>
+<li>在玩家没有输入 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">e</code> 时， <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">l</code> 总是显示 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"输入 16 进制数"</code> ，开始输入时 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">e</code> 的内容清空</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">e</code> 完成输入时，尝试将其解释为 16 进制数，并转化为 10 进制数，并将结果反应在 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">l</code>上。  </li>
+<li>如果输入不合法，无法将其转化，则设置 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">l</code> 的文本为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"错误的输入"</code>  </li>
 </ul>
-<h2>实例</h2>
-<h3>情形</h3>
-<p>已知一 UI 界面 <code>u</code> 下有一个输入框元件 <code>e</code> 和一个文本 <code>t</code> ，要求如下：  
-</p>
+<h3 id="分析">分析</h3>
 <ul>
-<li>在玩家没有输入 <code>e</code> 时， <code>e</code> 总是显示 <code>&quot;输入 16 进制数&quot;</code> ，开始输入时 <code>e</code> 的内容清空</li>
-<li><code>e</code> 完成输入时，尝试将其解释为 16 进制数，并转化为 10 进制数，并将结果反应在 <code>t</code>上。  
-</li>
-<li>如果输入不合法，无法将其转化，则设置 <code>t</code> 的文本为 <code>&quot;错误的输入&quot;</code>  
-</li>
+<li>要在开始输入时清空 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">e</code> 的内容，需要处理一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ui.onClick</code> 事件。实现方法是再创建一个按钮元件，设为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">b</code> ，将 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">e</code> 设为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">b</code> 的子集，调整 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">b</code> 的外观并将使其刚好覆盖 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">e</code> ，这样当玩家点击输入框开始输入时，也会触发按钮的点击事件，这时就能修改 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">e</code> 的内容了。  </li>
+<li>经测试，当按钮被点击时焦点才会进入输入框，所以不要使用按下事件。  </li>
+<li>使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tonumber(e [, base])</code> 函数来转化数字。  </li>
 </ul>
-<h3>分析</h3>
-<ul>
-<li>要在开始输入时清空 <code>e</code> 的内容，需要处理一个 <code>ui.onClick</code> 事件。实现方法是再创建一个按钮元件，设为 <code>b</code> ，将 <code>e</code> 设为 <code>b</code> 的子集，调整 <code>b</code> 的外观并将使其刚好覆盖 <code>e</code> ，这样当玩家点击输入框开始输入时，也会触发按钮的点击事件，这时就能修改 <code>e</code> 的内容了。  
-</li>
-<li>经测试，当按钮被点击时焦点才会进入输入框，所以不要使用按下事件。  
-</li>
-<li>使用 <code>tonumber(e [, base])</code> 函数来转化数字。  
-</li>
-</ul>
-<h3>代码</h3>
-<p>以下代码假设已经配置好 UI 了。  
-</p>
-<pre><code>-- 需替换以下 id  
-local uiview_id, editBox_id, text_id, button_id = [[]], [[]], [[]], [[]]
-uiview = CustomUI:newUIView(uiview_id)
-editBox = uiview:newEditBox(editBox_id)
-text = uiview:newText(text_id)
-button = uiview:newButton(button_id)
-
-
--- 初始化
-Event:connect([[Game.AnyPlayer.EnterGame]], function(paprm)
-    uiview:show()
-    text:setText(&quot;&quot;)
-    editBox:setText(&quot;输入 16 进制数&quot;)
-end, uiid)
-
-button.clickCallBack = function(paprm)
-    -- 清空输入框
-    editBox:setText(&quot;&quot;)
-end
-editBox.inputCallBack = function(paprm)
-    local num = tonumber(paprm[&quot;content&quot;], 16)
-    if num then
-        text:setText(tostring(num))
-    else
-        text:setText(&quot;错误的输入&quot;)
-    end
-    editBox:setText(&quot;输入 16 进制数&quot;)
-end
-</code></pre>
-
-<p>代码短的有点难以置信，这其中最复杂的还是在 UI 界面下创建元件并初始化状态。  
-</p>
-
-</body>
-</html>
-<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
+<h3 id="代码">代码</h3>
+<p>以下代码假设已经配置好 UI 了。<br><img alt="代码" src=".\img\code3.png">  </p>
+<p>-- 需替换以下 id<br>local uiview_id, editBox_id, label_id, button_id = [[]], [[]], [[]], [[]]<br>uiview = UI.UIView:new(uiview_id)<br>editBox = uiview:newEditBox(editBox_id)<br>label = uiview:newLabel(label_id)<br>button = uiview:newButton(button_id)  </p>
+<p>-- 初始化<br>Event.Connecter:new([[Game.AnyPlayer.EnterGame]], function(param)<br>    uiview:show()<br>    label:setText("")<br>    editBox:setText("输入 16 进制数")<br>end, uiid)  </p>
+<p>button.onClick = function(param)<br>    -- 清空输入框<br>    editBox:setText("")<br>end<br>editBox.onLostFocus = function(param)<br>    local num = tonumber(param["content"], 16)<br>    if num then<br>        label:setText(tostring(num))<br>    else<br>        label:setText("错误的输入")<br>    end<br>    editBox:setText("输入 16 进制数")<br>end  </p></body>
+      </html>
