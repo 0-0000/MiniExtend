@@ -1,0 +1,61 @@
+      <!DOCTYPE html>
+      <html>
+        <head>
+            <meta charset="utf-8" />
+            <title>MiniExtend Event</title>
+            <link rel="stylesheet" type="text/css" href="./css/markdown.css" />
+        </head>
+        <body class='markdown-preview' data-use-github-style><h1 id="miniextend-event">MiniExtend Event</h1>
+<p>对应源文件： <em>event.lua</em>, <em>ui_main.lua</em>  </p>
+<h2 id="自定义事件名">自定义事件名</h2>
+<p>下文将事件名简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">eventname</code> ，原始事件名称为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">msgStr</code> 。<br>需要使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">msgStr</code> 作为参数调用 API ，但 MiniExtend 提供了更简短，可读性更高的自定义事件，于是就有了 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">eventname</code> ，它作用调用 MiniExtend 时实际传入的参数。  </p>
+<p>既可以使用 MiniExtend 自定义事件名，也可以使用 API 事件名。<br>MiniExtend 自定义事件名在 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Event.CustomEvents</code> 中定义。  </p>
+<p>如果 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">eventname</code> 以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"$"</code> 开头，则认为其为 MiniExtend 自定义事件名，否则为 API 事件名。<br>如果为 MiniExtend 自定义事件名，则 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">msgStr = Event.CustomEvents[eventname];</code> 。<br>否则对于 API 事件， <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">msgStr = eventname;</code> 。  </p>
+<p>MiniExtend 自定义事件名(忽略 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"$"</code> 前缀):  </p>
+<ul>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ui.onShow</code>: 等同于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">[[UI.Show]]</code> ， UI 界面显示时调用。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ui.onHide</code>: 等同于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">[[UI.Hide]]</code> ， UI 界面隐藏时调用。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ui.onPress</code>: 等同于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">[[UI.Button.TouchBegin]]</code> ， 按钮被按下时调用。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ui.onClick</code>: 等同于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">[[UI.Button.Click]]</code> ， 按钮被点击时调用。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ui.onLostFocus</code>: 等同于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">[[UI.LostFocus]]</code> ， 输入框失去焦点时调用。  </li>
+</ul>
+<p>你会发现这些自定义事件名描述的都是 UI 事件，实际上通常通过 <a href="./ui.html">MiniExtend UI</a> 监听这些事件。<br>注: 点击 = 按下 + 释放(目前无法监听该事件)，按下事件不是延续性事件，只会在玩家开始按下的那一帧触发。  </p>
+<h2 id="code-stylecolorgreeneventcode-作用域"><code style="color: green; font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Event</code> 作用域</h2>
+<p>MiniExtend Event 的前身是 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ScriptSupportEvent</code> ，但更便于使用，支持 <a href="./object.html">MiniExtend Object</a> 。<br>Event 作用域包含上面提到的 MiniExtend 自定义事件和 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Connecter</code> 类。  </p>
+<h2 id="eventconnecter-类"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Event.Connecter</code> 类</h2>
+<p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Event.Connecter</code> 类管理事件监听， 一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Event.Connecter</code> 对象就代表这一个监听，并提供了删除监听的方法。<br>以下简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Event.Connecter</code> 为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Connecter</code> 。  </p>
+<h3 id="构造函数">构造函数</h3>
+<h4 id="语法">语法</h4>
+<blockquote>
+<p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Event.Connecter:new(eventname, callback, [, uiid])</code>  </p>
+</blockquote>
+<p>在 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">eventname</code> 所描述的事件发生时，调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">callback</code> ，如果 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">eventname</code> 所描述的事件为 UI 事件，需要指定 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiid</code> 需要监听的 UI 界面 id 。<br>该函数是 MiniExtend Event 的核心，作用为监听游戏事件，在事件发生时回调函数，并返回构造出的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Connecter</code> 对象。<br>该函数的原型为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ScriptSupportEvent:registerEvent(msgStr, func)</code> 。  </p>
+<h4 id="参数">参数</h4>
+<blockquote>
+<h5 id="eventname-参数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">eventname</code> 参数</h5>
+<p>类型: string<br>描述事件，详见<a href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6%E5%90%8D">自定义事件名</a></p>
+<h5 id="callback-参数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">callback</code> 参数</h5>
+<p>类型: function<br>指定回调函数。  </p>
+<blockquote>
+<p>回调函数调用时，还会传递一个哈希表作为参数，以下简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">param</code> ，存储着该事件发生时的一些信息。<br><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">param</code> 原型就是 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ScriptSupportEvent:registerEvent()</code> 回调函数传递的参数，详见<a href="https://developers.mini1.cn/wiki/event.html">假 wiki</a> 。<br>但除此之外， <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">param</code> 还必包含一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">connecter</code> ，表示该监听对应的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Connecter</code> 对象。<br>回调函数时还会提前隐式地设置 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 的值为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">param["eventobjd"]</code> ，根据 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setObjectId()</code> 函数的行为，如果不包含那个键，那么 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 的值不会被设置。  </p>
+</blockquote>
+<p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">eventname</code> 和 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">callback</code> 参数都会被检查，如果它们类型错误则会报错。  </p>
+<h5 id="uiid-参数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiid</code> 参数</h5>
+<p>类型: string | nil<br>如果所指定事件为 UI 事件，那么该参数应为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string</code> 类型，表示要监听的 UI 界面 id 。<br>如果指定事件非 UI 事件，应指定为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nil</code> 。<br>对于 UI 事件，如果该参数类型不为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string</code> ，会导致报错。<br>对于 UI 事件，函数只能监听 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiid</code> 所指 UI 界面发生的事件，其它 UI 界面发生的事件不会被监听，解决方法是对每个需要监听的 UI 界面使用不同的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiid</code> 参数调用该函数。  </p>
+</blockquote>
+<h3 id="析构函数">析构函数</h3>
+<h4 id="语法-1">语法</h4>
+<blockquote>
+<p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Event.Connecter:delete()</code>  </p>
+</blockquote>
+<p>删除监听，但不删除对象本生。<br>如果要删除对象本生，将访问对象的链接设为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nil</code> ，让 lua 垃圾回收器回收对象。  </p>
+<h3 id="属性">属性</h3>
+<ul>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">eventName</code>: <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string</code> 类型，等于调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Event.Connecter:new()</code> 函数时传递的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">eventname</code> 参数。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">msgStr</code>: <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string</code> 类型，事件在 API 中的名称，除非使用 miniExtend 自定义事件否则等于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">eventName</code> 属性。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">id</code>: <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">number</code> 类型，监听的 id 。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">isUIEvent</code>: <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">boolean | nil</code> 类型， <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">true</code> 表示事件为 UI 事件，否则为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nil</code> 。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiId</code>: <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string | nil</code> 类型，监听的 UI 界面的 id ，非 UI 事件为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nil</code> 。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">callback</code>: <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">function</code> 类型，事件发生时回调的函数，<strong>你可以修改它</strong>，这样在事件发生时回调的函数会改变。  </li>
+</ul></body>
+      </html>
