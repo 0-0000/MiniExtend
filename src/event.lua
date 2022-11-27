@@ -50,7 +50,7 @@ Event = {
 	-- MiniExtend 自定义事件名
 	["CustomEvents"] = {
 		["$ui.onShow"] = "UI.Show", -- UI 界面显示时调用
-		["$ui.onHide"] = "UI.Hide", -- UI 界面显示时调用
+		["$ui.onHide"] = "UI.Hide", -- UI 界面隐藏时调用
 		["$ui.onPress"] = "UI.Button.TouchBegin", -- 按钮被按下时调用
 		["$ui.onClick"] = "UI.Button.Click", -- 按钮被点击时调用
 		["$ui.onLostFocus"] = "UI.LostFocus", -- 玩家焦点离开输入框时调用
@@ -64,12 +64,13 @@ local CustomEvents = Event.CustomEvents
 Event.Connecter = {
 	-- @member {string} eventName 事件名，等于构造是传递的 eventname 参数
 	-- @member {string} msgStr 事件的原始名，用于调用 API 时做参数
+	-- @member {integer} id 监听的 id
 	-- @member {boolean | nil} isUIEvent
 	-- true: 事件是 UI 事件 nil: 事件不是 UI 事件
 	-- @member {string | nil} uiId 如果事件为 UI 事件，表示所属 UI 界面 id
 
 	-- 可写成员变量:
-	-- @member {function} callBack 事件发生时调用的函数
+	-- @member {function} callback 事件发生时调用的函数
 
 	-- @constructor Event.Connecter:new(eventname, callback, uiid)
 	-- @destructor delete() 取消事件连接

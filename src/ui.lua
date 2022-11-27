@@ -63,6 +63,10 @@ UI.UIView = {
 	-- @method show(playerid) 显示 UI 界面
 	-- @method hide(playerid) 隐藏 UI 界面
 	-- @method setState(state, playerid) 设置 UI 界面的所有子元件的界面状态
+	-- @method newTexture(elementid) 构造 Texture 对象
+	-- @method newButton(elementid) 构造 Button 对象
+	-- @method newLabel(elementid) 构造 Label 对象
+	-- @method newEditBox(elementid) 构造 EditBox 对象
 }; local UIView = UI.UIView
 -- 构造一个 id 为 uiid 的 UIView 对象，如果已经构造过这样的对象则返回之
 -- @param {string} uiid UI 界面的 id
@@ -224,7 +228,7 @@ end
 -- 注意该函数是 "设置" 不是 "旋转" ，旋转角度是相对于水平向右顺时针旋转的角度而言的
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
 local rotateElement = Customui.rotateElement
-function CustomUI.Element:setAngle(angle, playerid)
+function Element:setAngle(angle, playerid)
 	return rotateElement(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id, angle) == 0
 end
 
@@ -252,8 +256,8 @@ end
 -- Texture class
 -- 继承自 UI.Element
 UI.Texture = {
-	-- @constructor CustomUI.Texture:new(uiview, elementid)
-	-- @constructor CustomUI.UIView:newTexture(elementid)
+	-- @constructor UI.Texture:new(uiview, elementid)
+	-- @constructor UI.UIView:newTexture(elementid)
 	-- @method setTexture(url, playerid) 设置图片元件图案纹理
 }; Texture = UI.Texture
 -- 构造一个父 UI 界面为 uiview, id 为 elementid 的 Texture 对象
@@ -290,8 +294,8 @@ UI.Button = {
 	-- @member {function | nil} onClick 按钮被点击时回调的函数
 	-- 注: 点击 = 按下 + 释放(该事件目前不支持)
 
-	-- @constructor CustomUI.Button:new(uiview, elementid)
-	-- @constructor CustomUI.UIView:newButton(elementid)
+	-- @constructor UI.Button:new(uiview, elementid)
+	-- @constructor UI.UIView:newButton(elementid)
 }; local Button = UI.Button
 -- 构造一个父 UI 界面为 uiview, id 为 elementid 的 Button 对象
 -- 如果已经构造过这样的对象则返回之
@@ -313,8 +317,8 @@ end
 -- Label class
 -- 继承自 UI.Element
 UI.Label = {
-	-- @constructor CustomUI.Label:new(uiview, elementid)
-	-- @constructor CustomUI.UIView:newLabel(elementid)
+	-- @constructor UI.Label:new(uiview, elementid)
+	-- @constructor UI.UIView:newLabel(elementid)
 	-- @method setFontSize(size, playerid) 设置文本元件字体大小
 	-- @method setText(text, playerid) 设置文本元件内容
 }; local Label = UI.Label
@@ -356,8 +360,8 @@ UI.EditBox = {
 	-- 可写成员变量:
 	-- @member {function | nil} onLostFocus 输入框失去焦点时回调的函数
 
-	-- @constructor CustomUI.EditBox:new(uiview, elementid)
-	-- @constructor CustomUI.UIView:newEditBox(elementid)
+	-- @constructor UI.EditBox:new(uiview, elementid)
+	-- @constructor UI.UIView:newEditBox(elementid)
 }; local EditBox = UI.EditBox
 -- 构造一个父 UI 界面为 uiview, id 为 elementid 的 EditBox 对象
 -- 如果已经构造过这样的对象则返回之

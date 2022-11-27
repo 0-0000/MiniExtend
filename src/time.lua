@@ -31,7 +31,7 @@ Time = {
 	-- @static_function getTick(func, ...) 等价于 scheduleCall(1, func, ...)
 	-- @class Timer 计时器类
 }; local Time = Time
-local scheduleCalls, nextTickCalls, Timers = Time.scheduleCalls, Time.nextTickCalls, Time.Timers
+local Timers = Time.Timers
 -- 获取游戏帧
 -- @return {integer} 游戏帧，即 Time.tick
 function Time:getTick()
@@ -49,13 +49,13 @@ function Time:scheduleCall(ticks, func, ...)
 	if type(func) == "function" and type(ticks) == "number" then
 		ticks = max(floor(ticks), 1)
 		if ticks ~= 1 then
-			scheduleCalls[ticks] = scheduleCalls[ticks] or {}
-			insert(scheduleCalls[ticks], {
+			Time.scheduleCalls[ticks] = Time.scheduleCalls[ticks] or {}
+			insert(Time.scheduleCalls[ticks], {
 				func,
 				{...}
 			})
 		else
-			insert(nextTickCalls, {
+			insert(Time.nextTickCalls, {
 				func,
 				{...}
 			})
@@ -70,7 +70,7 @@ end
 -- @return {boolean} 成功(ticks 和 func 类型正确)返回 true ，否则返回 false
 function Time:nextTick(func, ...)
 	if type(func) == "function" then
-		insert(nextTickCalls, {
+		insert(Time.nextTickCalls, {
 			func,
 			{...}
 		})
@@ -87,9 +87,9 @@ Time.Timer = {
 	-- @member {number} createTime 对象创建时的 CPU 时间
 	-- @member {integer} id 等同于对象在 Time.Timers 中的索引
 	-- @member {integer} tick 对象创建以来计时器运行的游戏帧数
+	-- @member {boolean} running true: 计时器运行 false: 计时器暂停
 
 	-- 可写成员变量:
-	-- @member {boolean} running true: 计时器运行 false: 计时器暂停
 	--[=[
 	@member {function | nil} callback 如果计时器未暂停，每帧都调用该函数
 	传递两个参数: self 和 tick
@@ -101,6 +101,7 @@ Time.Timer = {
 	-- @destructor delete() 删除计时器
 	-- @method start() 启动计时器(将 running 设为 true)
 	-- @method pause() 暂停计时器(将 running 设为 false)
+	-- @method isRunning() 返回计时器是否在运行
 }; local Timer = Time.Timer
 -- 构造 Timer 对象
 -- @return {table<Timer>} 一个暂停的 Timer 对象
@@ -135,6 +136,11 @@ function Timer:pause()
 	end
 	return false
 end
+-- 返回计时器是否在运行
+-- @return {boolean} true: 计时器运行 false: 计时器暂停
+function Timer:isRunning()
+	return self.running
+end
 Timer.__index = {
 	["delete"] = Timer.delete,
 	["start"] = Timer.start,
@@ -148,13 +154,13 @@ end
 return function()
 	local tick = Time.tick + 1
 	Time.tick = tick
-	local thisTickCalls, tempScheduleCalls = nextTickCalls, scheduleCalls
-	nextTickCalls, scheduleCalls = {}, {}
+	local thisTickCalls, tempScheduleCalls = Time.nextTickCalls, Time.scheduleCalls
+	Time.nextTickCalls, Time.scheduleCalls = {}, {}
 	for tick, calls in pairs(tempScheduleCalls) do
 		if tick ~= 2 then
-			scheduleCalls[tick-1] = calls
+			Time.scheduleCalls[tick-1] = calls
 		else
-			nextTickCalls = calls
+			Time.nextTickCalls = calls
 		end
 	end
 
