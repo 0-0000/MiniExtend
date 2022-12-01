@@ -32,7 +32,7 @@
 你可以在自己代码中插入 *ide.lua* 中的内容，里面包含了 MiniExtend 关键字，这允许你的编辑器自动补全代码。  
 ![在脚本中插入 ide.lua](./img/ide.png)  
 该步骤完全是可选的。  
-注: 你可以将开头的作者信息和对 *ide.lua* 的描述移除，但不能移除其它 MiniExtend 脚本的作者信息。  
+注: 你可以将开头对 *ide.lua* 的描述移除，但不能移除其它 MiniExtend 脚本的作者信息。  
 ### 第一个 MiniExtend 脚本 ###
 接下来我们使用 MiniExtend 监听**玩家动作改变**这一事件，事件发生时在日志以**玩家 id** 为标签输出 `"Hello, world!"` 。  
 ![代码](./img/code1.png)

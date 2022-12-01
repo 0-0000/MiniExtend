@@ -14,7 +14,7 @@
 
 ## v2.0.0
 - 修改了自述文件 *README.md* 。  
-- 使用 Apache Licence 2.0 作为许可证，并在代码开头添加作者信息。  
+- 使用 ~Apache Licence 2.0~ 作为许可证，并在代码开头添加作者信息。  
 - MiniExtend 代码不再使用 MarkdownPad 风格文档。  
 - 分离文档让开发者自己维护自己风格的 MiniExtend 文档。  
 - 整体优化代码，原则为**以空间换时间**。  
@@ -32,3 +32,8 @@
 - 将 `CustomUI` 作用域更改为 `UI` 作用域，使用 `GameVM.UI` 来访问因此被顶替的 UI API 。  
 - 在 *ui.lua* 中将 `Image` 和 `Text` 分别更改为 `Texture` 和 `Label` ，即修改了相应的类名和函数名。  
 - 现在允许通过 `UI.$CLASSNAME:new(uiview, elementid)` 来构造 `$CLASSNAME` 对象，显然 `$CLASSNAME` 包含 `Texture`, `Button`, `Label`, `EditBox` 。  
+
+## v2.0.1
+- 改动了 *ide.lua* 。  
+- 使用 MIT Licence 作为许可证。  
+- 在 *README.md* 中增加了引用文档的仓库链接。  
