@@ -2,11 +2,7 @@
 - 版本：2.0.0  
 
 ## 许可证
-MiniExtend 使用 Apache Licence 2.0 作为许可证，其主要要求如下：  
-> 1. 需要给代码的用户一份Apache Licence  
-> 2. 如果你修改了代码，需要在被修改的文件中说明。  
-> 3. 在延伸的代码中（修改和有源代码衍生的代码中）需要带有原来代码中的协议，商标，专利声明和其他原来作者规定需要包含的说明。  
-> 4. 如果再发布的产品中包含一个Notice文件，则在Notice文件中需要带有Apache Licence。你可以在Notice中增加自己的许可，但不可以表现为对Apache Licence构成更改。  
+MiniExtend 使用 MIT Licence 作为许可证，它要求你保留作者的版权，侵权行为包括但不限于私自删除源代码中的作者信息。  
 
 ## 简介
 MiniExtend 是一个为<a title="理论上支持任何使用迷你世界引擎的软件，例如迷你编程">迷你世界</a>脚本设计的 lua 库。  
@@ -25,7 +21,7 @@ Release 中也包含了离线文档。
 > 直接访问压缩包中的文件的话，压缩程序通常只解压该文件到一个临时文件夹，所以无法访问 css 等必要文件，要获得更多信息可以查找相关资料。  
 
 **一些优秀的 MiniExtend 文档：**  
-- [kaikaibenkai 的 vuepress 风格文档](https://kaikaibenkai.github.io/MiniExtendDoc/)  
+- [kaikaibenkai 的 vuepress 风格文档](https://kaikaibenkai.github.io/MiniExtendDoc/) | [<u>仓库</u>](http://github.com/kaikaibenkai/MiniExtendDoc/)  
 
 ## 致开发者
 无论你的 pull requests 质量如何，很高兴你能为 MiniExtend 开发做贡献！  
