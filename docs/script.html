@@ -1,3 +1,4 @@
+<<<<<<< HEAD
       <!DOCTYPE html>
       <html>
         <head>
@@ -33,3 +34,41 @@
 </ul>
 <p>MiniExtend 没有修改这些添加的函数，但是不建议使用这些函数，它们应该只被内部调用。<br>以上内容只是对现象的简单概括，要想真正理解迷你世界脚本，建议阅读 <em>core.lua</em> 并手动测试。  </p></body>
       </html>
+=======
+<!-- converted -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>迷你世界脚本</title>
+<link rel="stylesheet" type="text/css" href="./css/markdown.css" />
+</head>
+<body class='markdown-preview' data-use-github-style><h1 id="迷你世界脚本">迷你世界脚本</h1>
+<h2 id="与标准-lua-脚本的差异">与标准 lua 脚本的差异</h2>
+<p>首先，要知道迷你世界的 lua 脚本解释器为 <a href="http://www.lua.org/manual/5.1/">lua51</a> 。
+但是，脚本运行环境与标准的 lua51 环境有很大差异，举个简单的事实， <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G</code> 表实际不包含任何值，对 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G</code> 的修改和读取都是由它的元表完成的，对环境的修复也要以这个元表为突破口，详见 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">core.lua</code> 。<br>以下内容假设你还未使用 MiniExtend ，使用 MiniExtend 会改变这些现象，详见 <a href="./core.html">MiniExtend Core</a> 。  </p>
+<h2 id="删除的基本函数">删除的基本函数</h2>
+<ul>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">io</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">package</code> 中的所有值 。</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.clock()</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.difftime()</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.execute()</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.exit()</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.getenv()</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.remove()</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.rename()</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.setlocale()</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.tmpname()</code> 。即 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os</code> 中除了 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.date()</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.time()</code> 以外的所有函数。  </li>
+</ul>
+<p>实际上，它们并没有真正的从内存上删除，只是无法通过 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G</code> 索引而已。  </p>
+<h2 id="更改的基本函数">更改的基本函数</h2>
+<ul>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">dofile()</code> 和 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">loadfile()</code> 函数不会获得它们应有的效果，应该是什么都不做的空函数。</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">error()</code> 函数虽然仍会在日志中输出错误信息，但不会抛出错误来终止函数运行，在没有 miniExtend 时，开发者可能不得不使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">return error(message);</code> 。</li>
+<li>调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">loadstring()</code> 函数会弹出漂浮文字，提示开发者使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">LoadLuaScript()</code> ，而不会做其它事。  </li>
+<li><code id="print" style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">print(...)</code> 函数在<u title="玩法模式下开发者可按右上角的“！”按钮打开日志">日志</u>中输出而不是在<u title="迷你世界是 GUI 软件，正常情况不会显示控制台">控制台</u>输出，且格式化方式与标准 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">print(...)</code> 差异很大，具体格式化方式可自行测试。  </li>
+</ul>
+<p>同样，它们也没有被真正替换，只是通过 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G</code> 来索引的结果是更改后的函数。</p>
+<h2 id="添加的函数">添加的函数</h2>
+<ul>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">copy_table(table)</code>: 返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">table</code> 的深拷贝  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">isTypeError(type, ...)</code>: 如果所有可变参数的类型都等于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">type</code> ，返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">false</code> ，否则返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">true</code> 。</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">print_console(...)</code>: 等价于调用标准 lua 的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">print(...)</code> 函数，要注意该函数会输出到控制，而非日志。</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">printtag(tag, ...)</code>: 在日志以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tag</code> 为标签格式化输出，参见 <a href="#print">print()</a> 函数，调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">print(...);</code> 等价于调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">printtag("global", ...)</code> ，也就是说 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">print()</code> 函数使用标签 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"global"</code> 。</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">warn(message)</code>: 在日志中输出警告信息（有黄色高亮标记） <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">message</code> ，使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"warning"</code> 作为标签。  </li>
+</ul>
+<p>MiniExtend 没有修改这些添加的函数，但是不建议使用这些函数，它们应该只被内部调用。<br>以上内容只是对现象的简单概括，要想真正理解迷你世界脚本，建议阅读 <em>core.lua</em> 并手动测试。  </p></body>
+</html>
+>>>>>>> develop

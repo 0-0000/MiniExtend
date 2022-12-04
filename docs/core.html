@@ -1,3 +1,4 @@
+<<<<<<< HEAD
       <!DOCTYPE html>
       <html>
         <head>
@@ -76,3 +77,84 @@
 <li>在 Windows 下执行 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.execute("cmd")</code> ，会弹出一个 cmd 窗口，而且该窗口会阻塞程序运行，除非手动关闭，这也非常难看。  </li>
 </ul></body>
       </html>
+=======
+<!-- converted -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>MiniExtend Core</title>
+<link rel="stylesheet" type="text/css" href="./css/markdown.css" />
+</head>
+<body class='markdown-preview' data-use-github-style><h1 id="miniextend-core">MiniExtend Core</h1>
+<p>对应源文件： <em>core.lua</em>  </p>
+<p>MiniExtend 已尽可能恢复标准 lua 环境，这意味着你能正常调用那些本来被"删除"的基本函数。<br>以下是相对标准 lua 环境有所不同的部分：  </p>
+<h3 id="genv-表"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">genv</code> 表</h3>
+<ul>
+<li>该表表示迷你世界脚本内部环境，想知道它包含什么可以遍历它，但要注意该表包含上万个键。  </li>
+<li>开发者编辑的脚本的环境 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G</code>(以下称作 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code>) 不同于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">genv</code> ，但 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">genv["_GScriptFenv_"]</code> 就等于这个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> ，也就是可以以此来通过 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">genv</code> 访问脚本环境。  </li>
+</ul>
+<h3 id="_g2-表"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G2</code> 表</h3>
+<ul>
+<li>在任何可能的环境下(包括 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 和 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">genv</code>)，只要脚本在 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">core</code> 脚本后运行都可以访问该表，因此可以通过 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G2</code> 来在各个脚本之间交换数据。  </li>
+<li>不要使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"__" + 大写字母组合</code> 来作为自己的索引，因为 MiniExtend 使用这种标识符作为索引存储一些变量，你可以遍历 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G2</code> 来确定 MiniExtend 使用了哪些标识符。  </li>
+</ul>
+<h3 id="gamevm-表"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">GameVM</code> 表</h3>
+<ul>
+<li>该表存储游戏 API 对象，如 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ScriptSupportEvent</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Game</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI</code>(自行类推)。  </li>
+<li>该表主要用于解决命名冲突，例如 MiniExtend 使用了 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI</code> 作用域，顶替掉了 UI API ，于是使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">GameVM.UI</code> 来访问 UI API 。  </li>
+</ul>
+<hr>
+<h3 id="loadstringstring--chuckname-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">loadstring(string, [, chuckname])</code> 函数</h3>
+<ul>
+<li>与传统的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">loadstring()</code> 函数不同的是，该函数返回的函数的环境为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">genv</code> ，因此无法直接使用 MiniExtend 。  </li>
+<li>上面说过了，可以使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 访问脚本环境，从而进一步访问 MiniExtend 。  </li>
+</ul>
+<h3 id="loadstring2string--chuckname-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">loadstring2(string, [, chuckname])</code> 函数</h3>
+<ul>
+<li>该函数等价于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">LoadLuaScript(string, [, chuckname])</code> 函数，使用它代替 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">LoadLuaScript()</code> 函数。  </li>
+<li>该函数效果类似于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">loadstring(string, [, chuckname]</code> ，但是返回的函数的环境运行时的环境为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 。  </li>
+<li>注意，如果返回的函数调用时出错，即使以保护模式调用函数本生，仍会调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">error()</code> 输出错误，解决方法是在函数内部使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">pcall()</code> 。  </li>
+</ul>
+<h3 id="deepcopytable-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">deepcopy(table)</code> 函数</h3>
+<ul>
+<li>该函数等价于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">copy_table(table)</code> 函数，使用它代替 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">copy_table()</code> 函数。  </li>
+<li>返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">table</code> 的深拷贝</li>
+</ul>
+<hr>
+<h2 id="效率">效率</h2>
+<p>通常情况迷你世界占用的内存空间不到 1GB ，这对于现在几乎任何设备都是能够承受的，但对 CPU 算力要求(指上限)高，所以 MiniExtend 采取以空间换时间的原则，使用了大量局部变量来提高效率，然而即使这样 MiniExtend 所占用的内存也很难超过 1MB 。<br>MiniExtend 对脚本在效率方面的优化主要如下:</p>
+<ul>
+<li>移除了 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 元表的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">__newindex</code> 函数，使得创建新全局变量只需索引赋值 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 而无需调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">__newindex</code> 。  </li>
+<li>将大多数 lua 基本函数和库直接移动到 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> ，使得访问这些只需索引一次 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 。  </li>
+<li>修改了 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 元表的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">__index</code> 函数。  </li>
+</ul>
+<p>为了表示它们对效率的提升，我们对第三项做实验进行效率分析，显然第一二项带来的效率提升远大于第三项。<br>实验方法:  </p>
+<ul>
+<li>关闭大多数耗能较大的程序，使得游戏在实验过程中分配到的 CPU 时间基本不变。  </li>
+<li>在运算前先进行次数很多的循环，使游戏进入 "无响应" 状态，避免 "无响应" 带来的不同影响。  </li>
+<li>先使用旧方法(未更改 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">__index</code> 函数)访问，然后使用新方法(紧随前一种方法运行)访问相同数量的变量多次。在一次循环中多次访问变量以减少循环带来的误差。  </li>
+<li>两种方法使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.clock()</code> 在前后计时，运算得出两种方法的运行时间。  </li>
+<li>重复实验或更换访问的全局变量的特征，数量继续实验。  </li>
+</ul>
+<p>实验数据如下:  </p>
+<ul>
+<li>在一次实验中，访问 10 个不存在的变量(<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nil</code>) 一百万次，前者花了 10.531s ，后者花了 8.668s ，快了约 <strong>17%</strong> 。  </li>
+<li>在一次实验中，访问 5 个在 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">genv</code> 中(这些变量可通过 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 索引)的变量，前者花了 5.934s ，后者花了 4.812s ，快了约 <strong>20%</strong> 。  </li>
+<li>在一次实验中，访问 2 个 API 对象，前者花了 9.506s ，后者花了 9.872s ；另一次同样的实验，前者花了 9.652s ，后者花了 9.845s ，慢了约 <strong>3%~4%</strong> 。  </li>
+</ul>
+<p>尽管新方法访问 API 对象较慢，但 MiniExtend 提供了 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">GameVM</code> 来快速访问 API 对象，如果在意这 <strong>3%~4%</strong> ，请使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">GameVM</code> 和局部变量。<br>注: 这些实验数据是多次实验中有代表性的(接近平均数)。  </p>
+<h2 id="注意事项">注意事项</h2>
+<p>迷你世界不是简单的 lua 解释器，有时 lua 还会在服务器上运行，因此一些 lua 基本函数可能有歧义。<br>对于任何访问系统的函数，例如 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">io</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">package</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.execute</code> ，它们大多本是被删除的函数和库，其行为取决于游戏的服务器。</p>
+<ul>
+<li>在单人模式下，服务器就是玩家的设备。  </li>
+<li>由房主开启的多人游戏，服务器是房主的设备。  </li>
+<li>开发者申请的云服，服务器是迷你世界管理该云服的服务器（这可能不准确因为没有明确的证据证明这一点）。  </li>
+</ul>
+<p>这些函数只会在服务器上运行，访问的操作系统方法也取决于服务器。<br>而且，其中的某些函数可能很危险，以下是一些例子：  </p>
+<ul>
+<li>如果你使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">io.close();</code> ，这将关闭默认输出文件，在 lua 上因为不能关闭标准文件而失败，但在迷你世界中，这将导致<a title="这似乎会使游戏保存，再次打开地图仍是玩法模式，然后继续关闭……所以请使用编辑模式打开">程序突然关闭</a>。  </li>
+<li>在 Windows 下执行 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.execute("cmd")</code> ，会弹出一个 cmd 窗口，而且该窗口会阻塞程序运行，除非手动关闭，这也非常难看。  </li>
+</ul></body>
+</html>
+>>>>>>> develop
