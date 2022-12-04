@@ -1,9 +1,5 @@
 # MiniExtend
-<<<<<<< HEAD
-- 版本：2.0.0  
-=======
 - 版本：2.0.2  
->>>>>>> develop
 
 ## 许可证
 MiniExtend 使用 MIT Licence 作为许可证，它要求你保留作者的版权，侵权行为包括但不限于私自删除源代码中的作者信息。  
@@ -37,13 +33,9 @@ Release 中也包含了离线文档。
 > 在你的 `docs` 分支上维护你的文档，最好部署 Github Pages 。  
 > 如果你的文档内容完整且较为准确，你可以联系作者推荐你的文档来增加流量（当前阶段也许不需要你联系作者作者都会联系你）。  
 
-<<<<<<< HEAD
-## 链接 ##
-=======
 ## 链接
 - [MiniWorldGenv](https://github.com/0-0000/MiniWorldGenv/)  
 研究迷你世界的 lua 环境 `genv` 。  
->>>>>>> develop
 - [lua 教程 | 菜鸟教程](https://www.runoob.com/lua/lua-tutorial.html)  
 可通过该教程入门学习 lua 。  
 - [Lua 5.1 Reference Manual - contents](http://www.lua.org/manual/5.1/)  

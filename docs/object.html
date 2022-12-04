@@ -1,33 +1,3 @@
-<<<<<<< HEAD
-      <!DOCTYPE html>
-      <html>
-        <head>
-            <meta charset="utf-8" />
-            <title>MiniExtend Object</title>
-            <link rel="stylesheet" type="text/css" href="./css/markdown.css" />
-        </head>
-        <body class='markdown-preview' data-use-github-style><h1 id="miniextend-object">MiniExtend Object</h1>
-<p>对应源文件： <em>time.lua</em>  </p>
-<p>MiniExtend Object 主要是为 <a href="./event.html">MiniExtend Event</a> 和 <a href="./ui.html">MiniExtend CustomUI</a> 设定的。  </p>
-<p>目前 MiniExtend Object 内容较少，且主要以理解为主。<br>Object 的核心是 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G2["__OBJID"]</code> ，以下简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 。<br>在调用 MiniExtend 的一些函数时， <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 会作为游戏对象默认参数（参数名形如 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...id</code> ，如 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">playerid</code>）。<br>注意， MiniExtend 没有 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Object</code> 这个作用域，以下函数都是全局函数。</p>
-<h3 id="getobjectid-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">getObjectId()</code> 函数</h3>
-<blockquote>
-<p>返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 的值。<br>你应该使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">getObjidId()</code> 函数获取 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 的值，而不是使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G2["__OBJID"]</code> 。  </p>
-</blockquote>
-<h3 id="setobjectidobjectid-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">setObjectId(objectid)</code> 函数</h3>
-<blockquote>
-<p>设置 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 的值。  </p>
-<p>如果 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objectid</code> 的类型为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">number</code> ，直接设置 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objectid</code> ，不会检查 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objectid</code> 是否合法。  </p>
-<p>如果 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objectid</code> 的类型为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">table</code> 且 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objectid["obeventobjid"]</code> 的类型为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">number</code> ，设置 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objectid["eventobjid"]</code> 。<br>这在回调函数中非常有用，只需传递回调传递的表参数，就会自动索引 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">eventobjid</code> 并设置 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 。  </p>
-<p>如果 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 类型为其它，函数不做有意义的事。  </p>
-</blockquote>
-<h2 id="实例">实例</h2>
-<p>对于<a href="./ui.html#UIView-show"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.UIView:show([playerid])</code></a> 这个函数，你可以不传递 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">playerid</code> 参数调用该函数，这时 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 将代替 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">playerid</code> 参数。<br><img alt="代码" src=".\img\code2.png"></p>
-<p>-- 需替换为 UI 界面 id<br>local uiid = [[]]  </p>
-<p>uiview = UI.UIView:new(uiid)<br>-- 任意玩家进入游戏事件<br>Event.Connecter:new([[Game.AnyPlayer.EnterGame]], function(param)<br>    -- objid 已被隐式地设置为 param.eventobjid<br>    -- 等价于调用 uiview:show(getObjectId())<br>    uiview:show()<br>end, uiid)  </p>
-<p>当任意玩家进入游戏时，玩家会打开 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiview</code> 界面。  </p></body>
-      </html>
-=======
 <!-- converted -->
 <!DOCTYPE html>
 <html>
@@ -57,4 +27,3 @@
 <p>uiview = UI.UIView:new(uiid)<br>-- 任意玩家进入游戏事件<br>Event.Connecter:new([[Game.AnyPlayer.EnterGame]], function(param)<br>    -- objid 已被隐式地设置为 param.eventobjid<br>    -- 等价于调用 uiview:show(getObjectId())<br>    uiview:show()<br>end, uiid)  </p>
 <p>当任意玩家进入游戏时，玩家会打开 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiview</code> 界面。  </p></body>
 </html>
->>>>>>> develop
