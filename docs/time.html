@@ -1,11 +1,12 @@
-      <!DOCTYPE html>
-      <html>
-        <head>
-            <meta charset="utf-8" />
-            <title>MiniExtend Time</title>
-            <link rel="stylesheet" type="text/css" href="./css/markdown.css" />
-        </head>
-        <body class='markdown-preview' data-use-github-style><h1 id="miniextend-time">MiniExtend Time</h1>
+<!-- converted -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>MiniExtend Time</title>
+<link rel="stylesheet" type="text/css" href="./css/markdown.css" />
+</head>
+<body class='markdown-preview' data-use-github-style><h1 id="miniextend-time">MiniExtend Time</h1>
 <p>对应源文件： <em>time.lua</em>  </p>
 <h2 id="code-stylecolorgreentimecode-作用域"><code style="color: green; font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Time</code> 作用域</h2>
 <h3 id="gettick-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">getTick()</code> 函数</h3>
@@ -60,4 +61,4 @@
 <p>-- fib1 表示 Fibonacci[tick-1] , fib2 表示 Fibonacci[tick]<br>-- Fibonacci[0] = 0, Fibonacci[1] = 1<br>local fib1, fib2 = 0, 1<br>timer.callback = function(self, tick)<br>    -- fib3 表示 Fibonacci[tick+1]<br>    local fib3 = fib1 + fib2<br>    Console:log("tick "..tostring(tick), "Fibonacci[tick+1] = "..tostring(fib3))<br>    fib1, fib2 = fib2, fib3<br>end  </p>
 <p>Time:nextTick(function()<br>    timer:start()<br>    Time:scheduleCall(50, function()<br>        timer:pause()<br>    end)<br>end)<br>Console:log("tick "..tostring(Time:getTick()))  </p>
 <p><img alt="部分输出" src=".\img\code4-output.png"></p></body>
-      </html>
+</html>

@@ -11,12 +11,19 @@ MiniExtend UI 前身为 `Customui` ，但以面相对象方式描述界面与元
 ## `UI` 下的类之间的关系
 | 类名 | 类描述 | 父类 | 具象 |
 | :-: | :-: | :-: | :-: |
-| UIView | UI 界面 | / | 是 |
-| Element | UI 元件 | / | 否 |
-| Texture | UI 图片 | Element | 是 |
-| Button | UI 按钮 | Texture | 是 |
-| Label | UI 文字 | Element | 是 |
-| EditBox | UI 输入框 | Label | 是 |
+| UIView | UI 界面 | / | √ |
+| Element | UI 元件 | / | × |
+| Texture | UI 图片 | Element | √ |
+| Button | UI 按钮 | Texture | √ |
+| Label | UI 文字 | Element | √ |
+| EditBox | UI 输入框 | Label | √ |
+
+### `UI:getRootSize()` 函数
+返回自定义 UI 界面的大小。  
+- 返回 `width: {number}`, `height: {number}` 。  
+- `width` 表示 UI 界面的宽度， `height` 表示高度。  
+- 精确到小数位，也就是返回值足够精确。  
+- 返回的是服务器上定义的 UI 界面大小，例如在多人游戏中调用 `UI:getRootSize()` 会返回房主(或者云服务器)的 UI 界面大小。  
 
 ## `UI.UIView` 类
 一个 `UI.UIView` 对象代表了一个 UI 界面，以下简称 `UIView` 。  

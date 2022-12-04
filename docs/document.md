@@ -1,6 +1,6 @@
 # MiniExtend 简介
 MiniExtend 是一个为<u title="理论上支持任何使用迷你世界引擎的软件，例如迷你编程">迷你世界</u>脚本设计的 lua 库。  
-MiniExtend 使用 Apache Licence 2.0 作为许可证。  
+MiniExtend 使用 MIT License 作为许可证。  
 使用 MiniExtend 可以极大降低迷你世界脚本开发复杂度。  
 学习和使用 MiniExtend 并不困难。  
 

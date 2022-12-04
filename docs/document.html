@@ -1,12 +1,13 @@
-      <!DOCTYPE html>
-      <html>
-        <head>
-            <meta charset="utf-8" />
-            <title>MiniExtend 文档</title>
-            <link rel="stylesheet" type="text/css" href="./css/markdown.css" />
-        </head>
-        <body class='markdown-preview' data-use-github-style><h1 id="miniextend-简介">MiniExtend 简介</h1>
-<p>MiniExtend 是一个为<u title="理论上支持任何使用迷你世界引擎的软件，例如迷你编程">迷你世界</u>脚本设计的 lua 库。<br>MiniExtend 使用 Apache Licence 2.0 作为许可证。<br>使用 MiniExtend 可以极大降低迷你世界脚本开发复杂度。<br>学习和使用 MiniExtend 并不困难。  </p>
+<!-- converted -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>MiniExtend 文档</title>
+<link rel="stylesheet" type="text/css" href="./css/markdown.css" />
+</head>
+<body class='markdown-preview' data-use-github-style><h1 id="miniextend-简介">MiniExtend 简介</h1>
+<p>MiniExtend 是一个为<u title="理论上支持任何使用迷你世界引擎的软件，例如迷你编程">迷你世界</u>脚本设计的 lua 库。<br>MiniExtend 使用 MIT License 作为许可证。<br>使用 MiniExtend 可以极大降低迷你世界脚本开发复杂度。<br>学习和使用 MiniExtend 并不困难。  </p>
 <ul>
 <li>MiniExtend 允许你将脚本代码集中在<a href="#%E5%85%A8%E5%B1%80%E4%BD%9C%E7%94%A8%E5%9F%9F">全局作用域</a>下管理，只需在 UI 作用域下添加简短的脚本并稍作修改即可，而不是在各个<a href="#%E8%84%9A%E6%9C%AC%E4%BD%9C%E7%94%A8%E5%9F%9F">作用域</a>之间来回切换，通常无法<strong>直接</strong>在全局作用域下绑定绑定 <a href="#ui-%E4%BA%8B%E4%BB%B6">UI 事件</a>。  </li>
 <li>MiniExtend 允许以面相对象方式编程，这甚至允许你将原来调用 API 所需的 3 个参数降至 0 个！一个例子是 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.Element:show()</code> ，函数首先根据对象自身(<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">self</code>)成员变量确定 2 个参数，然后根据 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G2["__OBJID"]</code> 再确定 1 个参数！  </li>
@@ -84,4 +85,4 @@
 </tr>
 </tbody></table>
 </blockquote></body>
-      </html>
+</html>

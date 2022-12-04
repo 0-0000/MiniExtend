@@ -1,11 +1,12 @@
-      <!DOCTYPE html>
-      <html>
-        <head>
-            <meta charset="utf-8" />
-            <title>MiniExtend UI</title>
-            <link rel="stylesheet" type="text/css" href="./css/markdown.css" />
-        </head>
-        <body class='markdown-preview' data-use-github-style><h1 id="miniextend-ui">MiniExtend UI</h1>
+<!-- converted -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>MiniExtend UI</title>
+<link rel="stylesheet" type="text/css" href="./css/markdown.css" />
+</head>
+<body class='markdown-preview' data-use-github-style><h1 id="miniextend-ui">MiniExtend UI</h1>
 <p>对应源文件： <em>ui.lua</em>  </p>
 <h2 id="code-stylecolorgreenuicode-作用域"><code style="color: green; font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI</code> 作用域</h2>
 <p>MiniExtend UI 前身为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Customui</code> ，但以面相对象方式描述界面与元件，且支持 <a href="./object.html">MiniExtend Object</a> 。<br>与 UI API 命名冲突，使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">GameVM.UI</code> 来访问 API 。  </p>
@@ -24,39 +25,47 @@
 <td align="center">UIView</td>
 <td align="center">UI 界面</td>
 <td align="center">/</td>
-<td align="center">是</td>
+<td align="center">√</td>
 </tr>
 <tr>
 <td align="center">Element</td>
 <td align="center">UI 元件</td>
 <td align="center">/</td>
-<td align="center">否</td>
+<td align="center">×</td>
 </tr>
 <tr>
 <td align="center">Texture</td>
 <td align="center">UI 图片</td>
 <td align="center">Element</td>
-<td align="center">是</td>
+<td align="center">√</td>
 </tr>
 <tr>
 <td align="center">Button</td>
 <td align="center">UI 按钮</td>
 <td align="center">Texture</td>
-<td align="center">是</td>
+<td align="center">√</td>
 </tr>
 <tr>
 <td align="center">Label</td>
 <td align="center">UI 文字</td>
 <td align="center">Element</td>
-<td align="center">是</td>
+<td align="center">√</td>
 </tr>
 <tr>
 <td align="center">EditBox</td>
 <td align="center">UI 输入框</td>
 <td align="center">Label</td>
-<td align="center">是</td>
+<td align="center">√</td>
 </tr>
 </tbody></table>
+<h3 id="uigetrootsize-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI:getRootSize()</code> 函数</h3>
+<p>返回自定义 UI 界面的大小。  </p>
+<ul>
+<li>返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">width: {number}</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">height: {number}</code> 。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">width</code> 表示 UI 界面的宽度， <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">height</code> 表示高度。  </li>
+<li>精确到小数位，也就是返回值足够精确。  </li>
+<li>返回的是服务器上定义的 UI 界面大小，例如在多人游戏中调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI:getRootSize()</code> 会返回房主(或者云服务器)的 UI 界面大小。  </li>
+</ul>
 <h2 id="uiuiview-类"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.UIView</code> 类</h2>
 <p>一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.UIView</code> 对象代表了一个 UI 界面，以下简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UIView</code> 。  </p>
 <h3 id="构造函数">构造函数</h3>
@@ -157,8 +166,8 @@
 <li>使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tonumber(e [, base])</code> 函数来转化数字。  </li>
 </ul>
 <h3 id="代码">代码</h3>
-<p>以下代码假设已经配置好 UI 了。<br><img alt="代码" src=".\img\code3.png">  </p>
+<p>以下代码假设已经配置好 UI 了。<br><img alt="代码" src="D:\GitRepositories\MiniExtend\docs\img\code3.png">  </p>
 <p>-- 需替换以下 id<br>local uiview_id, editBox_id, label_id, button_id = [[]], [[]], [[]], [[]]<br>uiview = UI.UIView:new(uiview_id)<br>editBox = uiview:newEditBox(editBox_id)<br>label = uiview:newLabel(label_id)<br>button = uiview:newButton(button_id)  </p>
 <p>-- 初始化<br>Event.Connecter:new([[Game.AnyPlayer.EnterGame]], function(param)<br>    uiview:show()<br>    label:setText("")<br>    editBox:setText("输入 16 进制数")<br>end, uiid)  </p>
 <p>button.onClick = function(param)<br>    -- 清空输入框<br>    editBox:setText("")<br>end<br>editBox.onLostFocus = function(param)<br>    local num = tonumber(param["content"], 16)<br>    if num then<br>        label:setText(tostring(num))<br>    else<br>        label:setText("错误的输入")<br>    end<br>    editBox:setText("输入 16 进制数")<br>end  </p></body>
-      </html>
+</html>

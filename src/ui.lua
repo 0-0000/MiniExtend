@@ -3,7 +3,7 @@
 ui.lua
 管理自定义 UI 界面
 依赖于 core.lua, object.lua, event.lua
-最后更新 : 2.0.0
+最后更新 : 2.0.2
 ]=]
 --[=[
 类关系示意图:
@@ -259,7 +259,7 @@ UI.Texture = {
 	-- @constructor UI.Texture:new(uiview, elementid)
 	-- @constructor UI.UIView:newTexture(elementid)
 	-- @method setTexture(url, playerid) 设置图片元件图案纹理
-}; Texture = UI.Texture
+}; local Texture = UI.Texture
 -- 构造一个父 UI 界面为 uiview, id 为 elementid 的 Texture 对象
 -- 如果已经构造过这样的对象则返回之
 -- @param {table<UIView>} uiview 元件所属父 UI 界面

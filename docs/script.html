@@ -1,11 +1,12 @@
-      <!DOCTYPE html>
-      <html>
-        <head>
-            <meta charset="utf-8" />
-            <title>迷你世界脚本</title>
-            <link rel="stylesheet" type="text/css" href="./css/markdown.css" />
-        </head>
-        <body class='markdown-preview' data-use-github-style><h1 id="迷你世界脚本">迷你世界脚本</h1>
+<!-- converted -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>迷你世界脚本</title>
+<link rel="stylesheet" type="text/css" href="./css/markdown.css" />
+</head>
+<body class='markdown-preview' data-use-github-style><h1 id="迷你世界脚本">迷你世界脚本</h1>
 <h2 id="与标准-lua-脚本的差异">与标准 lua 脚本的差异</h2>
 <p>首先，要知道迷你世界的 lua 脚本解释器为 <a href="http://www.lua.org/manual/5.1/">lua51</a> 。
 但是，脚本运行环境与标准的 lua51 环境有很大差异，举个简单的事实， <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G</code> 表实际不包含任何值，对 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_G</code> 的修改和读取都是由它的元表完成的，对环境的修复也要以这个元表为突破口，详见 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">core.lua</code> 。<br>以下内容假设你还未使用 MiniExtend ，使用 MiniExtend 会改变这些现象，详见 <a href="./core.html">MiniExtend Core</a> 。  </p>
@@ -32,4 +33,4 @@
 <li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">warn(message)</code>: 在日志中输出警告信息（有黄色高亮标记） <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">message</code> ，使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"warning"</code> 作为标签。  </li>
 </ul>
 <p>MiniExtend 没有修改这些添加的函数，但是不建议使用这些函数，它们应该只被内部调用。<br>以上内容只是对现象的简单概括，要想真正理解迷你世界脚本，建议阅读 <em>core.lua</em> 并手动测试。  </p></body>
-      </html>
+</html>
