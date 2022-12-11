@@ -22,8 +22,15 @@
 <p>如果 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 类型为其它，函数不做有意义的事。  </p>
 </blockquote>
 <h2 id="实例">实例</h2>
-<p>对于<a href="./ui.html#UIView-show"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">UI.UIView:show([playerid])</code></a> 这个函数，你可以不传递 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">playerid</code> 参数调用该函数，这时 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 将代替 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">playerid</code> 参数。<br><img alt="代码" src=".\img\code2.png"></p>
-<p>-- 需替换为 UI 界面 id<br>local uiid = [[]]  </p>
-<p>uiview = UI.UIView:new(uiid)<br>-- 任意玩家进入游戏事件<br>Event.Connecter:new([[Game.AnyPlayer.EnterGame]], function(param)<br>    -- objid 已被隐式地设置为 param.eventobjid<br>    -- 等价于调用 uiview:show(getObjectId())<br>    uiview:show()<br>end, uiid)  </p>
-<p>当任意玩家进入游戏时，玩家会打开 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiview</code> 界面。  </p></body>
+<p>对于<a href="./ui.html#UIView-show"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">MUI.UIView:show([playerid])</code></a> 这个函数，你可以不传递 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">playerid</code> 参数调用该函数，这时 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 将代替 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">playerid</code> 参数。<br>当任意玩家进入游戏时，玩家会打开 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">uiview</code> 界面。  </p>
+<p>代码:<br><pre><code>-- 需替换为 UI 界面 id
+local uiid = [[]]
+uiview = MUI.UIView:new(uiid)
+-- 任意玩家进入游戏事件
+Event.Connecter:new([[Game.AnyPlayer.EnterGame]], function(param)
+    -- objid 已被隐式地设置为 param.eventobjid
+    -- 等价于调用 uiview:show(getObjectId())
+    uiview:show()
+end, uiid)
+</code></pre></p></body>
 </html>

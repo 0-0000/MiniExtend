@@ -15,27 +15,27 @@
 <ul>
 <li><p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">log(...)</code>  </p>
 <blockquote>
-<p>在日志以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"global"</code> 为标签格式化输出 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...</code>，格式化方式与 lua 基本函数 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">print(...)</code> 相同，等价于调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Console:logtag("global", ...);</code> 。  </p>
+<p>在日志以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"global"</code> 为标签输出 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...</code> 。<br><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{all}</code>输出内容，格式化方式与 lua <strong>基本</strong>函数 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">print(...)</code> 相同。<br>等价于调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Console:logtag("global", ...);</code> 。  </p>
 </blockquote>
 </li>
 <li><p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">logtag(tag, ...)</code>  </p>
 <blockquote>
-<p>在日志以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tag</code> 为标签格式化输出 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...</code>，格式化方式与 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Console:log(...)</code> 相同。<br>如果 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tag</code> 不是字符串，结果会令人疑惑。  </p>
+<p>在日志以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tag</code> 为标签格式化输出 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...</code> 。<br><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tag</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{string}</code> 输出标签，如果不是 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">string</code> 类型那么函数行为会令人困惑。<br><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{all}</code> 输出内容，格式化方式与 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">log()</code> 相同。  </p>
 </blockquote>
 </li>
 <li><p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">warn(message)</code>  </p>
 <blockquote>
-<p>在日志输出警告信息 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">message</code> ，标签为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"warning"</code> 。<br>这和 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">warn(message)</code> 函数很像，但 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Console:warn(message)</code> 会以黄色高亮显示警告。</p>
+<p>在日志以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"warning"</code> 为标签输出输出警告信息 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">message</code> 。<br><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">message</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{string}</code> 输出的警告信息。<br>与脚本内置的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">warn(message)</code> 函数不同的是，该函数会以黄色高亮显示警告。  </p>
 </blockquote>
 </li>
 <li><p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">error(message)</code>  </p>
 <blockquote>
-<p>在日志输出错误信息 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">message</code> ，标签为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"error"</code> 。<br>该函数不像被 miniExtend 恢复的全局函数 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">error(message [, level])</code> ，不会终止上次调用的受保护函数。<br>该函数会以红色高亮显示警告。  </p>
+<p>在日志以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">"error"</code> 为标签输出输出错误信息 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">message</code> 。<br><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">message</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{string}</code> 输出的错误信息。<br>与 lua <strong>基本</strong>函数 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">error()</code> 不同的是，该函数不会抛出错误。<br>该函数会以红色高亮显示警告。  </p>
 </blockquote>
 </li>
 <li><p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">clear()</code>  </p>
 <blockquote>
-<p>清空日志，效果和在控制台点击<img alt="清空日志" src=".\img\clear-console.png">按钮一样。  </p>
+<p>清空日志，效果和在控制台点击<img alt="清空日志" src=".\img\clear-console.png">按钮一样。<br><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">return</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{boolean}</code> API 调用成功返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">true</code> ，否则返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">false</code> 。</p>
 </blockquote>
 </li>
 </ul>
