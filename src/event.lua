@@ -3,8 +3,9 @@
 event.lua
 处理回调
 依赖于 core.lua, object.lua
-最后更新 : 2.0.0
+最后更新 : 2.1.0
 ]=]
+
 --[=[
 使用事件名 eventname 来确定回调函数要连接什么事件
 既可以使用 MiniExtend 自定义事件名(Event.EventName)，也可以使用 API 事件名
@@ -95,9 +96,9 @@ function Connecter:new(eventname, callback, uiid)
 	object.callback = callback
 
 	-- 检查是否是 UI 事件，如果是则设置对象的 isUIEvent 和 uiId 属性
-	if sub(object.msgStr, 1, 2) == [[UI]] then
-		object.isUIEvent = true
+	if sub(msgStr, 1, 2) == [[UI]] then
 		if type(uiid) == "string" then
+			object.isUIEvent = true
 			object.uiId = uiid
 		else
 			error("MiniExtend - Event.Connecter:connect() : bad argument #3")

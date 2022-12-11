@@ -3,8 +3,9 @@
 ui.lua
 管理自定义 UI 界面
 依赖于 core.lua, object.lua, event.lua
-最后更新 : 2.0.2
+最后更新 : 2.1.0
 ]=]
+
 --[=[
 类关系示意图:
 类名		类描述	父类		具象 作用
@@ -21,9 +22,8 @@ local setState = Customui.setState
 local _G2 = _G2
 local setmetatable, ipairs = setmetatable, ipairs
 
--- UI namespace
--- 注意这和 UI API 名称冲突，使用 GameVM.UI 来访问 UI API
-UI = {
+-- MiniExtend UI namespace
+MUI = {
 	-- 存储所有 UIView 对象
 	UIViews = {}
 
@@ -34,20 +34,20 @@ UI = {
 	-- @class Button 按钮类
 	-- @class Label 文字类
 	-- @class EditBox 输入框类
-}; local UI = UI
-local UIViews = UI.UIViews
+}; local MUI = MUI
+local UIViews = MUI.UIViews
 
 -- 获取 UI 界面大小，该大小可精确到小数位
 -- @return {number} UI 界面的宽度(width)
 -- @return {number} UI 界面的高度(height)
 local getRootSize = genv["UIEditorDef"].getRootSize
-function UI:getRootSize()
+function MUI:getRootSize()
 	local result = getRootSize()
 	return result["width"], result["height"]
 end
 
 -- UIView class
-UI.UIView = {
+MUI.UIView = {
 	-- @member {string} id UI 界面的 id
 	-- @member {table} textures UI 界面的子图片元件
 	-- @member {table} buttons UI 界面的子按钮元件
@@ -67,7 +67,7 @@ UI.UIView = {
 	-- @method newButton(elementid) 构造 Button 对象
 	-- @method newLabel(elementid) 构造 Label 对象
 	-- @method newEditBox(elementid) 构造 EditBox 对象
-}; local UIView = UI.UIView
+}; local UIView = MUI.UIView
 -- 构造一个 id 为 uiid 的 UIView 对象，如果已经构造过这样的对象则返回之
 -- @param {string} uiid UI 界面的 id
 -- @return 构造的 UIView 对象
@@ -86,27 +86,27 @@ function UIView:new(uiid)
 				object.onShow(param)
 			end
 		end, uiid)
-		Event:connect([[$ui.hide]], function(param)
+		Event.Connecter:new([[$ui.hide]], function(param)
 			if object.onHide then
 				paprm["uiview"] = object
 				object.onHide(param)
 			end
 		end, uiid)
-		Event:connect([[$ui.onPress]], function(param)
+		Event.Connecter:new([[$ui.onPress]], function(param)
 			local button = object.buttons[param["btnelenemt"]]
 			if button and button.onPress then
 				param["element"] = button
 				button.onPress(param)
 			end
 		end, uiid)
-		Event:connect([[$ui.onClick]], function(param)
+		Event.Connecter:new([[$ui.onClick]], function(param)
 			local button = object.buttons[param["btnelenemt"]]
 			if button and button.onClick then
 				param["element"] = button
 				button.onClick(param)
 			end
 		end, uiid)
-		Event:connect([[$ui.onLostFocus]], function(param)
+		Event.Connecter:new([[$ui.onLostFocus]], function(param)
 			local editBox = object.editBoxes[param["btnelenemt"]]
 			if editBox and editBox.onLostFocus then
 				param["element"] = editBox
@@ -158,7 +158,7 @@ end
 
 -- Element class
 -- 该类非具象类，不支持构造 Element 对象，用于其它类继承
-UI.Element = {
+MUI.Element = {
 	-- @member {table<UIView>} uiView 元件所属 UI 界面
 	-- @member {string} id 元件的 id
 
@@ -172,7 +172,7 @@ UI.Element = {
 	-- @method setAngle(angle, playerid) 设置元件角度
 	-- @method setColor(color, playerid) 设置元件颜色
 	-- @method setAlpha(alpha, playerid) 设置元件透明度
-}; local Element = UI.Element
+}; local Element = MUI.Element
 
 local showElement, hideElement = Customui.showElement, Customui.hideElement
 -- 显示元件
@@ -254,12 +254,12 @@ function Element:setAlpha(alpha, playerid)
 end
 
 -- Texture class
--- 继承自 UI.Element
-UI.Texture = {
-	-- @constructor UI.Texture:new(uiview, elementid)
-	-- @constructor UI.UIView:newTexture(elementid)
+-- 继承自 MUI.Element
+MUI.Texture = {
+	-- @constructor MUI.Texture:new(uiview, elementid)
+	-- @constructor MUI.UIView:newTexture(elementid)
 	-- @method setTexture(url, playerid) 设置图片元件图案纹理
-}; local Texture = UI.Texture
+}; local Texture = MUI.Texture
 -- 构造一个父 UI 界面为 uiview, id 为 elementid 的 Texture 对象
 -- 如果已经构造过这样的对象则返回之
 -- @param {table<UIView>} uiview 元件所属父 UI 界面
@@ -287,16 +287,16 @@ function Texture:setTexture(url, playerid)
 end
 
 -- Button class
--- 继承自 UI.Texture
-UI.Button = {
+-- 继承自 MUI.Texture
+MUI.Button = {
 	-- 可写成员变量:
 	-- @member {function | nil} onPress 按钮被按下时回调的函数
 	-- @member {function | nil} onClick 按钮被点击时回调的函数
 	-- 注: 点击 = 按下 + 释放(该事件目前不支持)
 
-	-- @constructor UI.Button:new(uiview, elementid)
-	-- @constructor UI.UIView:newButton(elementid)
-}; local Button = UI.Button
+	-- @constructor MUI.Button:new(uiview, elementid)
+	-- @constructor MUI.UIView:newButton(elementid)
+}; local Button = MUI.Button
 -- 构造一个父 UI 界面为 uiview, id 为 elementid 的 Button 对象
 -- 如果已经构造过这样的对象则返回之
 -- @param {table<UIView>} uiview 元件所属父 UI 界面
@@ -306,7 +306,7 @@ function Button:new(uiview, elementid)
 	local object = uiview.buttons[elementid]
 	if object then return object
 	else
-		object = setmetatable({}, Texture)
+		object = setmetatable({}, Button)
 		object.uiView = uiview
 		object.id = elementid
 		uiview.buttons[elementid] = object
@@ -315,13 +315,13 @@ function Button:new(uiview, elementid)
 end
 
 -- Label class
--- 继承自 UI.Element
-UI.Label = {
-	-- @constructor UI.Label:new(uiview, elementid)
-	-- @constructor UI.UIView:newLabel(elementid)
+-- 继承自 MUI.Element
+MUI.Label = {
+	-- @constructor MUI.Label:new(uiview, elementid)
+	-- @constructor MUI.UIView:newLabel(elementid)
 	-- @method setFontSize(size, playerid) 设置文本元件字体大小
 	-- @method setText(text, playerid) 设置文本元件内容
-}; local Label = UI.Label
+}; local Label = MUI.Label
 -- 构造一个父 UI 界面为 uiview, id 为 elementid 的 Label 对象
 -- 如果已经构造过这样的对象则返回之
 -- @param {table<UIView>} uiview 元件所属父 UI 界面
@@ -331,7 +331,7 @@ function Label:new(uiview, elementid)
 	local object = uiview.labels[elementid]
 	if object then return object
 	else
-		object = setmetatable({}, Texture)
+		object = setmetatable({}, Label)
 		object.uiView = uiview
 		object.id = elementid
 		uiview.labels[elementid] = object
@@ -355,14 +355,14 @@ function Label:setText(text, playerid)
 end
 
 -- EditBox class
--- 继承自 UI.Label
-UI.EditBox = {
+-- 继承自 MUI.Label
+MUI.EditBox = {
 	-- 可写成员变量:
 	-- @member {function | nil} onLostFocus 输入框失去焦点时回调的函数
 
-	-- @constructor UI.EditBox:new(uiview, elementid)
-	-- @constructor UI.UIView:newEditBox(elementid)
-}; local EditBox = UI.EditBox
+	-- @constructor MUI.EditBox:new(uiview, elementid)
+	-- @constructor MUI.UIView:newEditBox(elementid)
+}; local EditBox = MUI.EditBox
 -- 构造一个父 UI 界面为 uiview, id 为 elementid 的 EditBox 对象
 -- 如果已经构造过这样的对象则返回之
 -- @param {table<UIView>} uiview 元件所属父 UI 界面
@@ -372,7 +372,7 @@ function EditBox:new(uiview, elementid)
 	local object = uiview.editBoxes[elementid]
 	if object then return object
 	else
-		object = setmetatable({}, Texture)
+		object = setmetatable({}, EditBox)
 		object.uiView = uiview
 		object.id = elementid
 		uiview.editBoxes[elementid] = object
@@ -382,7 +382,7 @@ end
 
 -- 构造一个 id 为 elementid 的子 Texture 对象(属于该 UI 界面)
 -- 如果已经构造过这样的对象则返回之
--- 等价于 UI.Texture:new(self, elementid)
+-- 等价于 MUI.Texture:new(self, elementid)
 -- @param {string} element 元件的 id ，形如 [[uiid_elementid]]
 -- @return 构造的 Texture 对象
 function UIView:newTexture(elementid)
@@ -390,7 +390,7 @@ function UIView:newTexture(elementid)
 end
 -- 构造一个 id 为 elementid 的子 Button 对象(属于该 UI 界面)
 -- 如果已经构造过这样的对象则返回之
--- 等价于 UI.Button:new(self, elementid)
+-- 等价于 MUI.Button:new(self, elementid)
 -- @param {string} element 元件的 id ，形如 [[uiid_elementid]]
 -- @return 构造的 Texture 对象
 function UIView:newButton(elementid)
@@ -398,7 +398,7 @@ function UIView:newButton(elementid)
 end
 -- 构造一个 id 为 elementid 的子 Label 对象(属于该 UI 界面)
 -- 如果已经构造过这样的对象则返回之
--- 等价于 UI.Label:new(self, elementid)
+-- 等价于 MUI.Label:new(self, elementid)
 -- @param {string} element 元件的 id ，形如 [[uiid_elementid]]
 -- @return 构造的 Texture 对象
 function UIView:newLabel(elementid)
@@ -406,7 +406,7 @@ function UIView:newLabel(elementid)
 end
 -- 构造一个 id 为 elementid 的子 EditBox 对象(属于该 UI 界面)
 -- 如果已经构造过这样的对象则返回之
--- 等价于 UI.EditBox:new(self, elementid)
+-- 等价于 MUI.EditBox:new(self, elementid)
 -- @param {string} element 元件的 id ，形如 [[uiid_elementid]]
 -- @return 构造的 EditBox 对象
 function UIView:newEditBox(elementid)

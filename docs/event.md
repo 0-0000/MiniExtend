@@ -39,11 +39,9 @@ Event 作用域包含上面提到的 MiniExtend 自定义事件和 `Connecter` �
 该函数的原型为 `ScriptSupportEvent:registerEvent(msgStr, func)` 。  
 
 #### 参数
-> ##### `eventname` 参数
-> 类型: string  
+> ##### `eventname`:`{string}`  
 > 描述事件，详见[自定义事件名](#自定义事件名)
-> ##### `callback` 参数
-> 类型: function  
+> ##### `callback`:`{function}`  
 > 指定回调函数。  
 > > 回调函数调用时，还会传递一个哈希表作为参数，以下简称 `param` ，存储着该事件发生时的一些信息。  
 > > `param` 原型就是 `ScriptSupportEvent:registerEvent()` 回调函数传递的参数，详见[假 wiki](https://developers.mini1.cn/wiki/event.html) 。  
@@ -51,8 +49,7 @@ Event 作用域包含上面提到的 MiniExtend 自定义事件和 `Connecter` �
 > > 回调函数时还会提前隐式地设置 `objid` 的值为 `param["eventobjd"]` ，根据 `setObjectId()` 函数的行为，如果不包含那个键，那么 `objid` 的值不会被设置。  
 >
 > `eventname` 和 `callback` 参数都会被检查，如果它们类型错误则会报错。  
-> ##### `uiid` 参数 ###
-> 类型: string | nil  
+> ##### `uiid`:`{string | nil}`  
 > 如果所指定事件为 UI 事件，那么该参数应为 `string` 类型，表示要监听的 UI 界面 id 。  
 > 如果指定事件非 UI 事件，应指定为 `nil` 。  
 > 对于 UI 事件，如果该参数类型不为 `string` ，会导致报错。  
@@ -66,9 +63,9 @@ Event 作用域包含上面提到的 MiniExtend 自定义事件和 `Connecter` �
 如果要删除对象本生，将访问对象的链接设为 `nil` ，让 lua 垃圾回收器回收对象。  
 
 ### 属性
-- `eventName`: `string` 类型，等于调用 `Event.Connecter:new()` 函数时传递的 `eventname` 参数。  
-- `msgStr`: `string` 类型，事件在 API 中的名称，除非使用 miniExtend 自定义事件否则等于 `eventName` 属性。  
-- `id`: `number` 类型，监听的 id 。  
-- `isUIEvent`: `boolean | nil` 类型， `true` 表示事件为 UI 事件，否则为 `nil` 。  
-- `uiId`: `string | nil` 类型，监听的 UI 界面的 id ，非 UI 事件为 `nil` 。  
-- `callback`: `function` 类型，事件发生时回调的函数，**你可以修改它**，这样在事件发生时回调的函数会改变。  
+- `eventName`:`{string}` 事件名，调用 `Event.Connecter:new()` 函数时传递的 `eventname` 参数。  
+- `msgStr`:`{string}` 事件在 API 中的名称，除非使用 miniExtend 自定义事件否则等于 `eventName` 。  
+- `id`:`{number}` 事件监听的 id 。  
+- `isUIEvent`:`{boolean | nil}` `true` 表示事件为 UI 事件，否则为 `nil` 。  
+- `uiId`:`{string | nil}` 类型，监听的 UI 界面的 id ，非 UI 事件为 `nil` 。  
+- `callback`:`{function}` 类型，事件发生时回调的函数，**你可以修改它**，这样在事件发生时回调的函数会改变。  

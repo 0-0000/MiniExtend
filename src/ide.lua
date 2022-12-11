@@ -2,8 +2,9 @@
 ide.lua
 用于编辑器自动补全代码
 本身全部是注释，无依赖
-最后更新 : 2.0.1
+最后更新 : 2.1.0
 ]=]
+
 --[=[
 @table genv _G2 GameVM
 @function loadstring2() deepcopy()
@@ -17,7 +18,7 @@ ide.lua
     @function getTick() scheduleCall(ticks, func, ...) nextTick(func, ...)
     @class Timer
         @r createTime tick
-        @rw callback(self, tick)
+        @rw callback(self, tick) delay
         @method new() start() pause() isRunning()
 
 @namespace Event

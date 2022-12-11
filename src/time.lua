@@ -2,7 +2,7 @@
 --[=[
 time.lua
 允许安排脚本运行时机
-最后更新 : 2.0.0
+最后更新 : 2.1.0
 ]=]
 
 local type, insert = type, table.insert
@@ -39,7 +39,6 @@ function Time:getTick()
 end
 
 --延时调用函数
--- @param {integer} paprm ?
 -- @paprm {integer} ticks 等待调用的帧数
 -- @param {function} func 要调用的函数
 -- @param {all} ... 调用函数时传递的参数
@@ -80,17 +79,20 @@ end
 -- Timer class
 --[=[
 Timer 对象包含两种状态: 运行和暂停，默认为暂停
-运行时对象的 tick 成员会随着新的游戏帧而增加，且每帧会调用 callback 。
+运行时对象的 tick 成员会随着新的游戏帧而增加，且每帧都将 delay 减 1 。
+当 delay 为 0 时就会先重置 delay 为 1 ，然后调用 callback 。
 反之，如果暂停， tick 就不会增加， callback 也不会被调用
 --]=]
 Time.Timer = {
 	-- @member {number} createTime 对象创建时的 CPU 时间
 	-- @member {integer} id 等同于对象在 Time.Timers 中的索引
-	-- @member {integer} tick 对象创建以来计时器运行的游戏帧数
 	-- @member {boolean} running true: 计时器运行 false: 计时器暂停
+	-- @member {integer} tick 对象创建以来计时器运行的游戏帧数
 
 	-- 可写成员变量:
 	--[=[
+	@member {integer} delay 下一次调用 callback 的间隔帧数，默认为 1
+		不影响 tick 的递增，在计时器暂停时 delay 不会减少
 	@member {function | nil} callback 如果计时器未暂停，每帧都调用该函数
 	传递两个参数: self 和 tick
 		@param {table<Timer>} self 表示所属 Timer 对象
@@ -108,8 +110,8 @@ Time.Timer = {
 local setmetatable, clock = setmetatable, os.clock
 function Timer:new()
 	local object = setmetatable({}, Timer)
-	object.tick = 0
 	object.createTime = clock()
+	object.tick, object.delay, object.running = 0, 1, false
 	local id = Time.id + 1
 	object.id, Time.id = id, id
 	Timers[id] = object
@@ -148,9 +150,6 @@ Timer.__index = {
 }
 
 local pairs, ipairs, pcall, unpack = pairs, ipairs, pcall, unpack
-local function safeCall(func, ...)
-	func(...)
-end
 return function()
 	local tick = Time.tick + 1
 	Time.tick = tick
@@ -165,14 +164,18 @@ return function()
 	end
 
 	for _, call in ipairs(thisTickCalls) do
-		pcall(safeCall, call[1], unpack(call[2]))
+		pcall(call[1], unpack(call[2]))
 	end
 
 	for id, timer in pairs(Timers) do
 		if timer.running then
 			timer.tick = timer.tick + 1
-			if timer.callback then
-				pcall(safeCall, timer.callback, timer, tick)
+			timer.delay = timer.delay - 1
+			if timer.delay <= 0 then
+				timer.delay = 1
+				if type(timer.callback) == "function" then
+					pcall(timer.callback, timer, tick)
+				end
 			end
 		end
 	end

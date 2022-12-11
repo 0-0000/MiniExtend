@@ -1,5 +1,5 @@
 # MiniExtend
-- 版本：2.0.2  
+- 版本：2.1.0  
 
 ## 许可证
 MiniExtend 使用 MIT Licence 作为许可证，它要求你保留作者的版权，侵权行为包括但不限于私自删除源代码中的作者信息。  
@@ -10,11 +10,13 @@ MiniExtend 是一个为<a title="理论上支持任何使用迷你世界引擎�
 学习和使用 MiniExtend 并不困难。  
 
 ## 使用 MiniExtend
-作者会维护比较准确详细的 MiniExtend 文档，文档会指引你搭建 MiniExtend 环境和使用 MiniExtend 。  
+作者会维护比较准确详细的 MiniExtend 文档，文档会指引你搭建 MiniExtend 环境和使用 MiniExtend ，参见下面的离线和静态文档。  
+[离线文档](./docs/index.html)  
+[静态文档](https://0-0000.github.io/MiniExtend/)  
 
 ## MiniExtend 文档
-`docs` 分支维护着 MiniExtend 文档，静态文档： <https://0-0000.github.io/MiniExtend/> 。  
-作者的文档采用朴素的 markdown 风格，该文档会在新版本发布后立即更新，且想当精确。  
+`docs` 分支维护着 MiniExtend 文档。  
+作者的文档采用朴素的 markdown 风格，该文档会在新版本发布后立即更新，且相当精确。  
 其他 MiniExtend 开发者可能会编写不同风格的文档，如果你觉得作者的 markdown 风格文档比较晦涩，你可以先阅读他们的文档。  
 Release 中也包含了离线文档。  
 > 注意，对于出于压缩包中离线文档，必须在解压压缩包后才能正常阅读文档。  

@@ -11,22 +11,28 @@
 `Console` 作用域包含以下函数：  
 
 - `log(...)`  
-> 在日志以 `"global"` 为标签格式化输出 `...`，格式化方式与 lua 基本函数 `print(...)` 相同，等价于调用 `Console:logtag("global", ...);` 。  
+> 在日志以 `"global"` 为标签输出 `...` 。  
+> `...`:`{all}`输出内容，格式化方式与 lua **基本**函数 `print(...)` 相同。  
+> 等价于调用 `Console:logtag("global", ...);` 。  
 
 - `logtag(tag, ...)`  
-> 在日志以 `tag` 为标签格式化输出 `...`，格式化方式与 `Console:log(...)` 相同。  
-> 如果 `tag` 不是字符串，结果会令人疑惑。  
+> 在日志以 `tag` 为标签格式化输出 `...` 。  
+> `tag`:`{string}` 输出标签，如果不是 `string` 类型那么函数行为会令人困惑。  
+> `...`:`{all}` 输出内容，格式化方式与 `log()` 相同。  
 
 - `warn(message)`  
-> 在日志输出警告信息 `message` ，标签为 `"warning"` 。  
-> 这和 `warn(message)` 函数很像，但 `Console:warn(message)` 会以黄色高亮显示警告。
+> 在日志以 `"warning"` 为标签输出输出警告信息 `message` 。  
+> `message`:`{string}` 输出的警告信息。  
+> 与脚本内置的 `warn(message)` 函数不同的是，该函数会以黄色高亮显示警告。  
 
 - `error(message)`  
-> 在日志输出错误信息 `message` ，标签为 `"error"` 。  
-> 该函数不像被 miniExtend 恢复的全局函数 `error(message [, level])` ，不会终止上次调用的受保护函数。  
+> 在日志以 `"error"` 为标签输出输出错误信息 `message` 。  
+> `message`:`{string}` 输出的错误信息。  
+> 与 lua **基本**函数 `error()` 不同的是，该函数不会抛出错误。  
 > 该函数会以红色高亮显示警告。  
 
 - `clear()`  
 > 清空日志，效果和在控制台点击![清空日志](./img/clear-console.png)按钮一样。  
+> `return`:`{boolean}` API 调用成功返回 `true` ，否则返回 `false` 。
 
 这些函数都比较简单，就不举实例了，有疑惑可以自行测试效果。

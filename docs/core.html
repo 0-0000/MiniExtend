@@ -28,18 +28,20 @@
 <h3 id="loadstringstring--chuckname-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">loadstring(string, [, chuckname])</code> 函数</h3>
 <ul>
 <li>与传统的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">loadstring()</code> 函数不同的是，该函数返回的函数的环境为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">genv</code> ，因此无法直接使用 MiniExtend 。  </li>
-<li>上面说过了，可以使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 访问脚本环境，从而进一步访问 MiniExtend 。  </li>
+<li>可以使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 访问脚本环境，从而进一步访问 MiniExtend 。  </li>
 </ul>
 <h3 id="loadstring2string--chuckname-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">loadstring2(string, [, chuckname])</code> 函数</h3>
 <ul>
-<li>该函数等价于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">LoadLuaScript(string, [, chuckname])</code> 函数，使用它代替 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">LoadLuaScript()</code> 函数。  </li>
-<li>该函数效果类似于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">loadstring(string, [, chuckname]</code> ，但是返回的函数的环境运行时的环境为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 。  </li>
+<li>等价于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">LoadLuaScript(string, [, chuckname]);</code> ，使用它替代 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">LoadLuaScript()</code> 。  </li>
+<li>类似于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">loadstring(string, [, chuckname]);</code> ，但是返回的函数的环境运行时的环境为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 。  </li>
 <li>注意，如果返回的函数调用时出错，即使以保护模式调用函数本生，仍会调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">error()</code> 输出错误，解决方法是在函数内部使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">pcall()</code> 。  </li>
 </ul>
 <h3 id="deepcopytable-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">deepcopy(table)</code> 函数</h3>
 <ul>
-<li>该函数等价于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">copy_table(table)</code> 函数，使用它代替 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">copy_table()</code> 函数。  </li>
-<li>返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">table</code> 的深拷贝</li>
+<li>返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">table</code> 的深拷贝。  </li>
+<li>等价于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">copy_table(table);</code> ，使用它替代 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">copy_table()</code> 。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">table</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{table}</code> 要深拷贝的表。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">return</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{table}</code> <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">table</code> 的深拷贝。  </li>
 </ul>
 <hr>
 <h2 id="效率">效率</h2>

@@ -2,12 +2,12 @@
 --[=[
 console.lua
 在控制台输出日志
-依赖于 core.lua 必须在 ui.lua 之前
-最后更新 : 2.0.0
+依赖于 core.lua
+最后更新 : 2.1.0
 ]=]
 
 local UI, clear, printtag = UI, UI.InitPrintData, printtag
-local ipairs, tostring, concat = ipairs, tostring, table.concat
+local pairs, tostring, concat = pairs, tostring, table.concat
 
 --Console namespace
 Console = {
@@ -21,9 +21,12 @@ Console = {
 --代替 print 函数，以 "global" 标签格式化输出日志，等价于 Console:logtag("global", ...)
 -- @param {all} ... 输出信息
 function Console:log(...)
-	local str = {}
-	for k, v in ipairs({...}) do
-		str[k] = tostring(v)
+	local str, ed = {}, 0
+	for k, v in pairs({...}) do
+		str[k], ed = tostring(v), k-1
+	end
+	for i = 1, ed do
+		if not str[i] then str[i] = "nil" end
 	end
 	printtag("global", concat(str, "\t"))
 end
@@ -31,11 +34,14 @@ end
 -- @param {string} tag 标签
 -- @param {all} ... 输出信息
 function Console:logtag(tag, ...)
-	local str = {}
-	for k, v in ipairs({...}) do
-		str[k] = tostring(v)
+	local str, ed = {}, 0
+	for k, v in pairs({...}) do
+		str[k], ed = tostring(v), k-1
 	end
-	printtag(tag, table.concat(str, "\t"))
+	for i = 1, ed do
+		if not str[i] then str[i] = "nil" end
+	end
+	printtag(tag, concat(str, "\t"))
 end
 -- 代替 warn 函数，输出警告信息 message
 -- @param {string} message 输出的警告信息

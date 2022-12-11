@@ -3,8 +3,9 @@
 ui_main.lua
 处理属于该 UI 界面的事件，
 依赖于 core.lua, event.lua 间接依赖于 object.lua
-最后更新 : 2.0.0
+最后更新 : 2.1.0
 ]=]
+
 --[=[
 该脚本应处于 UI 作用域中，所以所有的 UI 界面都应该有该脚本
 注意手动将 uiname 替换！
