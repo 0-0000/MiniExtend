@@ -8,38 +8,49 @@
 </head>
 <body class='markdown-preview' data-use-github-style><h1 id="miniextend-time">MiniExtend Time</h1>
 <p>对应源文件： <em>time.lua</em>  </p>
-<h2 id="code-stylecolorgreentimecode-作用域"><code style="color: green; font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Time</code> 作用域</h2>
-<h3 id="gettick-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">getTick()</code> 函数</h3>
+<hr>
+<h2 id="gettick-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">getTick()</code> 函数</h2>
 <ul>
-<li>函数返回当前是第几<a href="./document.html#%E6%B8%B8%E6%88%8F%E5%B8%A7">游戏帧</a>。  </li>
+<li>函数返回当前是第几游戏帧(详见 wiki)。  </li>
 <li>只要你立即游戏帧的含义，该函数很容易理解。  </li>
 </ul>
-<h3 id="schedulecallticks-func--函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">scheduleCall(ticks, func, ...)</code> 函数</h3>
+<hr>
+<h2 id="schedulecallticks-func--函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">scheduleCall(ticks, func, ...)</code> 函数</h2>
 <ul>
 <li>在 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ticks</code> 游戏帧后以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...</code> 为参数调用函数 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">func</code> 。  </li>
-<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ticks</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{integer}</code> 会被设置为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">math.max(math.floor(ticks), 1)</code> 来修正不合法的数值。  </li>
-<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">func</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{function}</code> MiniExtend 会检查它和 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ticks</code> 的类型。  </li>
-<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{all}</code> 调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">func</code> 时传递的实参。  </li>
-<li>函数不使用多线程，在当前线程执行 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">func</code> ，这可能导致程序阻塞。  </li>
+<li>函数不使用多线程，在当前线程执行 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">func</code> 可能导致程序阻塞。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">ticks</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{integer}</code> 会被设置为 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">math.max(math.floor(ticks), 1)</code> 来修正不合法的数值  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">func</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{function}</code> 延时调用的函数  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{all}</code> 调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">func</code> 时传递的实参  </li>
+<li>return:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{integer | boolean}</code> 成功时返回延时调用的 id (用于取消监听)，否则返回 false  </li>
 </ul>
-<h3 id="nexttickfunc--函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nextTick(func, ...)</code> 函数</h3>
+<hr>
+<h2 id="nexttickfunc--函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nextTick(func, ...)</code> 函数</h2>
 <ul>
 <li>在下一帧以 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">...</code> 为参数调用函数 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">func</code> 。  </li>
 <li>等价于 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">scheduleCall(1, func, ...);</code> 。  </li>
 </ul>
 <p>注: 如果在延时回调函数中再调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">scheduleCall()</code> 或 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nextTick()</code> 来延时执行函数，则从下一帧开始倒计时。  </p>
-<h2 id="timetimer-类"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Time.Timer</code> 类</h2>
-<p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Time.Timer</code> 表示计时器，一个 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Time.Timer</code> 类表示一个计时器，以下简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Timer</code> 。  </p>
-<p>注意，计时器运行时期晚于延时回调函数(<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">scheduleCall()</code>)。<br>在延时回调函数中启动计时器会使计时器在那一帧运行。<br>同样， <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 值仍会递减，然后判断 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 并调用。<br>即使你将 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 设为 0 然后 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 变为 -1 ，仍然正常调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">callback</code> 并重置 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 。  </p>
+<hr>
+<h2 id="cancelschedulecallid-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">cancelScheduleCall(id)</code> 函数</h2>
+<ul>
+<li>取消延时调用。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">id</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{integer}</code> 延时调用的 id ，由 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">scheduleCall()</code> 或 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nextTick()</code> 返回  </li>
+<li>return:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{boolean}</code> 如果正确地取消了一个函数调用，返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">true</code> ，否则返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">false</code>  </li>
+</ul>
+<hr>
+<h2 id="timer-类"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Timer</code> 类</h2>
+<p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Timer</code> 类即计时器类，以下简称 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Timer</code> 。  </p>
+<p>注意，计时器运行时期晚于延时调用的函数(<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">scheduleCall()</code>)。<br>在延时回调函数中启动计时器会使计时器在那一帧运行。<br>同样， <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 值仍会递减，然后判断 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 并调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">callback</code> 。<br> ，仍然正常调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">callback</code> 并重置 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 。  </p>
 <h3 id="构造函数">构造函数</h3>
-<p>使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Time.Timer:new()</code> 来构造一个计时器和相应的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Timer</code> 对象，计时器默认是<strong>暂停</strong>的。</p>
+<p>使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Timer:new()</code> 来构造一个计时器和相应的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Timer</code> 对象，计时器默认是<strong>暂停</strong>的。  </p>
 <h3 id="析构函数">析构函数</h3>
-<p>使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Time.Timer:delete()</code> 来删除计时器，这不会删除对象本身，仅仅使计时器失去计时功能。  </p>
+<p>使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Timer:delete()</code> 来删除计时器，这不会删除对象本身，仅仅使计时器失去计时功能。  </p>
 <h3 id="属性">属性</h3>
 <ul>
 <li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">createTime</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{float}</code> 表示对象创建时的 <strong>CPU 时间</strong>。  </li>
 <li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tick</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{integer}</code> 表示对象创建以来计时器<strong>运行</strong>的游戏帧数。  </li>
-<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{integer}</code> 下一次调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">callback</code> 的间隔帧数，计时器运行期间每帧减 1 ，降为 0 时恢复为 1 。  </li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{integer}</code> 下一次调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">callback</code> 的间隔帧数，计时器运行期间每帧减 1 ，降为 0 时恢复为 1 。<br>即使你将 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 设为 0 然后 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 变为 -1 ，仍然正常的恢复 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 为 1 然后调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">callback</code> 。  </li>
 <li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">callback</code>:<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">{function | nil}</code> 当 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 降为 0 时，调用该函数。  <blockquote>
 <p>回调时传递两个参数: <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">self</code> 和 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tick</code> 。<br><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">self</code> 表示计时器对象。<br><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tick</code> 表示当前游戏帧。  </p>
 </blockquote>
@@ -51,7 +62,9 @@
 <li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">pause()</code>: 暂停计时器，如果计时器之前是启动的返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">true</code> ，否则返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">false</code> 。  </li>
 <li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">isRunning()</code>: 返回计时器是否启动。  </li>
 </ul>
+<hr>
 <h2 id="综合实例">综合实例</h2>
+<h3 id="情形">情形</h3>
 <p>首先定义 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">tick</code> 表示当前游戏帧， <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">i</code> 的值为 2 。<br>从第一帧开始，每隔两帧执行以下操作:  </p>
 <ul>
 <li>在日志输出当前帧，以及 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Fibonacci[i]</code> 的值。  </li>
@@ -63,7 +76,21 @@
 <li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fib[1] = 1</code>  </li>
 <li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fib[i] = fib[i-1] + fib[i-2] (i≥2, i∈N*)</code>  </li>
 </ul>
-<p>代码:<br><pre><code>timer = Time.Timer:new()
+<h3 id="分析">分析</h3>
+<p>首先需要知道快速计算 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fib[1~n]</code> 的方法:  </p>
+<blockquote>
+<p>定义 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs[0~n]</code> ，满足 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs[i]</code> = <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fib[i]</code><br>令 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs[0]</code> = <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fib[0]</code> = <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">0</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fib[1]</code> = <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fib[1]</code> = <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">1</code> ，该步骤符合 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs</code> 的性质。<br>令 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">k</code> 从 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">2</code> 到 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">n</code> 进行如下运算:</p>
+<ul>
+<li>令 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs[k]</code> = <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs[k-1]</code> + <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs[k-2]</code></li>
+<li>该步骤也符合 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs</code> 的性质</li>
+</ul>
+<p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs</code> 即为所求</p>
+<p>实际上并不是真的需要 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs</code> 数组，因为计算 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs[k]</code> 只需要 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs[k-1]</code> 和 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fibs[k-2]</code> 的值，所以只需要存储这三个变量即可计算。  </p>
+</blockquote>
+<p>使用 MiniExtend Time 来完成异步输出，使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">nextTick()</code> 函数实现"从第一帧开始" 。<br>使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Timer</code> 计时器对象，通过设置其 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">delay</code> 值为 2 实现"每隔两帧" 。<br><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">i &gt;= 50</code> 时调用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Timer:pause()</code> 来实现"停止循环"。  </p>
+<h3 id="代码">代码</h3>
+<pre><code>Env.__init__()
+timer = Timer:new()
 -- fib1 表示 fib[i-2] , fib2 表示 fib[i-1]
 -- fib[0] = 0, fib[1] = 1
 local i, fib1, fib2 = 2, 0, 1
@@ -76,7 +103,7 @@ function timer:callback(tick)
     local fib3 = fib1 + fib2
     local tickInfo, fibInfo = "tick "..tostring(tick)
     local fibInfo = "fib["..tostring(i).."] = "..tostring(fib3)
-    Console:logtag("fib", tickInfo, fibInfo)
+    Log.logtag("fib", tickInfo, fibInfo)
     if i &gt;= 50 then
         timer:pause()
     else
@@ -85,13 +112,13 @@ function timer:callback(tick)
     end
 end
 -- 另一种方法:
--- Time:scheduleCall(1, function()
-Time:nextTick(function()
+-- scheduleCall(1, function()
+nextTick(function()
     -- 计时器运行晚于 nextTick
     -- 在这个 nextTick 回调后的那一帧 timer 就会开始运行
     timer:start()
 end)
-</code></pre></p>
+</code></pre>
 <p>部分输出如下:<br><img alt="上部输出" src=".\img\output1.png">
 <img alt="下部输出" src=".\img\output2.png"></p></body>
 </html>

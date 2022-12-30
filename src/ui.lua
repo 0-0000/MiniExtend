@@ -3,8 +3,21 @@
 ui.lua
 管理自定义 UI 界面
 依赖于 core.lua, object.lua, event.lua
-最后更新 : 2.1.0
+最后更新 : 3.0.0
 ]=]
+
+--[=[
+@namespace UI 自定义 UI 作用域
+	@static_function getRootSize() 获取 UI 界面大小
+	@class UIView UI 界面类
+	@class Element 元件类
+	@class Texture 图片类
+	@class Button 按钮类
+	@class Label 文字类
+	@class EditBox 输入框类
+]=]
+
+Env.__init__()
 
 --[=[
 类关系示意图:
@@ -17,13 +30,12 @@ Label	文字		Element	是	管理文字元件
 EditBox	输入框		Label	是	管理输入框元件
 ]=]
 
-local Player, Customui = Player, Customui
-local setState = Customui.setState
-local _G2 = _G2
-local setmetatable, ipairs = setmetatable, ipairs
+local Player, Customui = Env.indexAPI("Player"), Env.indexAPI("Customui")
+local getObjectId = getObjectId
+local setmetatable, pcall, ipairs = setmetatable, pcall, ipairs
 
--- MiniExtend UI namespace
-MUI = {
+-- UI namespace
+UI = {
 	-- 存储所有 UIView 对象
 	UIViews = {}
 
@@ -34,20 +46,20 @@ MUI = {
 	-- @class Button 按钮类
 	-- @class Label 文字类
 	-- @class EditBox 输入框类
-}; local MUI = MUI
-local UIViews = MUI.UIViews
+}; local UI = UI
+local UIViews = UI.UIViews
 
 -- 获取 UI 界面大小，该大小可精确到小数位
 -- @return {number} UI 界面的宽度(width)
 -- @return {number} UI 界面的高度(height)
 local getRootSize = genv["UIEditorDef"].getRootSize
-function MUI:getRootSize()
+function UI.getRootSize()
 	local result = getRootSize()
 	return result["width"], result["height"]
 end
 
 -- UIView class
-MUI.UIView = {
+UI.UIView = {
 	-- @member {string} id UI 界面的 id
 	-- @member {table} textures UI 界面的子图片元件
 	-- @member {table} buttons UI 界面的子按钮元件
@@ -55,11 +67,11 @@ MUI.UIView = {
 	-- @member {table} editBoxes UI 界面的子输入框元件
 
 	-- 可写成员变量:
-	-- @member {function | nil} onShow UI 界面显示时回调的函数
-	-- @member {function | nil} onHide UI 界面隐藏是回调的函数
-	-- 注意，桌面端玩家可能会按下 esc 键意外地打开的隐藏 UI 界面
+	-- @member {function | nil} showEvent UI 界面显示事件
+	-- @member {function | nil} closeEvent UI 界面隐藏事件
+	-- 注意，桌面端玩家可能会按下 esc 键意外地隐藏 UI 界面
 
-	-- @constructor UI.UIView:new()
+	-- @constructor UI.UIView:new(uiid)
 	-- @method show(playerid) 显示 UI 界面
 	-- @method hide(playerid) 隐藏 UI 界面
 	-- @method setState(state, playerid) 设置 UI 界面的所有子元件的界面状态
@@ -67,7 +79,7 @@ MUI.UIView = {
 	-- @method newButton(elementid) 构造 Button 对象
 	-- @method newLabel(elementid) 构造 Label 对象
 	-- @method newEditBox(elementid) 构造 EditBox 对象
-}; local UIView = MUI.UIView
+}; local UIView = UI.UIView
 -- 构造一个 id 为 uiid 的 UIView 对象，如果已经构造过这样的对象则返回之
 -- @param {string} uiid UI 界面的 id
 -- @return 构造的 UIView 对象
@@ -77,40 +89,40 @@ function UIView:new(uiid)
 	else
 		object = setmetatable({}, UIView)
 		object.id = uiid
-		object.textures, object.buttons = {}, {}
-		object.labels, object.editBoxes = {}, {}
+		object.textures, object.buttons, object.labels, object.editBoxes = {}, {}, {}, {}
 
-		Event.Connecter:new([[$ui.show]], function(param)
-			if object.onShow then
+		-- 绑定 UI 事件
+		registerEvent([[$ui.show]], function(param)
+			if object.showEvent then
 				param["uiview"] = object
-				object.onShow(param)
+				object.showEvent(param)
 			end
 		end, uiid)
-		Event.Connecter:new([[$ui.hide]], function(param)
-			if object.onHide then
+		registerEvent([[$ui.hide]], function(param)
+			if object.hideEvent then
 				paprm["uiview"] = object
-				object.onHide(param)
+				object.hideEvent(param)
 			end
 		end, uiid)
-		Event.Connecter:new([[$ui.onPress]], function(param)
+		registerEvent([[$ui.onPress]], function(param)
 			local button = object.buttons[param["btnelenemt"]]
-			if button and button.onPress then
+			if button and button.pressEvent then
 				param["element"] = button
-				button.onPress(param)
+				button.pressEvent(param)
 			end
 		end, uiid)
-		Event.Connecter:new([[$ui.onClick]], function(param)
+		registerEvent([[$ui.onClick]], function(param)
 			local button = object.buttons[param["btnelenemt"]]
-			if button and button.onClick then
+			if button and button.clickEvent then
 				param["element"] = button
-				button.onClick(param)
+				button.clickEvent(param)
 			end
 		end, uiid)
-		Event.Connecter:new([[$ui.onLostFocus]], function(param)
+		registerEvent([[$ui.onLostFocus]], function(param)
 			local editBox = object.editBoxes[param["btnelenemt"]]
-			if editBox and editBox.onLostFocus then
+			if editBox and editBox.lostFocusEvent then
 				param["element"] = editBox
-				editBox.onLostFocus(param)
+				editBox.lostFocusEvent(param)
 			end
 		end, uiid)
 
@@ -125,40 +137,41 @@ end
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
 local openUIView = Player.openUIView
 function UIView:show(playerid)
-	return openUIView(Player, playerid or _G2["__OBJID"], self.id) == 0
+	return openUIView(Player, playerid or getObjectId(), self.id) == 0
 end
 -- 隐藏 UI 界面
 -- @param {integer | nil} playerid
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
 local hideUIView = Player.hideUIView
 function UIView:hide(playerid)
-	return hideUIView(Player, playerid or _G2["__OBJID"], self.id) == 0
+	return hideUIView(Player, playerid or getObjectId(), self.id) == 0
 end
 -- 设置 UI 界面的所有子元件的界面状态为 state
 -- @param {string} state 要设置的界面状态
 -- @param {integer | nil} playerid
 -- @return {boolean}
 -- true: API 调用成功(不代表函数正常工作) false: API 调用出错，即使只有一次出错
+local setState = Customui.setState
 function UIView:setState(state, playerid)
-	local result, playerid = true, playerid or _G2["__OBJID"]
-	for id, element in ipairs(self.textures) do
-		result = (setState(Customui, playerid, self.id, element.id, state) == 0) and result
+	local result, playerid = true, playerid or getObjectId()
+	for elementid, element in ipairs(self.textures) do
+		result = (setState(Customui, playerid, self.id, elementid, state) == 0) and result
 	end
-	for id, element in ipairs(self.buttons) do
-		result = (setState(Customui, playerid, self.id, element.id, state) == 0) and result
+	for elementid, element in ipairs(self.buttons) do
+		result = (setState(Customui, playerid, self.id, elementid, state) == 0) and result
 	end
-	for id, element in ipairs(self.labels) do
-		result = (setState(Customui, playerid, self.id, element.id, state) == 0) and result
+	for elementid, element in ipairs(self.labels) do
+		result = (setState(Customui, playerid, self.id, elementid, state) == 0) and result
 	end
-	for id, element in ipairs(self.editBoxes) do
-		result = (setState(Customui, playerid, self.id, element.id, state) == 0) and result
+	for elementid, element in ipairs(self.editBoxes) do
+		result = (setState(Customui, playerid, self.id, elementid, state) == 0) and result
 	end
 	return result
 end
 
 -- Element class
 -- 该类非具象类，不支持构造 Element 对象，用于其它类继承
-MUI.Element = {
+UI.Element = {
 	-- @member {table<UIView>} uiView 元件所属 UI 界面
 	-- @member {string} id 元件的 id
 
@@ -172,37 +185,39 @@ MUI.Element = {
 	-- @method setAngle(angle, playerid) 设置元件角度
 	-- @method setColor(color, playerid) 设置元件颜色
 	-- @method setAlpha(alpha, playerid) 设置元件透明度
-}; local Element = MUI.Element
+}; local Element = UI.Element
 
-local showElement, hideElement = Customui.showElement, Customui.hideElement
 -- 显示元件
 -- @param {integer | nil} playerid
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
+local showElement = Customui.showElement
 function Element:show(playerid)
-	return showElement(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id) == 0
+	return showElement(Customui, playerid or getObjectId(), self.uiView.id, self.id) == 0
 end
 -- 隐藏元件
 -- @param {integer | nil} playerid
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
+local hideElement = Customui.hideElement
 function Element:hide(playerid)
-	return hideElement(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id) == 0
+	return hideElement(Customui, playerid or getObjectId(), self.uiView.id, self.id) == 0
 end
 -- 显示或隐藏元件
 -- @param {boolean} display true: 显示元件 false: 隐藏元件
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
 function Element:setDisplay(display, playerid)
 	if display then
-		return showElement(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id) == 0
+		return showElement(Customui, playerid or getObjectId(), self.uiView.id, self.id)
 	else
-		return hideElement(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id) == 0
+		return hideElement(Customui, playerid or getObjectId(), self.uiView.id, self.id)
 	end
 end
 -- 设置元件的界面状态为 state
 -- @param {string} state 要设置的界面状态
 -- @param {integer | nil} playerid
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
+-- local setState = Customui.setState
 function Element:setState(state, playerid)
-	return setState(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id, state) == 0
+	return setState(Customui, playerid or getObjectId(), self.uiView.id, self.id, state) == 0
 end
 
 -- 设置元件位置
@@ -212,7 +227,7 @@ end
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
 local setPosition = Customui.setPosition
 function Element:setPosition(x, y, playerid)
-	return setPosition(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id, x, y) == 0
+	return setPosition(Customui, playerid or getObjectId(), self.uiView.id, self.id, x, y) == 0
 end
 -- 设置元件大小
 -- @param {number} width 元件的新宽度
@@ -221,7 +236,7 @@ end
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
 local setSize = Customui.setSize
 function Element:setSize(width, height, playerid)
-	return setSize(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id, width, height) == 0
+	return setSize(Customui, playerid or getObjectId(), self.uiView.id, self.id, width, height) == 0
 end
 -- 设置元件角度
 -- @param {number} angle 旋转角度，0~360之间
@@ -229,7 +244,7 @@ end
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
 local rotateElement = Customui.rotateElement
 function Element:setAngle(angle, playerid)
-	return rotateElement(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id, angle) == 0
+	return rotateElement(Customui, playerid or getObjectId(), self.uiView.id, self.id, angle) == 0
 end
 
 -- 设置元件颜色
@@ -242,7 +257,7 @@ function Element:setColor(color, playerid)
 	-- 应该是因为 API 将颜色值解析为 0xrrggbbaa
 	-- 这其中 alpha 被忽略，最后 8 位无效，应左移 8 位使 0xrrggb 变成 0xrrggbb00
 	-- 由于 lua51 不支持位运算，使用 * 256 替代 << 8
-	return setColor(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id, color * 256) == 0
+	return setColor(Customui, playerid or getObjectId(), self.uiView.id, self.id, color * 256) == 0
 end
 -- 设置元件透明度
 -- @param {number} alpha 颜色新透明度值，0~100之间，0为完全透明，100为不透明
@@ -250,16 +265,16 @@ end
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
 local setAlpha = Customui.setAlpha
 function Element:setAlpha(alpha, playerid)
-	return setAlpha(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id, alpha) == 0
+	return setAlpha(Customui, playerid or getObjectId(), self.uiView.id, self.id, alpha) == 0
 end
 
 -- Texture class
--- 继承自 MUI.Element
-MUI.Texture = {
-	-- @constructor MUI.Texture:new(uiview, elementid)
-	-- @constructor MUI.UIView:newTexture(elementid)
+-- 继承自 UI.Element
+UI.Texture = {
+	-- @constructor UI.Texture:new(uiview, elementid)
+	-- @constructor UI.UIView:newTexture(elementid)
 	-- @method setTexture(url, playerid) 设置图片元件图案纹理
-}; local Texture = MUI.Texture
+}; local Texture = UI.Texture
 -- 构造一个父 UI 界面为 uiview, id 为 elementid 的 Texture 对象
 -- 如果已经构造过这样的对象则返回之
 -- @param {table<UIView>} uiview 元件所属父 UI 界面
@@ -270,8 +285,7 @@ function Texture:new(uiview, elementid)
 	if object then return object
 	else
 		object = setmetatable({}, Texture)
-		object.uiView = uiview
-		object.id = elementid
+		object.uiView, object.id = uiview, elementid
 		uiview.images[elementid] = object
 		return object
 	end
@@ -283,20 +297,21 @@ end
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
 local setTexture = Customui.setTexture
 function Texture:setTexture(url, playerid)
-	return setTexture(Customui.playerid or _G2["__OBJID"], self.uiView.id, self.id, url) == 0
+	return setTexture(Customui, playerid or getObjectId(), self.uiView.id, self.id, url) == 0
 end
 
 -- Button class
--- 继承自 MUI.Texture
-MUI.Button = {
+-- 继承自 UI.Texture
+UI.Button = {
 	-- 可写成员变量:
-	-- @member {function | nil} onPress 按钮被按下时回调的函数
-	-- @member {function | nil} onClick 按钮被点击时回调的函数
+	-- @member {function | nil} pressEvent 按钮按下事件
+	-- @member {function | nil} clickEvent 按钮点击事件
 	-- 注: 点击 = 按下 + 释放(该事件目前不支持)
+	-- 这些事件成员函数在 UI.UIView:new() 中实现了与事件的连接
 
-	-- @constructor MUI.Button:new(uiview, elementid)
-	-- @constructor MUI.UIView:newButton(elementid)
-}; local Button = MUI.Button
+	-- @constructor UI.Button:new(uiview, elementid)
+	-- @constructor UI.UIView:newButton(elementid)
+}; local Button = UI.Button
 -- 构造一个父 UI 界面为 uiview, id 为 elementid 的 Button 对象
 -- 如果已经构造过这样的对象则返回之
 -- @param {table<UIView>} uiview 元件所属父 UI 界面
@@ -307,21 +322,20 @@ function Button:new(uiview, elementid)
 	if object then return object
 	else
 		object = setmetatable({}, Button)
-		object.uiView = uiview
-		object.id = elementid
+		object.uiView, object.id = uiview, elementid
 		uiview.buttons[elementid] = object
 		return object
 	end
 end
 
 -- Label class
--- 继承自 MUI.Element
-MUI.Label = {
-	-- @constructor MUI.Label:new(uiview, elementid)
-	-- @constructor MUI.UIView:newLabel(elementid)
+-- 继承自 UI.Element
+UI.Label = {
+	-- @constructor UI.Label:new(uiview, elementid)
+	-- @constructor UI.UIView:newLabel(elementid)
 	-- @method setFontSize(size, playerid) 设置文本元件字体大小
 	-- @method setText(text, playerid) 设置文本元件内容
-}; local Label = MUI.Label
+}; local Label = UI.Label
 -- 构造一个父 UI 界面为 uiview, id 为 elementid 的 Label 对象
 -- 如果已经构造过这样的对象则返回之
 -- @param {table<UIView>} uiview 元件所属父 UI 界面
@@ -332,8 +346,7 @@ function Label:new(uiview, elementid)
 	if object then return object
 	else
 		object = setmetatable({}, Label)
-		object.uiView = uiview
-		object.id = elementid
+		object.uiView, object.id = uiview, elementid
 		uiview.labels[elementid] = object
 		return object
 	end
@@ -344,25 +357,25 @@ end
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
 local setFontSize = Customui.setFontSize
 function Label:setFontSize(size, playerid)
-	return setFontSize(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id, size) == 0
+	return setFontSize(Customui, playerid or getObjectId(), self.uiView.id, self.id, size) == 0
 end
 -- 设置文本元件内容
 -- @param {string} text 要显示的内容，如果字符串太长，可能不会生效
 -- @return {boolean} true: API 调用成功(不代表函数正常工作) false: API 调用出错
 local setText = Customui.setText
 function Label:setText(text, playerid)
-	return setText(Customui, playerid or _G2["__OBJID"], self.uiView.id, self.id, text) == 0
+	return setText(Customui, playerid or getObjectId(), self.uiView.id, self.id, text) == 0
 end
 
 -- EditBox class
--- 继承自 MUI.Label
-MUI.EditBox = {
+-- 继承自 UI.Label
+UI.EditBox = {
 	-- 可写成员变量:
-	-- @member {function | nil} onLostFocus 输入框失去焦点时回调的函数
+	-- @member {function | nil} lostFocusEvent 输入框失去焦点事件
 
-	-- @constructor MUI.EditBox:new(uiview, elementid)
-	-- @constructor MUI.UIView:newEditBox(elementid)
-}; local EditBox = MUI.EditBox
+	-- @constructor UI.EditBox:new(uiview, elementid)
+	-- @constructor UI.UIView:newEditBox(elementid)
+}; local EditBox = UI.EditBox
 -- 构造一个父 UI 界面为 uiview, id 为 elementid 的 EditBox 对象
 -- 如果已经构造过这样的对象则返回之
 -- @param {table<UIView>} uiview 元件所属父 UI 界面
@@ -373,8 +386,7 @@ function EditBox:new(uiview, elementid)
 	if object then return object
 	else
 		object = setmetatable({}, EditBox)
-		object.uiView = uiview
-		object.id = elementid
+		object.uiView, object.id = uiview, elementid
 		uiview.editBoxes[elementid] = object
 		return object
 	end
@@ -382,7 +394,7 @@ end
 
 -- 构造一个 id 为 elementid 的子 Texture 对象(属于该 UI 界面)
 -- 如果已经构造过这样的对象则返回之
--- 等价于 MUI.Texture:new(self, elementid)
+-- 等价于 UI.Texture:new(self, elementid)
 -- @param {string} element 元件的 id ，形如 [[uiid_elementid]]
 -- @return 构造的 Texture 对象
 function UIView:newTexture(elementid)
@@ -390,7 +402,7 @@ function UIView:newTexture(elementid)
 end
 -- 构造一个 id 为 elementid 的子 Button 对象(属于该 UI 界面)
 -- 如果已经构造过这样的对象则返回之
--- 等价于 MUI.Button:new(self, elementid)
+-- 等价于 UI.Button:new(self, elementid)
 -- @param {string} element 元件的 id ，形如 [[uiid_elementid]]
 -- @return 构造的 Texture 对象
 function UIView:newButton(elementid)
@@ -398,7 +410,7 @@ function UIView:newButton(elementid)
 end
 -- 构造一个 id 为 elementid 的子 Label 对象(属于该 UI 界面)
 -- 如果已经构造过这样的对象则返回之
--- 等价于 MUI.Label:new(self, elementid)
+-- 等价于 UI.Label:new(self, elementid)
 -- @param {string} element 元件的 id ，形如 [[uiid_elementid]]
 -- @return 构造的 Texture 对象
 function UIView:newLabel(elementid)
@@ -406,7 +418,7 @@ function UIView:newLabel(elementid)
 end
 -- 构造一个 id 为 elementid 的子 EditBox 对象(属于该 UI 界面)
 -- 如果已经构造过这样的对象则返回之
--- 等价于 MUI.EditBox:new(self, elementid)
+-- 等价于 UI.EditBox:new(self, elementid)
 -- @param {string} element 元件的 id ，形如 [[uiid_elementid]]
 -- @return 构造的 EditBox 对象
 function UIView:newEditBox(elementid)
