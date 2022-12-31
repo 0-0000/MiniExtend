@@ -3,7 +3,7 @@
 event.lua
 处理事件与回调
 依赖于 core.lua, object.lua
-最后更新 : 3.0.0
+最后更新 : 3.0.2
 ]=]
 
 --[=[
@@ -35,6 +35,7 @@ local registerAPI, removeEvent = SSE.registerEvent, SSE.removeEvent
 local getObjectId, setObjectId = getObjectId, setObjectId
 local pairs, type, sub = pairs, type, string.sub
 local setmetatable, error, pcall = setmetatable, error, pcall
+local concat, insert = table.concat, table.insert
 
 -- uiSSEObjects 存储 UI 界面的 ScriptSupportEvent 对象，以 UI 界面 id 为索引
 -- uiRegisters 存储预绑定的 UI 事件
@@ -49,7 +50,7 @@ _G2["__MiniExtend__sendSSEObject"] = function(uiid, SSE)
 	for id, register in pairs(uiRegisters) do
 		if register["uiId"] == uiid then
 			local callback = register["callback"]
-			local errorHead = table.concat("MiniExtend - Event [[", register["eventName"], "]] : run error!\n\terror message:")
+			local errorHead = concat({"MiniExtend - Event [[", register["eventName"], "]] : run error!\n\terror message:"})
 			register["id"] = SSE:registerEvent(register["msgStr"], function(param)
 				param["register"] = register
 				local old_objid = getObjectId()
@@ -114,7 +115,7 @@ function registerEvent(eventname, callback, uiid)
 	-- 正式调用 API 开始绑定事件
 	-- 如果是普通事件，直接通过 SSE 绑定
 	if not isUIEvent then
-		local errorHead = table.concat("MiniExtend - Event [[", eventname, "]] : run error!\n\terror message:")
+		local errorHead = concat({"MiniExtend - Event [[", eventname, "]] : run error!\n\terror message:"})
 		register["id"] = registerAPI(SSE, msgStr, function(param)
 			param["register"] = register
 			local old_objid = getObjectId()
@@ -131,7 +132,7 @@ function registerEvent(eventname, callback, uiid)
 	else
 		local api = uiSSEObjects[uiid]
 		if api then
-			local errorHead = table.concat("MiniExtend - Event [[", eventname, "]] : run error!\n\terror message:")
+			local errorHead = concat({"MiniExtend - Event [[", eventname, "]] : run error!\n\terror message:"})
 			register["id"] = api:registerEvent(msgStr, function(param)
 				param["register"] = register
 				local old_objid = getObjectId()
@@ -144,7 +145,7 @@ function registerEvent(eventname, callback, uiid)
 			end)
 		else
 			register["callback"], register["eventName"] = callback, eventname
-			table.insert(uiRegisters, register)
+			insert(uiRegisters, register)
 		end
 	end
 	return register

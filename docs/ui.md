@@ -204,4 +204,4 @@ function editBox.lostFocusEvent(param)
     end
     editBox:setText("输入 16 进制数")
 end
-<textarea>
+</textarea>
