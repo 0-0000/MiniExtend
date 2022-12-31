@@ -143,7 +143,7 @@ function registerEvent(eventname, callback, uiid)
 				end
 			end)
 		else
-			register["callback"]， register["eventName"] = callback, eventname
+			register["callback"], register["eventName"] = callback, eventname
 			table.insert(uiRegisters, register)
 		end
 	end

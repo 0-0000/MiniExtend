@@ -54,6 +54,6 @@ UI 界面创建时，对应作用域下可能会自动创建一个<u title="该�
 <textarea>
 Env.__init__()
 registerEvent([[Player.PlayAction]], function(param)
-    Log.logtag(param["eventobjid"], "Hello, world!");
+    Log.logtag(tostring(param["eventobjid"]), "Hello, world!");
 end)
 </textarea>

@@ -8,11 +8,6 @@ log.lua
 
 --[=[
 @namespace Log
-	@static_function log(...) 在日志输出内容
-	@static_function logtag(tag, ...) 在日志带标签地输出内容
-	@static_function warn(message) 在日志输出警告信息 message
-	@static_function error(message) 在日志输出错误信息 message
-	@static_function clear() 清空日志
 ]=]
 
 Env.__init__()
