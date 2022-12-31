@@ -110,3 +110,11 @@
 - 修正了 `UI.Texture:setTexture()` 函数。  
 
 ---
+
+## v3.0.1
+
+- 修复了 *event.lua* 中在 `_G2["__MiniExtend__sendSSEObject"]` 函数中使用了中文逗号的问题。  
+- 优化了 *log.lua* 的注释。  
+- 修正了 *environment* 文档中的代码。  
+
+---

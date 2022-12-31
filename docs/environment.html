@@ -37,7 +37,7 @@
 <p>代码:  </p>
 <pre><code>Env.__init__()
 registerEvent([[Player.PlayAction]], function(param)
-    Log.logtag(param["eventobjid"], "Hello, world!");
+    Log.logtag(tostring(param["eventobjid"]), "Hello, world!");
 end)
 </code></pre></body>
 </html>
