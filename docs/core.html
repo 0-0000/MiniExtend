@@ -10,7 +10,7 @@
 <p>对应源文件： <em>core.lua</em>  </p>
 <hr>
 <p>MiniExtend 已尽可能恢复标准 lua 环境，这意味着你能正常调用那些本来被"删除"的基本函数。<br>以下是相对标准 lua 环境有所不同的部分(前提是执行了 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Env.__init__();</code>):  </p>
-<h3 id="print-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">print</code> 函数</h3>
+<h3 id="print-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">print(...)</code> 函数</h3>
 <ul>
 <li>由于控制台是不可见的，在脚本中 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">print()</code> 函数被重定向到日志， MiniExtend 保留了这个更改，虽然进行了重写。  </li>
 </ul>
@@ -110,10 +110,9 @@
 <li>开发者申请的云服，服务器是迷你世界管理该云服的服务器（这可能不准确因为没有明确的证据证明这一点）。  </li>
 </ul>
 <h3 style="color:red;">危险</h3>
-某些 lua 基本函数可能很危险，必须注意这些危险行为，以下是一些例子：  
+某些 lua 基本函数可能很危险，必须注意这些危险行为，以下是一些例子：
 <ul>
-<li>如果你使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">io.close();</code> ，这将关闭默认输出文件，在 lua 上因为不能关闭标准文件而失败，但在迷你世界中，这将导致<u title="这似乎会使游戏保存，再次打开地图仍是玩法模式，然后继续关闭……所以请使用编辑模式打开">程序突然关闭。  </u></li><u title="这似乎会使游戏保存，再次打开地图仍是玩法模式，然后继续关闭……所以请使用编辑模式打开">
+<li>如果你使用 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">io.close();</code> ，这将关闭默认输出文件，在 lua 上因为不能关闭标准文件而失败，但在迷你世界中，这将导致<u title="这似乎会使游戏保存，再次打开地图仍是玩法模式，然后继续关闭……所以请使用编辑模式打开">程序突然关闭。  </u></li>
 <li>在 Windows 下执行 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">os.execute("cmd")</code> ，会弹出一个 cmd 窗口，而且该窗口会<span style="color:red;">阻塞</span>程序运行，除非手动关闭，这也非常难看。  </li>
-</u></ul><u title="这似乎会使游戏保存，再次打开地图仍是玩法模式，然后继续关闭……所以请使用编辑模式打开">
-</u></body>
+</ul></body>
 </html>
