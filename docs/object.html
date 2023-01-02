@@ -16,7 +16,6 @@
 <p>在延时调用中是不会有正确的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 值的，特别是在 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">registerEvent()</code> 的回调函数中要注意。<br>因为在发动延时调用后，回调函数会正常结束，然后会恢复 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 的值，这时已经失去了理想的 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 的值。  </p>
 <hr>
 <h2 id="函数">函数</h2>
-<p>以下函数都是在 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">_GScriptFenv_</code> 中的全局函数。  </p>
 <h3 id="getobjectid-函数"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">getObjectId()</code> 函数</h3>
 <blockquote>
 <p>返回 <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">objid</code> 的值。  </p>

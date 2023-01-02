@@ -1,5 +1,9 @@
 # MiniExtend
-- 版本：3.0.2  
+- 版本：3.0.3  
+
+[MiniExtend 3.0.3 Release (zip)](https://github.com/0-0000/MiniExtend/archive/refs/tags/Release-3.0.3.zip)  
+[MiniExtend 3.0.3 Release (tar.gz)](https://github.com/0-0000/MiniExtend/archive/refs/tags/Release-3.0.2.tar.gz)
+
 
 ---
 
@@ -19,12 +23,12 @@ MiniExtend 使你将脚本代码集中在[全局作用域](./document.html#全�
 通常无法**直接**在全局作用域下绑定绑定 [UI 事件](./document.html#ui-事件)。  
 
 ### 提高效率
-MiniExtend 可提高脚本运行效率，例如访问全局变量的速度是默认的 <strong style="color:red;">22~35</strong> 倍。  
-例如，访问 20 个不同的不存在的全局变量，不使用 MiniExtend 的脚本花了 24.691s ，而使用 MiniExtend 的脚本只花了 1.014s(数据排除循环花费)，几乎是瞬间完成，效率为默认的 <strong style="color:red;">2435%</strong> 。  
+MiniExtend 可提高脚本运行效率，例如访问全局变量的速度是默认的 ***22~35*** 倍。  
+例如，访问 20 个不同的不存在的全局变量，不使用 MiniExtend 的脚本花了 24.691s ，而使用 MiniExtend 的脚本只花了 1.014s(数据排除循环花费)，几乎是瞬间完成，效率为默认的 ***2435%*** 。  
 多次实验得到的平均值:  
 > 默认的脚本: 17.48s  
 > MiniExtend: 0.66s  
-> 运行效率: <strong style="color:red;">2658%</strong>  
+> 运行效率: ***2658%***  
 >
 > 不要过于震惊，这就是实验事实，你也可以手动验证实验数据的真实性。  
 
@@ -43,8 +47,8 @@ MiniExtend 可提高脚本运行效率，例如访问全局变量的速度是默
 
 ## 使用 MiniExtend
 作者会维护比较准确详细的 [MiniExtend 文档](#MiniExtend-文档)，文档会指引你搭建 MiniExtend 环境和使用 MiniExtend ，参见下面的离线和静态文档。  
-#### [离线文档](./docs/index.html)  
-#### [静态文档](https://0-0000.github.io/MiniExtend/)  
+#### [离线文档(仅用于 Release)](./docs/index.html)  
+#### [静态文档(适用于 github 上的浏览)](https://0-0000.github.io/MiniExtend/)  
 
 ---
 
