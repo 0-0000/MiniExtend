@@ -1,5 +1,5 @@
 # MiniExtend 文档
-版本：3.0.2  
+版本：3.0.3  
 
 ## 入门
 - [MiniExtend 文档](./document.html)  

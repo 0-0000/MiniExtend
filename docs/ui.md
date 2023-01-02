@@ -14,7 +14,7 @@ MiniExtend UI 前身为 `Customui` ，但以面相对象方式描述界面与元
 - 返回自定义 UI 界面的大小。  
 - `return`:`{float}` UI 界面的宽度。  
 - `return`:`{float}` UI 界面的高度。  
-- 返回的是服务器上定义的 UI 界面大小，例如在多人游戏中调用 `UI:getRootSize()` 会返回房主(或者云服务器)的 UI 界面大小。  
+- 返回的是服务器上定义的 UI 界面大小，例如在多人游戏中调用 `UI.getRootSize()` 会返回房主(或者云服务器)的 UI 界面大小。  
 
 ---
 

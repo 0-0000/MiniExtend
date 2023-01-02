@@ -28,6 +28,8 @@ MiniExtend 使用 MIT Licence 作为许可证，它要求你保留作者的版�
 > 这可能很难理解，没关系！你只需**会区分全局作用域和 UI 作用域并能创建它们的脚本**即可！等学习完 MiniExtend 再回来观看(建议阅读 *core.lua*)！  
 #### 游戏帧
 > 详见 [wiki](https://github.com/Mini-World-Dev-Org/Mini-World-Wiki/wiki/mechanism-tick) 。  
+#### `&genv`/`&_GScriptFenv_`
+> 详见 [wiki](https://github.com/Mini-World-Dev-Org/Mini-World-Wiki/wiki/script)
 
 ---
 ### 代码规范

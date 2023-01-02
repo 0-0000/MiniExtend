@@ -18,8 +18,6 @@ Object 的核心是一个叫 `objid` 的虚有值(在内部是局部变量)， `
 ---
 
 ## 函数
-以下函数都是在 `_GScriptFenv_` 中的全局函数。  
-
 ### `getObjectId()` 函数
 > 返回 `objid` 的值。  
 ### `setObjectId(objectid)` 函数

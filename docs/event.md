@@ -71,7 +71,7 @@ MiniExtend 自定义事件名在 *event.lua* 中的 `CustomEvents`(局部变量)
 
 ## `Register` 表
 `Register` 表是 `registerEvent()` 的返回值，用于作为 `cancelRegisterEvent()` 的参数来取消事件监听。  
-注意 `Register` 表是 MiniExtend 理论中的一个表，`_GScriptFenv_["Register"]` 为 `nil` 。  
+注意 `Register` 表是 MiniExtend 理论中的一个表，`&_GScriptFenv_["Register"]` 为 `nil` 。  
 
 不要修改 `Register` 表的值，仅将整个表作为参数调用 `cancelRegisterEvent()`，以下内容只是为了方便开发者
 

@@ -3,7 +3,7 @@
 time.lua
 允许安排脚本异步运行
 依赖于 core.lua
-最后更新 : 3.0.0
+最后更新 : 3.0.3
 ]=]
 
 --[=[
@@ -167,7 +167,7 @@ return function()
 			insert(thisTickCalls, call)
 			scheduleCalls[id] = nil
 		else
-			calls[1] = waitTick - 1
+			call[1] = waitTick - 1
 		end
 	end
 
