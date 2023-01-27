@@ -1,4 +1,16 @@
 # MiniExtend
+很遗憾，在 *1.23.0* 版本，`debug` 库在迷你世界开发者脚本中被改动，现在访问到的 `debug` 表只剩下 `traceback` 函数。  
+这意味着 MiniExtend 无法再通过 `debug` 得到 `genv` 。  
+凭借已知可知，通过开发者脚本可使用的 Lua51 基本函数和库得到 `genv` 是不可能了。  
+我们已尽最大努力恢复这一切，与官方联系谈论这件事，但是直到目前为止都没有得到有效的回复，我们甚至不知道 `debug` 表在 *1.23.0* 被改动的原因。   
+所以，我们宣布 MiniExtend 在 *2023/1/27* **结束**！  
+
+Unfortunatelym, in version *1.23.0*, `debug` lib is changed by Mini World in developer script. Now the `debug` table just have a `traceback` function.  
+It means that MiniExtend can't get `genv` by `debug`.  
+With known, We can deduce a conclusion that It's impossible to get `genv` by Lua51 basic functions and libs in developer script.  
+We have tried our best to resume. We communicated with offical to talk about this. But so far, we don't receive any valid answer. We even not know the reason that `debug` table is changed in *1.23.0*.  
+So, we announce that MiniExtend **EOL** at *2022/1/27*.  
+<!--
 - 版本：3.0.3  
 
 [MiniExtend 3.0.3 Release (zip)](https://github.com/0-0000/MiniExtend/archive/refs/tags/Release-3.0.3.zip)  
@@ -89,3 +101,4 @@ MiniExtend Release 中也包含了离线文档。
 - [Lua 5.1 Reference Manual - contents](http://www.lua.org/manual/5.1/)  
 入门后建议通过该手册进阶学习 lua 。  
 - QQ群 [MiniExtend 开源库](https://jq.qq.com/?_wv=1027&k=PfLcOMQw)  
+--!>
