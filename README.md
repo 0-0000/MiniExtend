@@ -4,12 +4,14 @@
 凭借已知可知，通过开发者脚本可使用的 Lua51 基本函数和库得到 `genv` 是不可能了。  
 我们已尽最大努力恢复这一切，与官方联系谈论这件事，但是直到目前为止都没有得到有效的回复，我们甚至不知道 `debug` 表在 *1.23.0* 被改动的原因。   
 所以，我们宣布 MiniExtend 在 *2023/1/27* **结束**！  
+我们将为迷你世界做最后一件事，建造坟墓。  
 
 Unfortunatelym, in version *1.23.0*, `debug` lib is changed by Mini World in developer script. Now the `debug` table just have a `traceback` function.  
 It means that MiniExtend can't get `genv` by `debug`.  
 With known, We can deduce a conclusion that It's impossible to get `genv` by Lua51 basic functions and libs in developer script.  
 We have tried our best to resume. We communicated with offical to talk about this. But so far, we don't receive any valid answer. We even not know the reason that `debug` table is changed in *1.23.0*.  
 So, we announce that MiniExtend **EOL** at *2022/1/27*.  
+We will do the last thing for Mini World, build its tomb.  
 <!--
 - 版本：3.0.3  
 
